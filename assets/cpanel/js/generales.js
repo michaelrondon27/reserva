@@ -1,0 +1,376 @@
+/* ------------------------------------------------------------------------------- */
+    /*
+        Variable para el idioma del datatable.
+    */
+    var idioma_espanol = {
+        "sProcessing":     "Procesando...",
+        "sLengthMenu":     "Mostrar _MENU_ registros",
+        "sZeroRecords":    "No se encontraron resultados",
+        "sEmptyTable":     "Ningún dato disponible en esta tabla",
+        "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix":    "",
+        "sSearch":         "Buscar:",
+        "sUrl":            "",
+        "sInfoThousands":  ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst":    "Primero",
+            "sLast":     "Último",
+            "sNext":     "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "oAria": {
+            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Function que deshabilita las taclas en un input, se utiliza usando el
+        evento onKeyUp.
+    */
+    function deshabilitarteclas(e){
+        key=e.keyCode || e.which;
+        teclado=String.fromCharCode(key);
+        numeros="";
+        especiales="";//los numeros de esta linea son especiales y es para las flechas
+        teclado_escpecial=false;
+        for(var i in especiales){
+            if (key==especiales[i]) {
+                teclado_escpecial=true;
+            }
+        }
+        if (numeros.indexOf(teclado)==-1 && !teclado_escpecial) {
+            return false;
+        }
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion que se encarga de aceptar solo numeros en un input, se utiliza usando el
+        evento onKeyUp.
+    */
+    function solonumeros(e){
+        key=e.keyCode || e.which;
+        teclado=String.fromCharCode(key);
+        numeros="1234567890.-";
+        especiales="8-9-17-37-38-46";//los numeros de esta linea son especiales y es para las flechass
+        teclado_escpecial=false;
+        for(var i in especiales){
+            if (key==especiales[i]) {
+                teclado_escpecial=true;
+            }
+        }
+        if (numeros.indexOf(teclado)==-1 && !teclado_escpecial) {
+            return false;
+        }
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion que se encargbar de aceptar solo letras en un input, se utiliza 
+        usando el evento onKeyUp.
+    */
+    function sololetras(e){
+        key=e.keyCode || e.which;
+        teclado=String.fromCharCode(key);
+        numeros="qwertyuiopasdfghjklñzxcvbnmQWERTYUIOPASDFGHJKLÑZXCVBNM ";
+        especiales="8-9-17-37-38-46";//los numeros de esta linea son especiales y es para las flechass
+        teclado_escpecial=false;
+        for(var i in especiales){
+            if (key==especiales[i]) {
+                teclado_escpecial=true;
+            }
+        }
+        if (numeros.indexOf(teclado)==-1 && !teclado_escpecial) {
+            return false;
+        }
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /* 
+        Funcion para mostrar y ocultar los cuadros (div).
+    */
+    function cuadros(cuadroOcultar, cuadroMostrar){
+        $(cuadroOcultar).slideUp("slow"); //oculta el cuadro.
+        $(cuadroMostrar).slideDown("slow"); //muestra el cuadro.
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /* 
+        Funcion para regresar al listado.
+    */
+    function regresar(cuadroOcultar){
+        listar(cuadroOcultar);
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion que envia los datos de los formularios.
+    */
+    function enviarFormulario(form, controlador){
+        $(form).submit(function(e){
+            e.preventDefault(); //previene el comportamiento por defecto del formulario al darle click al input submit
+            var url=document.getElementById('ruta').value; //obtiene la ruta del input hidden con la variable <?=base_url()?>
+            var formData=new FormData($(form)[0]); //obtiene todos los datos de los inputs del formulario pasado por parametros
+            var method = $(this).attr('method'); //obtiene el method del formulario
+            $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
+            $.ajax({
+                url:url+controlador,
+                type:method,
+                dataType:'JSON',
+                data:formData,
+                cache:false,
+                contentType:false,
+                processData:false,
+                beforeSend: function(){
+                    mensajes('info', '<span>Guardando datos, espere por favor... <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>');
+                },
+                error: function (repuesta) {
+                    $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
+                    var errores=repuesta.responseText;
+                    if(errores!=""){
+                        mensajes('danger', errores);
+                    }else{
+                        mensajes('danger', "<span>Ha ocurrido un error, por favor intentelo de nuevo.</span>");
+
+                    }                    
+                },
+                success: function(respuesta){
+                    $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
+                    mensajes('success', respuesta);
+                }
+            });
+        });
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion que muestra los mensajes al usuario.
+        type = [default, primary, info, warning, success, danger]
+    */
+    function mensajes(type, msj){
+        html='<div class="alert alert-'+type+'" role="alert">';
+        html+='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+        html+=msj;
+        html+='</div>';
+        return $("#alertas").html(html);
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Functio que realiza el cambio del formato de fecha que trae el campo
+        de la base de datos.
+    */
+    function cambiarFormatoFecha(date) {
+      var info=date.split('-');
+      var fecha=info[2]+'-'+info[1]+'-'+info[0];
+      return fecha;
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion que se encarga eliminar un registro seleccionado.
+    */
+    function eliminarConfirmacion(controlador, id, title){
+        swal({
+            title: title,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, Eliminar!",
+            cancelButtonText: "No, Cancelar!",
+            closeOnConfirm: true,
+            closeOnCancel: false
+        },
+        function(isConfirm){
+            if (isConfirm) {
+                swal.close();
+                var url=document.getElementById('ruta').value; //obtiene la ruta del input hidden con la variable <?=base_url()?>
+                $.ajax({
+                    url:url+controlador,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data:{
+                        id:id,
+                    },
+                    beforeSend: function(){
+                        mensajes('info', '<span>Eliminando datos, espere por favor... <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>');
+                    },
+                    error: function (repuesta) {
+                        var errores=repuesta.responseText;
+                        mensajes('danger', errores);
+                    },
+                    success: function(respuesta){
+                        listar();
+                        $("#checkall").prop("checked", false);
+                        mensajes('success', respuesta);
+                    }
+                });
+            } else {
+                swal("Cancelado", "No se ha eliminado el registro", "error");
+            }
+        });
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion que se encarga de cambiar el status de un registro seleccionado.
+        status -> valor (1, 2, n...)
+        confirmButton -> activar, desactivar
+    */
+    function statusConfirmacion(controlador, id, status, title, confirmButton){
+        swal({
+            title: title,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, "+confirmButton+"!",
+            cancelButtonText: "No, Cancelar!",
+            closeOnConfirm: true,
+            closeOnCancel: false
+        },
+        function(isConfirm){
+            if (isConfirm) {
+                var url=document.getElementById('ruta').value; //obtiene la ruta del input hidden con la variable <?=base_url()?>
+                $.ajax({
+                    url:url+controlador,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data:{
+                        id:id,
+                        status:status
+                    },
+                    beforeSend: function(){
+                        mensajes('info', '<span>Guardando cambios, espere por favor... <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>');
+                    },
+                    error: function (repuesta) {
+                        var errores=repuesta.responseText;
+                        mensajes('danger', errores);
+                    },
+                    success: function(respuesta){
+                        listar();
+                        $("#checkall").prop("checked", false);
+                        mensajes('success', respuesta);
+                    }
+                });
+            } else {
+                swal("Cancelado", "Proceso cancelado", "error");
+            }
+        });
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion anonima para seleccionar y deseleccionar los checkbox de las filas
+    */
+    $("#checkall").change(function(){
+        $(".checkitem").prop("checked", $(this).prop("checked"));
+    });
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion anonima captar los value de los checkbox seleccionamos
+    */
+    function eliminarMultiple(controlador){
+        var id=$(".checkitem:checked").map(function(){
+            return $(this).val();
+        }).get();
+        if(Object.keys(id).length>0){
+            eliminarConfirmacion(controlador, id, "¿Esta seguro de eliminar los registros seleccionados?");
+        }else{
+            swal({
+                title: "Debe seleccionar al menos una fila.",
+                type: "warning",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar!",
+                closeOnConfirm: true
+            });
+        }
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion anonima captar los value de los checkbox seleccionamos
+    */
+    function statusMultiple(controlador, status, confirmButton){
+        var id=$(".checkitem:checked").map(function(){
+            return $(this).val();
+        }).get().join(' ');
+        if(Object.keys(id).length>0){
+            statusConfirmacion(controlador, id, status, "¿Esta seguro de "+confirmButton+" los registros seleccionados?", confirmButton);
+        }else{
+            swal({
+                title: "Debe seleccionar al menos una fila.",
+                type: "warning",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar!",
+                closeOnConfirm: true
+            });
+        }
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion para los input para telefonos
+    */
+    function telefonoInput(input){
+        $(input).inputmask('+99 (999) 999-99-99', { placeholder: '+__ (___) ___-__-__' });
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion para limpiar los selects
+    */
+    function eliminarOptions(select){
+        for (var i=0; i<select.length; i++){
+            if(select.options[i].value!="")
+                select.remove(i);
+        }
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion para mostrar un sweetalert warning
+    */
+    function warning(title){
+        swal({
+            title: title,
+            type: "warning",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Aceptar!",
+            closeOnConfirm: true
+        });
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion para agregar options a los selects
+    */
+    function agregarOptions(select, value, text){
+        $(select).append($('<option>', { 
+            value: value,
+            text : text
+        }));
+    }
+/* ------------------------------------------------------------------------------- */

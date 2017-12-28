@@ -1,0 +1,72 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+class MiEmpresa extends CI_Controller
+{
+	function __construct()
+	{
+    parent::__construct();
+    $this->load->database();
+    $this->load->model('MiEmpresa_model');
+    $this->load->library('form_validation');
+  }
+
+  public function index()
+  {
+    $this->load->view('cpanel/header');
+    $this->load->view('cpanel/menu');
+    $this->load->view('configuracion/MiEmpresa/index');
+    $this->load->view('cpanel/footer');
+  }
+
+  public function buscar_codigos()
+  {
+    $datos=$this->MiEmpresa_model->buscar_codigos($this->input->post('codigo'));
+    echo json_encode($datos);
+  }
+
+  public function buscar_mi_empresa()
+  {
+    $datos=$this->MiEmpresa_model->buscar_mi_empresa();
+    echo json_encode($datos);
+  }
+
+  public function actualizar_mi_empresa()
+  {
+    $this->reglas_mi_empresa();
+    $this->mensajes_reglas_mi_empresa();
+    if($this->form_validation->run() == true){
+      $dataContacto=array(
+        'id_codigo_postal' => $this->input->post('colonia'),
+        'telefono_principal_contacto' => $this->input->post('telefono_principal_contacto'),
+        'telefono_movil_contacto' => $this->input->post('telefono_movil_contacto'),
+        'correo_opcional_contacto' => $this->input->post('correo_opcional_contacto'),
+        'direccion_contacto' => strtoupper($this->input->post('direccion_contacto')),
+        'calle_contacto' => strtoupper($this->input->post('calle_contacto')),
+        'exterior_contacto' => $this->input->post('exterior_contacto'),
+        'interior_contacto' => $this->input->post('interior_contacto'),
+      );
+      $this->MiEmpresa_model->actualizar_mi_empresa($this->input->post('id_mi_empresa'), $this->input->post('nombre_mi_empresa'), $this->input->post('rfc_mi_empresa'), $this->input->post('id_contacto'), $dataContacto);
+      echo json_encode("<span>Datos editado exitosamente!</span>"); // envio de mensaje exitoso
+    }else{
+      // enviar los errores
+      echo validation_errors();
+    }
+  }
+
+  public function reglas_mi_empresa()
+  {
+    $this->form_validation->set_rules('nombre_mi_empresa','Nombre de Empresa','required');
+    $this->form_validation->set_rules('rfc_mi_empresa','RFC','required|max_length[14]');
+    $this->form_validation->set_rules('telefono_principal_contacto','Teléfono Principal','required');
+    $this->form_validation->set_rules('telefono_movil_contacto','Teléfono Móvil','required');
+    $this->form_validation->set_rules('correo_opcional_contacto','Correo Electrónico','required|valid_email');
+    $this->form_validation->set_rules('colonia','Colonia','required');
+  }
+
+  public function mensajes_reglas_mi_empresa(){
+    $this->form_validation->set_message('required', 'El campo %s es obligatorio');
+    $this->form_validation->set_message('max_length', 'El Campo %s debe tener un Máximo de %d Caracteres');
+    $this->form_validation->set_message('valid_email', 'El Campo %s debe ser un correo');
+  }
+
+}//Fin class Bancos
