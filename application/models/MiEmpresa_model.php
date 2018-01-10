@@ -30,22 +30,25 @@ Class MiEmpresa_model extends CI_Model{
     {
         $query=$this->db->query("SELECT e.*, c.*, cp.* FROM ".$this->tabla_empresa." e INNER JOIN ".$this->tabla_contacto." c ON e.id_contacto=c.id_contacto INNER JOIN codigo_postal cp ON c.id_codigo_postal=cp.id_codigo_postal LIMIT 1");
         $empresa=$query->result();
-        foreach($query->result_array() as $row){
-            $estados=$this->db->query("SELECT DISTINCT d_estado FROM codigo_postal WHERE d_codigo='".$row['d_codigo']."'");
-            $estados->result();
-            $ciudades=$this->db->query("SELECT DISTINCT d_ciudad FROM codigo_postal WHERE d_codigo='".$row['d_codigo']."'");
-            $ciudades->result();
-            $municipios=$this->db->query("SELECT DISTINCT d_mnpio FROM codigo_postal WHERE d_codigo='".$row['d_codigo']."'");
-            $municipios->result();
-            $colonias=$this->db->query("SELECT DISTINCT id_codigo_postal, d_asenta FROM codigo_postal WHERE d_codigo='".$row['d_codigo']."'");
-            $colonias->result();
-            $data=array(
-                'empresa' => $empresa,
-                'estados' => $estados,
-                'ciudades' => $ciudades,
-                'municipios' => $municipios,
-                'colonias' => $colonias,
-            );
+        $data=array();
+        if($empresa!=""){
+            foreach($query->result_array() as $row){
+                $estados=$this->db->query("SELECT DISTINCT d_estado FROM codigo_postal WHERE d_codigo='".$row['d_codigo']."'");
+                $estados->result();
+                $ciudades=$this->db->query("SELECT DISTINCT d_ciudad FROM codigo_postal WHERE d_codigo='".$row['d_codigo']."'");
+                $ciudades->result();
+                $municipios=$this->db->query("SELECT DISTINCT d_mnpio FROM codigo_postal WHERE d_codigo='".$row['d_codigo']."'");
+                $municipios->result();
+                $colonias=$this->db->query("SELECT DISTINCT id_codigo_postal, d_asenta FROM codigo_postal WHERE d_codigo='".$row['d_codigo']."'");
+                $colonias->result();
+                $data=array(
+                    'empresa' => $empresa,
+                    'estados' => $estados,
+                    'ciudades' => $ciudades,
+                    'municipios' => $municipios,
+                    'colonias' => $colonias,
+                );
+            }
         }
         return $data;
     }

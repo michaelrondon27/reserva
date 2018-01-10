@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label for="telefono_principal_contacto">Teléfono Principal*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control telefono" name="telefono_principal_contacto" id="telefono_principal_contacto" placeholder="P. EJ.: +00 (000) 000-00-00">
+			                                        <input type="text" class="form-control telefono" name="telefono_principal_contacto" id="telefono_principal_contacto" placeholder="P. EJ.: +00 (000) 000-00-00" onkeypress='return solonumeros(event)'>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -45,7 +45,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label for="telefono_movil_contacto">Teléfono Móvil*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control telefono" name="telefono_movil_contacto" id="telefono_movil_contacto" placeholder="P. EJ.: +00 (000) 000-00-00">
+			                                        <input type="text" class="form-control telefono" name="telefono_movil_contacto" id="telefono_movil_contacto" placeholder="P. EJ.: +00 (000) 000-00-00" onkeypress='return solonumeros(event)'>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -134,30 +134,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	            </div>
 			</div>
 		</section>
-		<div class="modal fade" id="modalCodigoPostal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="largeModalLabel">Buscar Código Postal</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form name="form_buscar_codigo_postal" id="form_buscar_codigo_postal" method="post">
-								<div class="col-md-12">
-	                                <input type="text" class="form-control" name="buscar" id="buscar" onkeypress='return solonumeros(event)' maxlength="6" style="width: 30%; float: left;" placeholder="Ingrese el código postal">
-	                                <input type="submit" value="Buscar" class="btn btn-info" style="float: left; margin-left: 10px;">
-	                            </div>
-	                            <br><br><hr>
-	                            <div class="col-md-12" id="resultados">
-	                            	
-	                            </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 	</body>
 	<script src="<?=base_url();?>assets/template/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
     <script src="<?=base_url();?>assets/cpanel/MiEmpresa/js/miEmpresa.js"></script>

@@ -47,6 +47,17 @@
                         <span>Inicio</span>
                     </a>
                 </li>
+                <li id="perfiles">
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">people</i>
+                        <span>Perfiles</span>
+                    </a>
+                    <ul class="ml-menu">
+                        <li id="usuarios">
+                            <a href="<?=base_url();?>Usuarios">Usuarios</a>
+                        </li>
+                    </ul>
+                </li>
                 <li id="configuracion">
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">settings</i>
