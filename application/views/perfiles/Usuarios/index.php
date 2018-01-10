@@ -60,7 +60,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		        <!-- Cierre del cuadro de la tabla -->
 
 		        <!-- Comienzo del cuadro de registrar banco -->
-					<div class="row clearfix " id="cuadro2">
+					<div class="row clearfix ocultar" id="cuadro2">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
@@ -186,7 +186,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="codigo_postal_registrar">Código Postal*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" id="codigo_postal_registrar" onkeypress='return solonumeros(event)' maxlength="6" onchange="buscarCodigos(this.value)">
+				                                        <input type="text" class="form-control" id="codigo_postal_registrar" onkeypress='return solonumeros(event)' maxlength="6" onchange="buscarCodigos(this.value, 'create')">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -229,13 +229,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="correo_confirmar_registrar">Confirmar Correo Electrónico*</label>
 				                                <div class="form-group form-float">
 				                                    <div class="form-line" id="correoConfirmarRegistrar">
-				                                        <input type="email" class="form-control" id="correo_confirmar_registrar" placeholder="P. EJ. ejemplo@dominio.com" oninput="validarCorreo('#correo_usuario_registrar', '#correo_confirmar_registrar','#correoConfirmarRegistrar')">
+				                                        <input type="email" class="form-control" name="correo_confirmar" id="correo_confirmar_registrar" placeholder="P. EJ. ejemplo@dominio.com" oninput="validarCorreo('#correo_usuario_registrar', '#correo_confirmar_registrar','#correoConfirmarRegistrar')">
 				                                    </div>
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-4" style="padding-bottom: 30px;">
-			                            		<label for="nacionalidad_datos_personales_registrar">Tipo de Rol*</label>
-		                                    	<select name="nacionalidad_datos_personales" id="nacionalidad_datos_personales_registrar" required class="form-control">
+			                            		<label for="id_rol_registrar">Tipo de Rol*</label>
+		                                    	<select name="id_rol" id="id_rol_registrar" required class="form-control">
 		                                    		<option value="" selected>Seleccione</option>
 		                                    		<?php foreach ($roles as $rol): ?>
 		                                    			<option value="<?=$rol->id_rol;?>"><?=$rol->nombre_rol;?></option>
@@ -254,16 +254,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="repetir_registrar">Repetir Contraseña*</label>
 				                                <div class="form-group form-float">
 				                                    <div class="form-line" id="repetirContraseñaRegistrar">
-				                                        <input type="password" class="form-control" id="repetir_registrar" placeholder="P. EJ. ejemplo@dominio.com" oninput="validarClave('#clave_usuario_registrar', '#repetir_registrar','#repetirContraseñaRegistrar')">
+				                                        <input type="password" class="form-control" name="repetir_clave" id="repetir_registrar" placeholder="Repetir Contraseña" oninput="validarClave('#clave_usuario_registrar', '#repetir_registrar','#repetirContraseñaRegistrar')">
 				                                    </div>
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-12">
-				                                <label for="imagen_registrar">Subir Imagen</label>
+				                                <label for="avatar_usuario_registrar">Subir Imagen</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="file" class="form-control" id="imagen_registrar" name="avatar_usuario">
+				                                        <input type="file" class="form-control" id="avatar_usuario_registrar" name="avatar_usuario" onchange="readURL(this, '#imagen_registrar', '#avatar_usuario_registrar')">
 				                                    </div>
+				                                    <img id="imagen_registrar" src="http://placehold.it/180" alt="Tu avatar"/ class="img-responsive" style="max-width: 15%;">
 				                                </div>
 				                            </div>
                                 			<br>

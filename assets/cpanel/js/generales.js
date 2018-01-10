@@ -465,3 +465,34 @@
         }
     }
 /* ------------------------------------------------------------------------------- */
+
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion que muestra la vista previa de la imagen y valida el tipo del file
+    */
+    function readURL(input, img, avatar){
+        var val = $(avatar).val();
+        switch(val.substring(val.lastIndexOf('.') + 1).toLowerCase()){
+            case 'gif': case 'jpg': case 'png':
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $(img).attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+                break;
+            default:
+                $(avatar).val('');
+                swal({
+                    title: "El archivo seleccionado no es una imagen.",
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Aceptar!",
+                    closeOnConfirm: true
+                });
+                break;
+        }
+    }
+/* ------------------------------------------------------------------------------- */

@@ -106,7 +106,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function registrar_usuario(){
-		enviarFormulario("#form_usuario_registrar", 'Usuario/registrar_usuario');
+		enviarFormulario("#form_usuario_registrar", 'Usuarios/registrar_usuario');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -183,4 +183,61 @@ $(document).ready(function(){
             statusConfirmacion('Bancos/status_banco', data.id_banco, 1, "¿Esta seguro de activar el registro?", 'activar');
         });
 	}
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion que busca los codigos
+    */
+    function buscarCodigos(codigo, type){
+    	if(type=='create'){
+    		var estado = 'estado_registrar',
+	    		ciudad = 'ciudad_registrar',
+	    		municipio = 'municipio_registrar',
+	    		colonia = 'colonia_registrar';
+    	}
+        eliminarOptions(document.getElementById(estado));
+        eliminarOptions(document.getElementById(ciudad));
+        eliminarOptions(document.getElementById(municipio));
+        eliminarOptions(document.getElementById(colonia));
+        if(codigo.length>4){
+            var url=document.getElementById('ruta').value;
+            $.ajax({
+                url:url+'Usuarios/buscar_codigos',
+                type:'POST',
+                dataType:'JSON',
+                data:{'codigo':codigo},
+                beforeSend: function(){
+                    mensajes('info', '<span>Buscando, espere por favor... <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>');
+                },
+                error: function (repuesta) {
+                    mensajes('danger', '<span>Ha ocurrido un error, por favor intentelo de nuevo</span>');         
+                },
+                success: function(respuesta){
+                    $("#alertas").html('');
+                    respuesta.estados.result_object.forEach(function(campo, index){
+                        agregarOptions("#"+ estado, campo.d_estado, campo.d_estado);
+                    });
+                    respuesta.ciudades.result_object.forEach(function(campo, index){
+                        if(campo.d_ciudad!=""){
+                            agregarOptions("#"+ ciudad, campo.d_ciudad, campo.d_ciudad);
+                            $("#"+ ciudad).css('border-color', '#ccc');
+                        }else{
+                            agregarOptions(ciudad, "N/A", "NO APLICA");
+                            $("#"+ ciudad + " option[value='N/A']").attr("selected","selected");
+                            $("#"+ ciudad).css('border-color', '#a94442');
+                        }
+                    });
+                    respuesta.municipios.result_object.forEach(function(campo, index){
+                        agregarOptions("#"+ municipio, campo.d_mnpio, campo.d_mnpio);
+                    });
+                    respuesta.colonias.result_object.forEach(function(campo, index){
+                        agregarOptions("#"+ colonia, campo.id_codigo_postal, campo.d_asenta);
+                    });
+                }
+            });
+        }else{
+            warning('Debe colocar al menos 5 caracteres para continuar.');
+        }
+    }
 /* ------------------------------------------------------------------------------- */

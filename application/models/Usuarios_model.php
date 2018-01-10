@@ -8,33 +8,58 @@ Class Usuarios_model extends CI_Model
     private $tabla_usuario = "usuario";
     private $tabla_lval = "lval";
     private $tabla_roles = "rol";
+    private $tabla_contacto = "contacto";
+    private $tabla_personal = "datos_personales";
 
     public function listar_usuarios()
     {
-        $query=$this->db->query("SELECT u.id_usuario, u.id_rol, u.correo_usuario, u.avatar_usuario, u.fec_ult_acceso_usuario, a.status, a.fec_regins, r.nombre_rol, dt.*, c.*, cp.* FROM ".$this->tabla_usuario." u INNER JOIN auditoria a ON u.id_usuario=a.cod_reg INNER JOIN rol r ON u.id_rol=r.id_rol INNER JOIN datos_personales dt ON u.id_usuario=dt.id_usuario INNER JOIN contacto c ON dt.id_contacto=c.id_contacto INNER JOIN codigo_postal cp ON c.id_codigo_postal=cp.id_codigo_postal WHERE a.tabla='".$this->tabla_usuario."'");
+        $query = $this->db->query("SELECT u.id_usuario, u.id_rol, u.correo_usuario, u.avatar_usuario, u.fec_ult_acceso_usuario, a.status, a.fec_regins, r.nombre_rol, dt.*, c.*, cp.* FROM ".$this->tabla_usuario." u INNER JOIN auditoria a ON u.id_usuario=a.cod_reg INNER JOIN rol r ON u.id_rol=r.id_rol INNER JOIN datos_personales dt ON u.id_usuario=dt.id_usuario INNER JOIN contacto c ON dt.id_contacto=c.id_contacto INNER JOIN codigo_postal cp ON c.id_codigo_postal=cp.id_codigo_postal WHERE a.tabla='".$this->tabla_usuario."'");
         return $query->result();
     }
 
     public function nacionalidades()
     {
-        $query=$this->db->query("SELECT * FROM ".$this->tabla_lval." WHERE tipolval='NACIONALIDAD'");
+        $query = $this->db->query("SELECT * FROM ".$this->tabla_lval." WHERE tipolval='NACIONALIDAD'");
         return $query->result();
     }
 
     public function roles()
     {
-        $query=$this->db->query("SELECT * FROM ".$this->tabla_roles);
+        $query = $this->db->query("SELECT * FROM ".$this->tabla_roles);
         return $query->result();
     }
+
+    public function buscar_codigos($codigo)
+    {
+        $estados = $this->db->query("SELECT DISTINCT d_estado FROM codigo_postal WHERE d_codigo='$codigo'");
+        $estados->result();
+        $ciudades = $this->db->query("SELECT DISTINCT d_ciudad FROM codigo_postal WHERE d_codigo='$codigo'");
+        $ciudades->result();
+        $municipios = $this->db->query("SELECT DISTINCT d_mnpio FROM codigo_postal WHERE d_codigo='$codigo'");
+        $municipios->result();
+        $colonias = $this->db->query("SELECT id_codigo_postal, d_asenta FROM codigo_postal WHERE d_codigo='$codigo'");
+        $colonias->result();
+        $data = array(
+            'estados' => $estados,
+            'ciudades' => $ciudades,
+            'municipios' => $municipios,
+            'colonias' => $colonias,
+        );
+        return $data;
+    }
         
-    public function registrar_banco($data){
-        $this->db->insert($this->nombre_tabla, $data);
-        $datos=array(
-            'tabla' => $this->nombre_tabla,
+    public function registrar_usuario($usuarioArray, $contactoArray, $personalArray){
+        $this->db->insert($this->tabla_usuario, $usuarioArray);
+        $datos = array(
+            'tabla' => $this->tabla_usuario,
             'cod_reg' => $this->db->insert_id(),
             'usr_regins' => '1',
             'fec_regins' => date('Y-m-d'),
         );
+        $personalArray['id_usuario'] = $this->db->insert_id();
+        $this->db->insert($this->tabla_contacto, $contactoArray);
+        $personalArray['id_contacto']  = $this->db->insert_id();
+        $this->db->insert($this->tabla_personal, $personalArray);
         $this->db->insert('auditoria', $datos);
     }
 
