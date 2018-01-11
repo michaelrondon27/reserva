@@ -54,15 +54,15 @@ $(document).ready(function(){
 				},
 				{"data": null,
 					render : function(data, type, row) {
-						/*var botones="<span class='consultar btn btn-info' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
+						var botones="<span class='consultar btn btn-info' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
 						botones+="<span class='editar btn btn-primary' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
-						if(data.status==1){
+						/*if(data.status==1){
 							botones+="<span class='desactivar btn btn-warning' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
 						}else if(data.status==2){
 							botones+="<span class='activar btn btn-warning' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
 						}
 		              	return botones+="<span class='eliminar btn btn-danger' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";*/
-		              	return "";
+		              	return botones;
 		          	}
 				}
 			],
@@ -117,8 +117,36 @@ $(document).ready(function(){
 	function consultar(tbody, table){
 		$(tbody).on("click", "span.consultar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			document.getElementById('cod_banco_consultar').value=data.cod_banco;
-			document.getElementById('nombre_banco_consultar').value=data.nombre_banco;
+			document.getElementById('nombre_datos_personales_consultar').value=data.nombre_datos_personales;
+			document.getElementById('apellido_p_datos_personales_consultar').value=data.apellido_p_datos_personales;
+			document.getElementById('apellido_m_datos_personales_consultar').value=data.apellido_m_datos_personales;
+			document.getElementById('fecha_nac_datos_personales_consultar').value=cambiarFormatoFecha(data.fecha_nac_datos_personales);
+			$("#nacionalidad_datos_personales_consultar option[value='"+data.nacionalidad_datos_personales+"']").attr("selected","selected");
+			document.getElementById('curp_datos_personales_consultar').value=data.curp_datos_personales;
+			document.getElementById('telefono_consultar').value=data.telefono_principal_contacto;
+			$("#edo_civil_datos_personales_consultar option[value='"+data.edo_civil_datos_personales+"']").attr("selected","selected");
+			$("#genero_datos_personales_consultar option[value='"+data.genero_datos_personales+"']").attr("selected","selected");
+			document.getElementById('direccion_contacto_consultar').value=data.direccion_contacto;
+			document.getElementById('calle_contacto_consultar').value=data.calle_contacto;
+			document.getElementById('exterior_contacto_consultar').value=data.exterior_contacto;
+			document.getElementById('interior_contacto_consultar').value=data.interior_contacto;
+			document.getElementById('codigo_postal_consultar').value=data.d_codigo;
+			document.getElementById('estado_consultar').value=data.d_estado;
+			if(data.ciudad!=""){
+				document.getElementById('ciudad_consultar').value=data.d_ciudad;
+			}else{
+				document.getElementById('ciudad_consultar').value='NO APLICA';
+			}
+			document.getElementById('municipio_consultar').value=data.d_mnpio;
+			document.getElementById('colonia_consultar').value=data.d_asenta;
+			document.getElementById('correo_usuario_consultar').value=data.correo_usuario;
+			$("#id_rol_consultar option[value='"+data.id_rol+"']").attr("selected","selected");
+			if(data.avatar_usuario!=null){
+				$("#imagen_consultar").attr('src', document.getElementById('ruta').value+'assets/cpanel/Usuarios/iamges/');
+			}else{
+				$("#imagen_consultar").attr('src', "http://placehold.it/180");
+			}
+			document.getElementById('colonia_consultar').value=data.d_asenta;
 			cuadros('#cuadro1', '#cuadro3');
 		});
 	}
@@ -131,9 +159,20 @@ $(document).ready(function(){
 	function editar(tbody, table){
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			document.getElementById('id_banco_editar').value=data.id_banco;
-			document.getElementById('cod_banco_editar').value=data.cod_banco;
-			document.getElementById('nombre_banco_editar').value=data.nombre_banco;
+			document.getElementById('nombre_datos_personales_actualizar').value=data.nombre_datos_personales;
+			document.getElementById('apellido_p_datos_personales_actualizar').value=data.apellido_p_datos_personales;
+			document.getElementById('apellido_m_datos_personales_actualizar').value=data.apellido_m_datos_personales;
+			document.getElementById('fecha_nac_datos_personales_actualizar').value=cambiarFormatoFecha(data.fecha_nac_datos_personales);
+			$("#nacionalidad_datos_personales_actualizar option[value='"+data.nacionalidad_datos_personales+"']").attr("selected","selected");
+			document.getElementById('curp_datos_personales_actualizar').value=data.curp_datos_personales;
+			document.getElementById('telefono_actualizar').value=data.telefono_principal_contacto;
+			$("#edo_civil_datos_personales_actualizar option[value='"+data.edo_civil_datos_personales+"']").attr("selected","selected");
+			$("#genero_datos_personales_actualizar option[value='"+data.genero_datos_personales+"']").attr("selected","selected");
+			document.getElementById('direccion_contacto_actualizar').value=data.direccion_contacto;
+			document.getElementById('calle_contacto_actualizar').value=data.calle_contacto;
+			document.getElementById('exterior_contacto_actualizar').value=data.exterior_contacto;
+			document.getElementById('interior_contacto_actualizar').value=data.interior_contacto;
+			document.getElementById('codigo_postal_actualizar').value=data.d_codigo;
 			cuadros('#cuadro1', '#cuadro4');
 			$("#nombre_banco_editar").focus();
 		});
