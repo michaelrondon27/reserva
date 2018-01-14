@@ -142,7 +142,7 @@ $(document).ready(function(){
 			document.getElementById('correo_usuario_consultar').value=data.correo_usuario;
 			$("#id_rol_consultar option[value='"+data.id_rol+"']").attr("selected","selected");
 			if(data.avatar_usuario!=null){
-				$("#imagen_consultar").attr('src', document.getElementById('ruta').value+'assets/cpanel/Usuarios/iamges/');
+				$("#imagen_consultar").attr('src', document.getElementById('ruta').value+'assets/cpanel/Usuarios/images/'+data.avatar_usuario);
 			}else{
 				$("#imagen_consultar").attr('src', "http://placehold.it/180");
 			}
@@ -192,9 +192,9 @@ $(document).ready(function(){
 			document.getElementById('correo_confirmar_actualizar').value=data.correo_usuario;
 			$("#id_rol_actualizar option[value='"+data.id_rol+"']").attr("selected","selected");
 			if(data.avatar_usuario!=null){
-				$("#imagen_consultar").attr('src', document.getElementById('ruta').value+'assets/cpanel/Usuarios/iamges/');
+				$("#imagen_actualizar").attr('src', document.getElementById('ruta').value+'assets/cpanel/Usuarios/images/'+data.avatar_usuario);
 			}else{
-				$("#imagen_consultar").attr('src', "http://placehold.it/180");
+				$("#imagen_actualizar").attr('src', "http://placehold.it/180");
 			}
 			document.getElementById('id_contacto_actualizar').value=data.id_contacto;
 			document.getElementById('id_datos_personales_actualizar').value=data.id_datos_personales;

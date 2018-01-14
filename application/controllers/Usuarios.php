@@ -35,13 +35,25 @@ class Usuarios extends CI_Controller
 
   public function registrar_usuario()
   {
+    $config['upload_path'] = "assets/cpanel/Usuarios/images/"; //ruta donde carga el archivo
+    $config['file_name'] = time(); //nombre temporal del archivo
+    $config['allowed_types'] = "gif|jpg|jpeg|png";
+    $config['overwrite'] = true; //sobreescribe si existe uno con ese nombre
+    $config['max_size'] = "2000000"; //tamaño maximo de archivo
+    $this->load->library('upload', $config);
+    if($this->upload->do_upload('avatar_usuario')){
+      $imagen = $this->upload->data()['file_name'];
+    }else{
+      $imagen = "";
+    }
     $this->reglas_usuarios('insert');
     $this->mensajes_reglas_usuarios();
     if ($this->form_validation->run() == true) {
       $usuarioArray = array(
         'id_rol' => $this->input->post('id_rol'),
         'correo_usuario' => $this->input->post('correo_usuario'),
-        'clave_usuario' => $this->encrypt->encode($this->input->post('clave_usuario'))
+        'clave_usuario' => $this->encrypt->encode($this->input->post('clave_usuario')),
+        'avatar_usuario' => $imagen,
       );
       $contactoArray = array(
         'id_codigo_postal' => $this->input->post('colonia'),
@@ -79,16 +91,17 @@ class Usuarios extends CI_Controller
     $config['max_size'] = "2000000"; //tamaño maximo de archivo
     $this->load->library('upload', $config);
     if($this->upload->do_upload('avatar_usuario')){
-
+      $imagen = $this->upload->data()['file_name'];
     }else{
-      echo $this->upload->display_errors();
+      $imagen = "";
     }
-    /*$this->reglas_usuarios('update');
+    $this->reglas_usuarios('update');
     $this->mensajes_reglas_usuarios();
     if($this->form_validation->run() == true){
       $usuarioArray = array(
         'id_rol' => $this->input->post('id_rol'),
         'correo_usuario' => $this->input->post('correo_usuario'),
+        'avatar_usuario' => $imagen,
       );
       $contactoArray = array(
         'id_codigo_postal' => $this->input->post('colonia'),
@@ -130,11 +143,10 @@ class Usuarios extends CI_Controller
         $this->Usuarios_model->actualizar_usuario($usuarioArray, $contactoArray, $personalArray, $idArray, $this->input->post('avatar_usuario'));
         echo json_encode("<span>El usuario se ha editado exitosamente!</span>"); // envio de mensaje exitoso
       }
-      
     }else{
       // enviar los errores
       echo validation_errors();
-    }*/
+    }
   }
 
   public function reglas_usuarios($method)
