@@ -63,9 +63,12 @@ Class ListasValores_model extends CI_Model{
     {
         try { 
             $this->db->delete($this->nombre_tabla, array('codlval' => $id));
-            echo json_encode("<span>Se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
-        } catch(QueryException $ex){ 
-            echo "<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>"; // envio de mensaje exitoso
+                throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
+            }else{
+                cho json_encode("<span>Se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
+            }
+        } catch(Exception $e){ 
+            echo $e->getMessage(); // envio de mensaje de error
         }
     }
 

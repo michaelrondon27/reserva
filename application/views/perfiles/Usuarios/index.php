@@ -44,13 +44,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    <tbody></tbody>
 		                                </table>
 		                                <div class="col-md-2">
-		                                	<button class="btn btn-danger" onclick="eliminarMultiple('Bancos/eliminar_multiple_banco')">Eliminar seleccionados</button>
+		                                	<button class="btn btn-danger" onclick="eliminarMultiple('Usuarios/eliminar_multiple_usuario')">Eliminar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2">
-		                                	<button class="btn btn-warning" onclick="statusMultiple('Bancos/status_multiple_banco', 1, 'activar')">Activar seleccionados</button>
+		                                	<button class="btn btn-warning" onclick="statusMultiple('Usuarios/status_multiple_usuario', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2">
-		                                	<button class="btn btn-warning" onclick="statusMultiple('Bancos/status_multiple_banco', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                	<button class="btn btn-warning" onclick="statusMultiple('Usuarios/status_multiple_usuario', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>
@@ -71,7 +71,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        		<div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
 		                        			<h4>Datos Personales</h4>
 		                        		</div>
-			                            <form name="form_usuario_registrar" id="form_usuario_registrar" method="post">
+			                            <form name="form_usuario_registrar" id="form_usuario_registrar" method="post" enctype="multipart/form-data">
 			                            	<div class="col-sm-4">
 			                            		<label for="nombre_datos_personales_registrar">Nombre(s)*</label>
 				                                <div class="form-group">
@@ -491,7 +491,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        		<div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
 		                        			<h4>Datos Personales</h4>
 		                        		</div>
-			                            <form name="form_usuario_actualizar" id="form_usuario_actualizar" method="post">
+			                            <form name="form_usuario_actualizar" id="form_usuario_actualizar" method="post" enctype="multipart/form-data">
 			                            	<div class="col-sm-4">
 			                            		<label for="nombre_datos_personales_actualizar">Nombre(s)*</label>
 				                                <div class="form-group">
@@ -606,7 +606,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="codigo_postal_actualizar">Código Postal*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" id="codigo_postal_actualizar" onkeypress='return solonumeros(event)' maxlength="6" onchange="buscarCodigos(this.value, 'create')">
+				                                        <input type="text" class="form-control" id="codigo_postal_actualizar" onkeypress='return solonumeros(event)' maxlength="6" onchange="buscarCodigos(this.value, 'edit')">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -641,7 +641,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="correo_usuario_actualizar">Correo Electrónico*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="email" class="form-control" name="correo_usuario" id="correo_usuario_registrar" placeholder="P. EJ. ejemplo@dominio.com">
+				                                        <input type="email" class="form-control" name="correo_usuario" id="correo_usuario_actualizar" placeholder="P. EJ. ejemplo@dominio.com">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -662,22 +662,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
-				                            <div class="col-sm-4">
-				                                <label for="clave_usuario_actualizar">Contraseña*</label>
-				                                <div class="form-group">
-				                                    <div class="form-line">
-				                                        <input type="password" class="form-control" name="clave_usuario" id="clave_usuario_actualizar" placeholder="Escribir contraseña">
-				                                    </div>
-				                                </div>
-				                            </div>
-				                            <div class="col-sm-4">
-				                                <label for="repetir_actualizar">Repetir Contraseña*</label>
-				                                <div class="form-group form-float">
-				                                    <div class="form-line" id="repetirContraseñaActualizar">
-				                                        <input type="password" class="form-control" name="repetir_clave" id="repetir_actualizar" placeholder="Repetir Contraseña" oninput="validarClave('#clave_usuario_actualizar', '#repetir_actualizar','#repetirContraseñaActualizar')">
-				                                    </div>
-				                                </div>
-				                            </div>
 				                            <div class="col-sm-12">
 				                                <label for="avatar_usuario_actualizar">Subir Imagen</label>
 				                                <div class="form-group">
@@ -687,11 +671,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                    <img id="imagen_actualizar" src="http://placehold.it/180" alt="Tu avatar"/ class="img-responsive" style="max-width: 15%;">
 				                                </div>
 				                            </div>
-				                            <input type="text" name="id_contacto" id="id_contacto_actualizar">
-				                            <input type="text" name="id_datos_personales" id="id_datos_personales_actualizar">
+				                            <input type="hidden" name="id_usuario" id="id_usuario_actualizar">
+				                            <input type="hidden" name="id_contacto" id="id_contacto_actualizar">
+				                            <input type="hidden" name="id_datos_personales" id="id_datos_personales_actualizar">
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
-		                                        <button type="button" onclick="regresar('#cuadro2')" class="btn btn-primary">Regresar</button>
+		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary">Regresar</button>
 		                                        <input type="submit" value="Guardar" class="btn btn-success">
 			                                </div>
 			                            </form>

@@ -63,35 +63,46 @@ Class Usuarios_model extends CI_Model
         $this->db->insert('auditoria', $datos);
     }
 
-    public function actualizar_banco($id, $data)
+    public function actualizar_usuario($usuarioArray, $contactoArray, $personalArray, $idArray, $imagen)
     {
-        $this->db->where('id_banco', $id);
-        $this->db->update($this->nombre_tabla, $data);
+        $this->db->where('id_usuario', $idArray['id_usuario']);
+        $this->db->update($this->tabla_usuario, $usuarioArray);
+        $this->db->where('id_contacto', $idArray['id_contacto']);
+        $this->db->update($this->tabla_contacto, $contactoArray);
+        $this->db->where('id_datos_personales', $idArray['id_datos_personales']);
+        echo $imagen;
+        $this->db->update($this->tabla_personal, $personalArray);
+        if($imagen!=""){
+            subirImagen($imagen, $idArray['id_usuario']);
+        }
         $datos=array(
             'usr_regmod' => '1',
             'fec_regmod' => date('Y-m-d'),
         );
-        $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
+        $this->db->where('cod_reg', $idArray['id_usuario'])->where('tabla', $this->tabla_usuario);
         $this->db->update('auditoria', $datos);
     }
 
-    public function verificar_banco($data)
+    public function verificar_usuario($correo)
     {
-        $query=$this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE nombre_banco='".$data['nombre_banco']."' LIMIT 1");
+        $query=$this->db->query("SELECT * FROM ".$this->tabla_usuario." WHERE correo_usuario='".$correo."' LIMIT 1");
         return $query->result_array();
     }
 
-    public function eliminar_banco($id)
+    public function eliminar_usuario($id)
     {
         try { 
-            $this->db->delete($this->nombre_tabla, array('id_banco' => $id));
-            echo json_encode("<span>El Banco se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
-        } catch(QueryException $ex){ 
-            echo "<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>"; // envio de mensaje exitoso
+            if(!$this->db->delete($this->tabla_usuario, array('id_usuario' => $id))){
+                throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
+            }else{
+                echo json_encode("<span>El usuario se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
+            }
+        } catch(Exception $e){ 
+            echo $e->getMessage(); // envio de mensaje de error
         }
     }
 
-    public function status_banco($id, $status)
+    public function status_usuario($id, $status)
     {
         $datos=array(
             'status'=>$status,
@@ -99,30 +110,49 @@ Class Usuarios_model extends CI_Model
             'usr_regmod' => '1',
             'fec_regmod' => date('Y-m-d'),
         );
-        $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
+        $this->db->where('cod_reg', $id)->where('tabla', $this->tabla_usuario);
         $this->db->update('auditoria', $datos);
     }
 
-    public function eliminar_multiple_banco($id)
+    public function eliminar_multiple_usuario($id)
     {
         $eliminados=0;
         $noEliminados=0;
-        foreach($id as $banco)
+        foreach($id as $usuario)
         {
-            try { 
-                $this->db->delete($this->nombre_tabla, array('id_banco' => $banco));
-                $eliminados++;
-            } catch(QueryException $ex){ 
+            if(!$this->db->delete($this->tabla_usuario, array('id_usuario' => $usuario))){
                 $noEliminados++;
+            }else{
+                $eliminados++;
             }
         }
         echo json_encode("<span>Registros eliminados: ".$eliminados."</span><br><span>Registros no eliminados (porque tienen dependencia en otras tablas): ".$noEliminados);
     }
 
-    public function status_multiple_banco($id, $status)
+    public function status_multiple_usuario($id, $status)
     {
-        $bancos=str_replace(' ', ',', $id);
-        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$bancos.") AND tabla='".$this->nombre_tabla."'");
+        $usuarios=str_replace(' ', ',', $id);
+        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$usuarios.") AND tabla='".$this->tabla_usuario."'");
+    }
+
+    public function subirImagen($imagen, $id)
+    {
+        $config['upload_path'] = "assets/cpanel/usuarios/images/"; //ruta donde carga el archivo
+        /*if(!file_exists($config['upload_path'])){
+            mkdir($config['upload_path'], 0777, true);
+        }*/
+        $config['file_name'] = time(); //nombre temporal del archivo
+        $config['allowed_types'] = "gif|jpg|jpeg|png";
+        $config['overwrite'] = true; //sobreescribe si existe uno con ese nombre
+        $config['max_size'] = "2000000"; //tamaño maximo de archivo
+        $usuarioArray = array(
+            'avatar_usuario' => $config['file_name'],
+        );
+        $this->load->library('upload', 'avatar_usuario');
+        if($this->upload->do_upload($imagen)){
+            $this->db->where('id_usuario', $id);
+            $this->db->update($this->tabla_usuario, $usuarioArray);
+        }
     }
 
 }

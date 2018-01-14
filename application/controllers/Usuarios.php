@@ -70,35 +70,71 @@ class Usuarios extends CI_Controller
     }
   }
 
-  public function actualizar_banco()
+  public function actualizar_usuario()
   {
-    $this->reglas_bancos('update');
+    $config['upload_path'] = "assets/cpanel/Usuarios/images/"; //ruta donde carga el archivo
+    $config['file_name'] = time(); //nombre temporal del archivo
+    $config['allowed_types'] = "gif|jpg|jpeg|png";
+    $config['overwrite'] = true; //sobreescribe si existe uno con ese nombre
+    $config['max_size'] = "2000000"; //tamaño maximo de archivo
+    $this->load->library('upload', $config);
+    if($this->upload->do_upload('avatar_usuario')){
+
+    }else{
+      echo $this->upload->display_errors();
+    }
+    /*$this->reglas_usuarios('update');
     $this->mensajes_reglas_usuarios();
     if($this->form_validation->run() == true){
-      $data=array(
-        'nombre_banco' => strtoupper($this->input->post('nombre_banco')),
+      $usuarioArray = array(
+        'id_rol' => $this->input->post('id_rol'),
+        'correo_usuario' => $this->input->post('correo_usuario'),
       );
-      $banco_verificado=$this->Bancos_model->verificar_banco($data); //busca si el nombre del banco esta registrado en la base de datos
-      if(count($banco_verificado)>0){
+      $contactoArray = array(
+        'id_codigo_postal' => $this->input->post('colonia'),
+        'telefono_principal_contacto' => $this->input->post('telefono_principal_contacto'),
+        'telefono_movil_contacto' => $this->input->post('telefono_principal_contacto'),
+        'direccion_contacto' => strtoupper($this->input->post('direccion_contacto')),
+        'calle_contacto' => strtoupper($this->input->post('calle_contacto')),
+        'interior_contacto' => $this->input->post('interior_contacto'),
+        'exterior_contacto' => $this->input->post('exterior_contacto'),
+      );
+      $personalArray = array(
+        'nombre_datos_personales' => strtoupper($this->input->post('nombre_datos_personales')),
+        'apellido_p_datos_personales' => strtoupper($this->input->post('apellido_p_datos_personales')),
+        'apellido_m_datos_personales' => strtoupper($this->input->post('apellido_m_datos_personales')),
+        'fecha_nac_datos_personales' => date("Y-m-d", strtotime($this->input->post('fecha_nac_datos_personales'))),
+        'nacionalidad_datos_personales' => $this->input->post('nacionalidad_datos_personales'),
+        'curp_datos_personales' => strtoupper($this->input->post('curp_datos_personales')),
+        'edo_civil_datos_personales' => $this->input->post('edo_civil_datos_personales'),
+        'genero_datos_personales' => $this->input->post('genero_datos_personales'),
+      );
+      $idArray = array(
+        'id_usuario' => $this->input->post('id_usuario'),
+        'id_contacto' => $this->input->post('id_contacto'),
+        'id_datos_personales' => $this->input->post('id_datos_personales'),
+      );
+      $usuario_verificado=$this->Usuarios_model->verificar_usuario($this->input->post('correo_usuario')); //busca si el nombre del banco esta registrado en la base de datos
+      if(count($usuario_verificado)>0){
         // si es mayor a cero, se verifica si el id recibido del formulario es igual al id que se verifico
-        if($banco_verificado[0]['id_banco']==$this->input->post('id_banco')){
+        if($usuario_verificado[0]['id_usuario']==$this->input->post('id_usuario')){
           //si son iguales, quiere decir que es el mismo registro
-          $this->Bancos_model->actualizar_banco($this->input->post('id_banco'), $data);
-          echo json_encode("<span>El Banco se ha editado exitosamente!</span>"); // envio de mensaje exitoso
+          $this->Usuarios_model->actualizar_usuario($usuarioArray, $contactoArray, $personalArray, $idArray, $this->input->post('avatar_usuario'));
+          echo json_encode("<span>El usuario se ha editado exitosamente!</span>"); // envio de mensaje exitoso
         }else{
           //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro
-          echo "<span>El nombre del banco ingresado ya se encuentra en uso!</span>";
+          echo "<span>El correo del usuario ingresado ya se encuentra en uso!</span>";
         }
       }else{
         // si conteo del array es igual a 0, se actualiza el registro
-        $this->Bancos_model->actualizar_banco($this->input->post('id_banco'), $data);
-        echo json_encode("<span>El Banco se ha editado exitosamente!</span>"); // envio de mensaje exitoso
+        $this->Usuarios_model->actualizar_usuario($usuarioArray, $contactoArray, $personalArray, $idArray, $this->input->post('avatar_usuario'));
+        echo json_encode("<span>El usuario se ha editado exitosamente!</span>"); // envio de mensaje exitoso
       }
       
     }else{
       // enviar los errores
       echo validation_errors();
-    }
+    }*/
   }
 
   public function reglas_usuarios($method)
@@ -127,7 +163,24 @@ class Usuarios extends CI_Controller
       $this->form_validation->set_rules('genero_datos_personales','Género.','required');
 
     }else if($method=="update"){
-      $this->form_validation->set_rules('nombre_banco','Nombre o Razón Social','required|max_length[200]|min_length[6]');
+      // Reglas para la tabla de usuario
+      $this->form_validation->set_rules('correo_usuario','Correo Electrónico','required|valid_email');
+      $this->form_validation->set_rules('correo_confirmar','Confirmar Correo Electrónico','required|valid_email|matches[correo_usuario]');
+      $this->form_validation->set_rules('id_rol','Tipo de Rol','required');
+
+      // Reglas para la tabla contacto
+      $this->form_validation->set_rules('colonia','Código Postal','required');
+      $this->form_validation->set_rules('telefono_principal_contacto','Teléfono','required');
+
+      // Reglas para la tabla
+      $this->form_validation->set_rules('nombre_datos_personales','Nombre(s)','required');
+      $this->form_validation->set_rules('apellido_p_datos_personales','Apellido Paterno','required');
+      $this->form_validation->set_rules('apellido_m_datos_personales','Apellido Materno','required');
+      $this->form_validation->set_rules('fecha_nac_datos_personales','Fecha de Nacimiento','required');
+      $this->form_validation->set_rules('nacionalidad_datos_personales','Nacionalidad','required');
+      $this->form_validation->set_rules('curp_datos_personales','C.U.R.P.','required');
+      $this->form_validation->set_rules('edo_civil_datos_personales','Estado Civil','required');
+      $this->form_validation->set_rules('genero_datos_personales','Género.','required');
     }
   }
 
@@ -140,25 +193,25 @@ class Usuarios extends CI_Controller
     $this->form_validation->set_message('matches', 'El valor ingresado en el campo %s no coincide');
   }
 
-  public function eliminar_banco()
+  public function eliminar_usuario()
   {
-    $this->Bancos_model->eliminar_banco($this->input->post('id'));
+    $this->Usuarios_model->eliminar_usuario($this->input->post('id'));
   }
 
-  public function status_banco()
+  public function status_usuario()
   {
-    $this->Bancos_model->status_banco($this->input->post('id'), $this->input->post('status'));
+    $this->Usuarios_model->status_usuario($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 
-  public function eliminar_multiple_banco()
+  public function eliminar_multiple_usuario()
   {
-    $this->Bancos_model->eliminar_multiple_banco($this->input->post('id'));
+    $this->Usuarios_model->eliminar_multiple_usuario($this->input->post('id'));
   }
 
-  public function status_multiple_banco()
+  public function status_multiple_usuario()
   {
-    $this->Bancos_model->status_multiple_banco($this->input->post('id'), $this->input->post('status'));
+    $this->Usuarios_model->status_multiple_usuario($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 

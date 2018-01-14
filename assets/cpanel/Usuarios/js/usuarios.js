@@ -5,7 +5,7 @@ $(document).ready(function(){
 	telefonoInput('.telefono');
 	listar();
 	registrar_usuario();
-	//actualizar_banco();
+	actualizar_usuario();
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -56,12 +56,12 @@ $(document).ready(function(){
 					render : function(data, type, row) {
 						var botones="<span class='consultar btn btn-info' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
 						botones+="<span class='editar btn btn-primary' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
-						/*if(data.status==1){
+						if(data.status==1){
 							botones+="<span class='desactivar btn btn-warning' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
 						}else if(data.status==2){
 							botones+="<span class='activar btn btn-warning' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
 						}
-		              	return botones+="<span class='eliminar btn btn-danger' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";*/
+		              	return botones+="<span class='eliminar btn btn-danger' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
 		              	return botones;
 		          	}
 				}
@@ -173,6 +173,32 @@ $(document).ready(function(){
 			document.getElementById('exterior_contacto_actualizar').value=data.exterior_contacto;
 			document.getElementById('interior_contacto_actualizar').value=data.interior_contacto;
 			document.getElementById('codigo_postal_actualizar').value=data.d_codigo;
+			agregarOptions("#estado_actualizar", data.d_estado, data.d_estado);
+			$("#estado_actualizar option[value='"+data.d_estado+"']").attr("selected","selected");
+			if(data.d_ciudad!=""){
+                agregarOptions('#ciudad_actualizar', data.d_ciudad, data.d_ciudad);
+                $("#ciudad_actualizar").css('border-color', '#ccc');
+                $("#ciudad_actualizar option[value='"+data.d_ciudad+"']").attr("selected","selected");
+            }else{
+                agregarOptions('#ciudad_actualizar', "N/A", "NO APLICA");
+                $("#ciudad_actualizar").css('border-color', '#a94442');
+                $("#ciudad_actualizar option[value='N/A']").attr("selected","selected");
+            }
+            agregarOptions("#municipio_actualizar", data.d_mnpio, data.d_mnpio);
+			$("#municipio_actualizar option[value='"+data.d_mnpio+"']").attr("selected","selected");
+			agregarOptions('#colonia_actualizar', data.id_codigo_postal, data.d_asenta);
+			$("#colonia_actualizar option[value='"+data.id_codigo_postal+"']").attr("selected","selected");
+			document.getElementById('correo_usuario_actualizar').value=data.correo_usuario;
+			document.getElementById('correo_confirmar_actualizar').value=data.correo_usuario;
+			$("#id_rol_actualizar option[value='"+data.id_rol+"']").attr("selected","selected");
+			if(data.avatar_usuario!=null){
+				$("#imagen_consultar").attr('src', document.getElementById('ruta').value+'assets/cpanel/Usuarios/iamges/');
+			}else{
+				$("#imagen_consultar").attr('src', "http://placehold.it/180");
+			}
+			document.getElementById('id_contacto_actualizar').value=data.id_contacto;
+			document.getElementById('id_datos_personales_actualizar').value=data.id_datos_personales;
+			document.getElementById('id_usuario_actualizar').value=data.id_usuario;
 			cuadros('#cuadro1', '#cuadro4');
 			$("#nombre_banco_editar").focus();
 		});
@@ -183,8 +209,8 @@ $(document).ready(function(){
 	/*
 		Funcion que realiza el envio del formulario de registro
 	*/
-	function actualizar_banco(){
-		enviarFormulario("#form_banco_actualizar", 'Bancos/actualizar_banco');
+	function actualizar_usuario(){
+		enviarFormulario("#form_usuario_actualizar", 'Usuarios/actualizar_usuario');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -195,7 +221,7 @@ $(document).ready(function(){
 	function eliminar(tbody, table){
 		$(tbody).on("click", "span.eliminar", function(){
             var data=table.row($(this).parents("tr")).data();
-            eliminarConfirmacion('Bancos/eliminar_banco', data.id_banco, "¿Esta seguro de eliminar el registro?");
+            eliminarConfirmacion('Usuarios/eliminar_usuario', data.id_usuario, "¿Esta seguro de eliminar el registro?");
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -207,7 +233,7 @@ $(document).ready(function(){
 	function desactivar(tbody, table){
 		$(tbody).on("click", "span.desactivar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Bancos/status_banco', data.id_banco, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
+            statusConfirmacion('Usuarios/status_usuario', data.id_usuario, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -219,7 +245,7 @@ $(document).ready(function(){
 	function activar(tbody, table){
 		$(tbody).on("click", "span.activar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Bancos/status_banco', data.id_banco, 1, "¿Esta seguro de activar el registro?", 'activar');
+            statusConfirmacion('Usuarios/status_usuario', data.id_usuario, 1, "¿Esta seguro de activar el registro?", 'activar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -229,11 +255,16 @@ $(document).ready(function(){
         Funcion que busca los codigos
     */
     function buscarCodigos(codigo, type){
-    	if(type=='create'){
+    	if(type == 'create'){
     		var estado = 'estado_registrar',
 	    		ciudad = 'ciudad_registrar',
 	    		municipio = 'municipio_registrar',
 	    		colonia = 'colonia_registrar';
+    	}else if(type == 'edit'){
+    		var estado = 'estado_actualizar',
+	    		ciudad = 'ciudad_actualizar',
+	    		municipio = 'municipio_actualizar',
+	    		colonia = 'colonia_actualizar';
     	}
         eliminarOptions(document.getElementById(estado));
         eliminarOptions(document.getElementById(ciudad));
