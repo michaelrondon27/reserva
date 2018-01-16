@@ -43,47 +43,25 @@
                 <li class="header">Barra de Navegación</li>
                 <li id="inicio">
                     <a href="<?=base_url();?>">
-                        <i class="material-icons">home</i>
                         <span>Inicio</span>
                     </a>
                 </li>
-                <li id="perfiles">
-                    <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">people</i>
-                        <span>Perfiles</span>
-                    </a>
-                    <ul class="ml-menu">
-                        <li id="usuarios">
-                            <a href="<?=base_url();?>Usuarios">Usuarios</a>
-                        </li>
-                    </ul>
-                </li>
-                <li id="configuracion">
-                    <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">settings</i>
-                        <span>Configuración</span>
-                    </a>
-                    <ul class="ml-menu">
-                        <li id="banco">
-                            <a href="<?=base_url();?>Bancos">Bancos</a>
-                        </li>
-                        <li id="listaValor">
-                            <a href="<?=base_url();?>listaValores">Lista de Valores</a>
-                        </li>
-                        <li id="miCorreo">
-                            <a href="<?=base_url();?>MiCorreo">Mi Correo</a>
-                        </li>
-                        <li id="miEmpresa">
-                            <a href="<?=base_url();?>MiEmpresa">Mi Empresa</a>
-                        </li>
-                        <li id="plaza">
-                            <a href="<?=base_url();?>Plaza">Plazas Bancarias</a>
-                        </li>
-                        <li id="sepomex">
-                            <a href="<?=base_url();?>Sepomex">Sepomex</a>
-                        </li>
-                    </ul>
-                </li>
+                <?php foreach($modulos as $modulo): ?>
+                    <li id="<?php echo $modulo->nombre_modulo_vista; ?>">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <span><?php echo $modulo->nombre_modulo_vista; ?></span>
+                        </a>
+                        <ul class="ml-menu">
+                            <?php foreach($vistas as $vista): ?>
+                                <?php if($modulo->id_modulo_vista==$vista->id_modulo_vista): ?>
+                                    <li id="<?php echo $vista->nombre_lista_vista; ?>">
+                                        <a href="<?=base_url();?><?php echo $vista->url_lista_vista; ?>"><?php echo $vista->nombre_lista_vista; ?></a>
+                                    </li>
+                                <?php endif ?>
+                            <?php endforeach ?>
+                        </ul>
+                    </li>
+                <?php endforeach ?>
             </ul>
         </div>
         <!-- #Menu -->

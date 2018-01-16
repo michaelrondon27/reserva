@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Bancos extends CI_Controller
+class Modulos extends CI_Controller
 {
 	function __construct()
 	{
     parent::__construct();
     $this->load->database();
-    $this->load->model('Bancos_model');
+    $this->load->model('Modulos_model');
     $this->load->model('Menu_model');
     $this->load->library('form_validation');
   }
@@ -17,14 +17,19 @@ class Bancos extends CI_Controller
     $data['vistas'] = $this->Menu_model->vistas(1);
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
-    $this->load->view('configuracion/Bancos/index');
+    $this->load->view('perfiles/Modulos/index');
     $this->load->view('cpanel/footer');
   }
 
-  public function listado_bancos()
+  public function listado_modulos()
   {
-    $listado=$this->Bancos_model->listar_bancos();
+    $listado = $this->Modulos_model->listar_modulos();
     echo json_encode($listado);
+  }
+
+  public function contar_modulos()
+  {
+    $contador = 
   }
 
   public function registrar_banco()
