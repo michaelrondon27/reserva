@@ -14,6 +14,8 @@ class Usuarios extends CI_Controller
   public function index()
   {
     $data['nacionalidades'] = $this->Usuarios_model->nacionalidades();
+    $data['estadosCiviles'] = $this->Usuarios_model->estados_civiles();
+    $data['sexos'] = $this->Usuarios_model->sexos();
     $data['roles'] = $this->Usuarios_model->roles();
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu');

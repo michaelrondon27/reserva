@@ -90,7 +90,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function registrar_plaza(){
-		enviarFormulario("#form_plaza_registrar", 'Plaza/registrar_plaza');
+		enviarFormulario("#form_plaza_registrar", 'Plaza/registrar_plaza', '#cuadro2');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -129,7 +129,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function actualizar_plaza(){
-		enviarFormulario("#form_plaza_actualizar", 'Plaza/actualizar_plaza');
+		enviarFormulario("#form_plaza_actualizar", 'Plaza/actualizar_plaza', '#cuadro4');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -140,7 +140,7 @@ $(document).ready(function(){
 	function eliminar(tbody, table){
 		$(tbody).on("click", "span.eliminar", function(){
             var data=table.row($(this).parents("tr")).data();
-            eliminarConfirmacion('Plaza/eliminar_plaza', data.id_plaza)
+            eliminarConfirmacion('Plaza/eliminar_plaza', data.id_plaza, "¿Esta seguro de eliminar el registro?")
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -152,7 +152,7 @@ $(document).ready(function(){
 	function desactivar(tbody, table){
 		$(tbody).on("click", "span.desactivar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Plaza/status_plaza', data.id_plaza, 2, 'desactivar')
+            statusConfirmacion('Plaza/status_plaza', data.id_plaza, 2, "¿Esta seguro de desactivar el registro?", 'desactivar')
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -164,7 +164,7 @@ $(document).ready(function(){
 	function activar(tbody, table){
 		$(tbody).on("click", "span.activar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Plaza/status_plaza', data.id_plaza, 1, 'activar')
+            statusConfirmacion('Plaza/status_plaza', data.id_plaza, 1, "¿Esta seguro de activar el registro?", 'activar')
         });
 	}
 /* ------------------------------------------------------------------------------- */

@@ -2,12 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class ListaValores extends CI_Controller {
 
-    function __construct(){
-        parent::__construct();
-        $this->load->database();
-        $this->load->model('ListasValores_model');
-        $this->load->library('form_validation');
-    }
+  public function __construct(){
+      parent::__construct();
+      $this->load->database();
+      $this->load->model('ListasValores_model');
+      $this->load->library('form_validation');
+  }
 
 	public function index()
 	{
@@ -28,10 +28,10 @@ class ListaValores extends CI_Controller {
   {
     if($method=="insert"){
       $this->form_validation->set_rules('tipolval','Tipo de Valor','required');
-      $this->form_validation->set_rules('descriplval','Descripción','required|max_length[200]|min_length[6]');
+      $this->form_validation->set_rules('descriplval','Descripción','required|max_length[200]|min_length[2]');
     }else if($method=="update"){
       $this->form_validation->set_rules('tipolval','Tipo de Valor','required');
-      $this->form_validation->set_rules('descriplval','Descripción','required|max_length[200]|min_length[6]');
+      $this->form_validation->set_rules('descriplval','Descripción','required|max_length[200]|min_length[2]');
     }
   }
 
@@ -72,6 +72,7 @@ class ListaValores extends CI_Controller {
         // si es mayor a cero, se verifica si el id recibido del formulario es igual al id que se verifico
         if($lval_verificado[0]['codlval']==$this->input->post('codlval')){
           //si son iguales, quiere decir que es el mismo registro
+          $this->ListasValores_model->actualizar_lval($this->input->post('codlval'), $data);
           echo json_encode("<span>Se ha editado exitosamente!</span>"); // envio de mensaje exitoso
         }else{
           //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro

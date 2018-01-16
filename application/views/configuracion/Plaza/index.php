@@ -75,7 +75,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="nombre_plaza">Nombre*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="nombre_plaza" id="nombre_plaza_registrar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_plaza" id="nombre_plaza_registrar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -113,7 +113,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label>Nombre</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="nombre_plaza_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="nombre_plaza_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -151,7 +151,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="nombre_plaza">Nombre*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="nombre_plaza" id="nombre_plaza_editar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_plaza" id="nombre_plaza_editar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
 				                                    </div>
 				                                </div>
 				                            </div>

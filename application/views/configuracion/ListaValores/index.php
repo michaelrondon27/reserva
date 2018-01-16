@@ -87,7 +87,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="tipolval">Descripción*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="descriplval" id="descriplval_registrar" placeholder="P. EJ. DESCRIPCIÓN" required>
+				                                        <input type="text" class="form-control mayusculas" name="descriplval" id="descriplval_registrar" placeholder="P. EJ. DESCRIPCIÓN" required>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -125,7 +125,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                            		<label>Descripción</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="descriplval_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="descriplval_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -164,7 +164,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="tipolval">Descripción*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="descriplval" id="descriplval_editar" placeholder="P. EJ. DESCRIPCIÓN" required>
+				                                        <input type="text" class="form-control mayusculas" name="descriplval" id="descriplval_editar" placeholder="P. EJ. DESCRIPCIÓN" required>
 				                                    </div>
 				                                </div>
 				                            </div>

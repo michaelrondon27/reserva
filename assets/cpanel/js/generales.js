@@ -117,7 +117,7 @@
     /*
         Funcion que envia los datos de los formularios.
     */
-    function enviarFormulario(form, controlador){
+    function enviarFormulario(form, controlador, cuadro){
         $(form).submit(function(e){
             e.preventDefault(); //previene el comportamiento por defecto del formulario al darle click al input submit
             var url=document.getElementById('ruta').value; //obtiene la ruta del input hidden con la variable <?=base_url()?>
@@ -148,6 +148,9 @@
                 success: function(respuesta){
                     $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
                     mensajes('success', respuesta);
+                    if(cuadro!=""){
+                        listar(cuadro);
+                    }
                 }
             });
         });
@@ -427,9 +430,11 @@
             valido = "Válido";
             $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
             resultado.removeClass('focused error');
+            $(".curpError").html('');
         } else {
             $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
             resultado.addClass('focused error');
+            $(".curpError").html('El C.U.R.P. ingresado es incorrecto');
         }
     }
 /* ------------------------------------------------------------------------------- */
@@ -443,9 +448,11 @@
         if(correo1==correo2){
             $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
             resultado.removeClass('focused error');
+            $(".correoError").html('');
         }else{
             $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
             resultado.addClass('focused error');
+            $(".correoError").html('Los correos no coinciden');
         }
     }
 /* ------------------------------------------------------------------------------- */
@@ -459,9 +466,11 @@
         if(clave1==clave2){
             $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
             resultado.removeClass('focused error');
+            $(".claveError").html('');
         }else{
             $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
             resultado.addClass('focused error');
+            $(".claveError").html('Las contraseñas no coinciden');
         }
     }
 /* ------------------------------------------------------------------------------- */

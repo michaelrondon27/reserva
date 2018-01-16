@@ -106,7 +106,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function registrar_usuario(){
-		enviarFormulario("#form_usuario_registrar", 'Usuarios/registrar_usuario');
+		enviarFormulario("#form_usuario_registrar", 'Usuarios/registrar_usuario', '#cuadro2');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -210,7 +210,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function actualizar_usuario(){
-		enviarFormulario("#form_usuario_actualizar", 'Usuarios/actualizar_usuario');
+		enviarFormulario("#form_usuario_actualizar", 'Usuarios/actualizar_usuario', '#cuadro2');
 	}
 /* ------------------------------------------------------------------------------- */
 

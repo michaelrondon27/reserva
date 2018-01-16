@@ -91,7 +91,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function registrar_banco(){
-		enviarFormulario("#form_banco_registrar", 'Bancos/registrar_banco');
+		enviarFormulario("#form_banco_registrar", 'Bancos/registrar_banco', '#cuadro2');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -130,7 +130,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function actualizar_banco(){
-		enviarFormulario("#form_banco_actualizar", 'Bancos/actualizar_banco');
+		enviarFormulario("#form_banco_actualizar", 'Bancos/actualizar_banco', '#cuadro4');
 	}
 /* ------------------------------------------------------------------------------- */
 

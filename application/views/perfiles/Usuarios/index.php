@@ -76,7 +76,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                            		<label for="nombre_datos_personales_registrar">Nombre(s)*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="nombre_datos_personales" id="nombre_datos_personales_registrar" onkeypress='return sololetras(event)' maxlength="200" placeholder="P. EJ. LUIS RAÚL" required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_datos_personales" id="nombre_datos_personales_registrar" onkeypress='return sololetras(event)' maxlength="200" placeholder="P. EJ. LUIS RAÚL" required>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -84,7 +84,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="apellido_p_datos_personales_registrar">Apellido Paterno*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="apellido_p_datos_personales" id="apellido_p_datos_personales_registrar" placeholder="P. EJ. BELLO" required onkeypress='return sololetras(event)'>
+				                                        <input type="text" class="form-control mayusculas" name="apellido_p_datos_personales" id="apellido_p_datos_personales_registrar" placeholder="P. EJ. BELLO" required onkeypress='return sololetras(event)'>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -92,7 +92,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="apellido_m_datos_personales_registrar">Apellido Materno*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="apellido_m_datos_personales" id="apellido_m_datos_personales_registrar" placeholder="P. EJ. MENA" required onkeypress='return sololetras(event)'>
+				                                        <input type="text" class="form-control mayusculas" name="apellido_m_datos_personales" id="apellido_m_datos_personales_registrar" placeholder="P. EJ. MENA" required onkeypress='return sololetras(event)'>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -117,8 +117,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="curp_datos_personales_registrar">C.U.R.P.*</label>
 				                                <div class="form-group form-float">
 				                                    <div class="form-line" id="validCurp">
-				                                        <input type="text" class="form-control" name="curp_datos_personales" id="curp_datos_personales_registrar" placeholder="P. EJ. BEML920313HCMLNS09" oninput="validarInputCurp(this)">
+				                                        <input type="text" class="form-control mayusculas" name="curp_datos_personales" id="curp_datos_personales_registrar" placeholder="P. EJ. BEML920313HCMLNS09" oninput="validarInputCurp(this)">
 				                                    </div>
+				                                    <span class="curpError text-danger"></span>
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-4">
@@ -133,18 +134,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                            		<label for="edo_civil_datos_personales_registrar">Estado Civil*</label>
 		                                    	<select name="edo_civil_datos_personales" id="edo_civil_datos_personales_registrar" required class="form-control">
 		                                    		<option value="" selected>Seleccione</option>
-		                                    		<option value="1">Soltero(a)</option>
-		                                    		<option value="2">Casado(a)</option>
-		                                    		<option value="3">Divorciado(a)</option>
-		                                    		<option value="4">Viudo(a)</option>
+		                                    		<?php foreach ($estadosCiviles as $estadoCivil): ?>
+		                                    			<option value="<?=$estadoCivil->codlval;?>"><?=$estadoCivil->descriplval;?></option>
+		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
 				                            <div class="col-sm-4">
 			                            		<label for="genero_datos_personales_registrar">Género*</label>
 		                                    	<select name="genero_datos_personales" id="genero_datos_personales_registrar" required class="form-control">
 		                                    		<option value="" selected>Seleccione</option>
-		                                    		<option value="1">Hombre</option>
-		                                    		<option value="2">Mujer</option>
+		                                    		<?php foreach ($sexos as $sexo): ?>
+		                                    			<option value="<?=$sexo->codlval;?>"><?=$sexo->descriplval;?></option>
+		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
 				                            <div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
@@ -154,7 +155,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="direccion_contacto_registrar">Domicilio</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="direccion_contacto" id="direccion_contacto_registrar" placeholder="P. EJ. INSURGENTE">
+				                                        <input type="text" class="form-control mayusculas" name="direccion_contacto" id="direccion_contacto_registrar" placeholder="P. EJ. INSURGENTE">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -162,7 +163,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="calle_contacto_registrar">Calle</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="calle_contacto" id="calle_contacto_registrar" placeholder="P. EJ. PRIMAVERA">
+				                                        <input type="text" class="form-control mayusculas" name="calle_contacto" id="calle_contacto_registrar" placeholder="P. EJ. PRIMAVERA">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -231,6 +232,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                    <div class="form-line" id="correoConfirmarRegistrar">
 				                                        <input type="email" class="form-control" name="correo_confirmar" id="correo_confirmar_registrar" placeholder="P. EJ. ejemplo@dominio.com" oninput="validarCorreo('#correo_usuario_registrar', '#correo_confirmar_registrar','#correoConfirmarRegistrar')">
 				                                    </div>
+				                                    <span class="text-danger correoError"></span>
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-4" style="padding-bottom: 30px;">
@@ -256,6 +258,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                    <div class="form-line" id="repetirContraseñaRegistrar">
 				                                        <input type="password" class="form-control" name="repetir_clave" id="repetir_registrar" placeholder="Repetir Contraseña" oninput="validarClave('#clave_usuario_registrar', '#repetir_registrar','#repetirContraseñaRegistrar')">
 				                                    </div>
+				                                    <span class="text-danger claveError"></span>
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-12">
@@ -296,7 +299,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                            		<label>Nombre(s)*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="nombre_datos_personales_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="nombre_datos_personales_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -304,7 +307,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label>Apellido Paterno*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="apellido_p_datos_personales_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="apellido_p_datos_personales_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -312,7 +315,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label>Apellido Materno*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="apellido_m_datos_personales_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="apellido_m_datos_personales_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -337,7 +340,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label>C.U.R.P.*</label>
 			                                <div class="form-group form-float">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="curp_datos_personales_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="curp_datos_personales_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -353,18 +356,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                            		<label>Estado Civil*</label>
 	                                    	<select  id="edo_civil_datos_personales_consultar" disabled class="form-control">
 	                                    		<option value="" selected>Seleccione</option>
-	                                    		<option value="1">Soltero(a)</option>
-	                                    		<option value="2">Casado(a)</option>
-	                                    		<option value="3">Divorciado(a)</option>
-	                                    		<option value="4">Viudo(a)</option>
+	                                    		<?php foreach ($estadosCiviles as $estadoCivil): ?>
+	                                    			<option value="<?=$estadoCivil->codlval;?>"><?=$estadoCivil->descriplval;?></option>
+	                                    		<?php endforeach ?>
 	                                    	</select>
 			                            </div>
 			                            <div class="col-sm-4">
 		                            		<label>Género*</label>
 	                                    	<select id="genero_datos_personales_consultar" disabled class="form-control">
 	                                    		<option value="" selected>Seleccione</option>
-	                                    		<option value="1">Hombre</option>
-	                                    		<option value="2">Mujer</option>
+	                                    		<?php foreach ($sexos as $sexo): ?>
+	                                    			<option value="<?=$sexo->codlval;?>"><?=$sexo->descriplval;?></option>
+	                                    		<?php endforeach ?>
 	                                    	</select>
 			                            </div>
 			                            <div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
@@ -374,7 +377,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label>Domicilio</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="direccion_contacto_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="direccion_contacto_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -382,7 +385,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label>Calle</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="calle_contacto_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="calle_contacto_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -496,7 +499,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                            		<label for="nombre_datos_personales_actualizar">Nombre(s)*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="nombre_datos_personales" id="nombre_datos_personales_actualizar" onkeypress='return sololetras(event)' maxlength="200" placeholder="P. EJ. LUIS RAÚL" required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_datos_personales" id="nombre_datos_personales_actualizar" onkeypress='return sololetras(event)' maxlength="200" placeholder="P. EJ. LUIS RAÚL" required>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -504,7 +507,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="apellido_p_datos_personales_actualizar">Apellido Paterno*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="apellido_p_datos_personales" id="apellido_p_datos_personales_actualizar" placeholder="P. EJ. BELLO" required onkeypress='return sololetras(event)'>
+				                                        <input type="text" class="form-control mayusculas" name="apellido_p_datos_personales" id="apellido_p_datos_personales_actualizar" placeholder="P. EJ. BELLO" required onkeypress='return sololetras(event)'>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -512,7 +515,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="apellido_m_datos_personales_actualizar">Apellido Materno*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="apellido_m_datos_personales" id="apellido_m_datos_personales_actualizar" placeholder="P. EJ. MENA" required onkeypress='return sololetras(event)'>
+				                                        <input type="text" class="form-control mayusculas" name="apellido_m_datos_personales" id="apellido_m_datos_personales_actualizar" placeholder="P. EJ. MENA" required onkeypress='return sololetras(event)'>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -537,8 +540,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="curp_datos_personales_actualizar">C.U.R.P.*</label>
 				                                <div class="form-group form-float">
 				                                    <div class="form-line" id="validCurp">
-				                                        <input type="text" class="form-control" name="curp_datos_personales" id="curp_datos_personales_actualizar" placeholder="P. EJ. BEML920313HCMLNS09" oninput="validarInputCurp(this)">
+				                                        <input type="text" class="form-control mayusculas" name="curp_datos_personales" id="curp_datos_personales_actualizar" placeholder="P. EJ. BEML920313HCMLNS09" oninput="validarInputCurp(this)">
 				                                    </div>
+				                                    <span class="curpError text-danger"></span>
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-4">
@@ -553,18 +557,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                            		<label for="edo_civil_datos_personales_actualizar">Estado Civil*</label>
 		                                    	<select name="edo_civil_datos_personales" id="edo_civil_datos_personales_actualizar" required class="form-control">
 		                                    		<option value="" selected>Seleccione</option>
-		                                    		<option value="1">Soltero(a)</option>
-		                                    		<option value="2">Casado(a)</option>
-		                                    		<option value="3">Divorciado(a)</option>
-		                                    		<option value="4">Viudo(a)</option>
+		                                    		<?php foreach ($estadosCiviles as $estadoCivil): ?>
+		                                    			<option value="<?=$estadoCivil->codlval;?>"><?=$estadoCivil->descriplval;?></option>
+		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
 				                            <div class="col-sm-4">
 			                            		<label for="genero_datos_personales_actualizar">Género*</label>
 		                                    	<select name="genero_datos_personales" id="genero_datos_personales_actualizar" required class="form-control">
 		                                    		<option value="" selected>Seleccione</option>
-		                                    		<option value="1">Hombre</option>
-		                                    		<option value="2">Mujer</option>
+		                                    		<<?php foreach ($sexos as $sexo): ?>
+		                                    			<option value="<?=$sexo->codlval;?>"><?=$sexo->descriplval;?></option>
+		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
 				                            <div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
@@ -574,7 +578,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="direccion_contacto_actualizar">Domicilio</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="direccion_contacto" id="direccion_contacto_actualizar" placeholder="P. EJ. INSURGENTE">
+				                                        <input type="text" class="form-control mayusculas" name="direccion_contacto" id="direccion_contacto_actualizar" placeholder="P. EJ. INSURGENTE">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -582,7 +586,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="calle_contacto_actualizar">Calle</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="calle_contacto" id="calle_contacto_actualizar" placeholder="P. EJ. PRIMAVERA">
+				                                        <input type="text" class="form-control mayusculas" name="calle_contacto" id="calle_contacto_actualizar" placeholder="P. EJ. PRIMAVERA">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -651,6 +655,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                    <div class="form-line" id="correoConfirmarActualizar">
 				                                        <input type="email" class="form-control" name="correo_confirmar" id="correo_confirmar_actualizar" placeholder="P. EJ. ejemplo@dominio.com" oninput="validarCorreo('#correo_usuario_actualizar', '#correo_confirmar_actualizar','#correoConfirmarActualizar')">
 				                                    </div>
+				                                    <span class="text-danger correoError"></span>
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-4" style="padding-bottom: 30px;">

@@ -8043,3 +8043,6 @@ html.ie11 .bs-searchbox .form-control {
 .ocultar{
   display: none;
 }
+.mayusculas{
+  text-transform: uppercase;
+}

@@ -72,6 +72,7 @@ class Plaza extends CI_Controller
         // si es mayor a cero, se verifica si el id recibido del formulario es igual al id que se verifico
         if($plaza_verificada[0]['id_plaza']==$this->input->post('id_plaza')){
           //si son iguales, quiere decir que es el mismo registro
+          $this->Plazas_model->actualizar_plaza($this->input->post('id_plaza'), $data);
           echo json_encode("<span>La plaza se ha editado exitosamente!</span>"); // envio de mensaje exitoso
         }else{
           //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro

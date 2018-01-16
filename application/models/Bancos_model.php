@@ -73,10 +73,9 @@ Class Bancos_model extends CI_Model
         $noEliminados=0;
         foreach($id as $banco)
         {
-            try { 
-                $this->db->delete($this->nombre_tabla, array('id_banco' => $banco));
+            if(!$this->db->delete($this->nombre_tabla, array('id_banco' => $id))){
                 $eliminados++;
-            } catch(QueryException $ex){ 
+            }else{
                 $noEliminados++;
             }
         }

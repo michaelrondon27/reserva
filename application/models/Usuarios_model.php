@@ -19,7 +19,19 @@ Class Usuarios_model extends CI_Model
 
     public function nacionalidades()
     {
-        $query = $this->db->query("SELECT * FROM ".$this->tabla_lval." WHERE tipolval='NACIONALIDAD'");
+        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='NACIONALIDAD' AND a.status=1 AND tabla='".$this->tabla_lval."'");
+        return $query->result();
+    }
+
+    public function estados_civiles()
+    {
+        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='EDOCIVIL' AND a.status=1 AND tabla='".$this->tabla_lval."'");
+        return $query->result();
+    }
+
+    public function sexos()
+    {
+        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='SEXO' AND a.status=1 AND tabla='".$this->tabla_lval."'");
         return $query->result();
     }
 

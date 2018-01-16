@@ -90,7 +90,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function registrar_lval(){
-		enviarFormulario("#form_valor_registrar", 'ListaValores/registrar_lval');
+		enviarFormulario("#form_valor_registrar", 'ListaValores/registrar_lval', '#cuadro2');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -129,7 +129,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function actualizar_lval(){
-		enviarFormulario("#form_lval_actualizar", 'ListaValores/actualizar_lval');
+		enviarFormulario("#form_lval_actualizar", 'ListaValores/actualizar_lval', '#cuadro4');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -140,7 +140,7 @@ $(document).ready(function(){
 	function eliminar(tbody, table){
 		$(tbody).on("click", "span.eliminar", function(){
             var data=table.row($(this).parents("tr")).data();
-            eliminarConfirmacion('ListaValores/eliminar_lval', data.codlval)
+            eliminarConfirmacion('ListaValores/eliminar_lval', data.codlval, '¿Está seguro de eliminar el registro?')
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -152,7 +152,7 @@ $(document).ready(function(){
 	function desactivar(tbody, table){
 		$(tbody).on("click", "span.desactivar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('ListaValores/status_lval', data.codlval, 2, 'desactivar')
+            statusConfirmacion('ListaValores/status_lval', data.codlval, 2, '¿Está seguro de desactivar el registro?', 'desactivar')
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -164,7 +164,7 @@ $(document).ready(function(){
 	function activar(tbody, table){
 		$(tbody).on("click", "span.activar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('ListaValores/status_lval', data.codlval, 1, 'activar')
+            statusConfirmacion('ListaValores/status_lval', data.codlval, 1, '¿Está seguro de activar el registro?', 'activar')
         });
 	}
 /* ------------------------------------------------------------------------------- */

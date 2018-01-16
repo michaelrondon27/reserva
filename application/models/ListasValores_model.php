@@ -62,10 +62,10 @@ Class ListasValores_model extends CI_Model{
     public function eliminar_lval($id)
     {
         try { 
-            $this->db->delete($this->nombre_tabla, array('codlval' => $id));
+            if($this->db->delete($this->nombre_tabla, array('codlval' => $id))){
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
-                cho json_encode("<span>Se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
+                echo json_encode("<span>Se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
             }
         } catch(Exception $e){ 
             echo $e->getMessage(); // envio de mensaje de error
@@ -78,10 +78,9 @@ Class ListasValores_model extends CI_Model{
         $noEliminados=0;
         foreach($id as $lval)
         {
-            try { 
-                $this->db->delete($this->nombre_tabla, array('codlval' => $lval));
+            if($this->db->delete($this->nombre_tabla, array('codlval' => $id))){
                 $eliminados++;
-            } catch(QueryException $ex){ 
+            }else{
                 $noEliminados++;
             }
         }

@@ -76,7 +76,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="nombre_banco">Nombre o Razón Social*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="nombre_banco" id="nombre_banco_registrar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_banco" id="nombre_banco_registrar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -114,7 +114,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label>Nombre o Razón Social</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="nombre_banco_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="nombre_banco_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -152,7 +152,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="nombre_banco">Nombre o Razón Social*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="nombre_banco" id="nombre_banco_editar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_banco" id="nombre_banco_editar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
 				                                    </div>
 				                                </div>
 				                            </div>
