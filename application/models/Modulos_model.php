@@ -13,7 +13,7 @@ Class Modulos_model extends CI_Model
         return $query->result();
     }   
         
-    public function registrar_banco($data){
+    public function registrar_modulo($data){
         $this->db->insert($this->nombre_tabla, $data);
         $datos=array(
             'tabla' => $this->nombre_tabla,
@@ -24,9 +24,9 @@ Class Modulos_model extends CI_Model
         $this->db->insert('auditoria', $datos);
     }
 
-    public function actualizar_banco($id, $data)
+    public function actualizar_modulo($id, $data)
     {
-        $this->db->where('id_banco', $id);
+        $this->db->where('id_modulo_vista', $id);
         $this->db->update($this->nombre_tabla, $data);
         $datos=array(
             'usr_regmod' => '1',
@@ -36,26 +36,37 @@ Class Modulos_model extends CI_Model
         $this->db->update('auditoria', $datos);
     }
 
-    public function verificar_banco($data)
+    public function verificar_modulo($data)
     {
-        $query=$this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE nombre_banco='".$data['nombre_banco']."' LIMIT 1");
+        $query=$this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE nombre_modulo_vista='".$data."' LIMIT 1");
         return $query->result_array();
     }
 
-    public function eliminar_banco($id)
+    public function eliminar_modulo($id)
     {
         try { 
-            if(!$this->db->delete($this->nombre_tabla, array('id_banco' => $id))){
+            if(!$this->db->delete($this->nombre_tabla, array('id_modulo_vista' => $id))){
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
-                echo json_encode("<span>El Banco se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
+                $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." ORDER BY posicion_modulo_vista DESC");
+                $contador = sizeof($query->result());
+                foreach($query->result() as $row)
+                {
+                    $datos = array(
+                        'posicion_modulo_vista' => $contador,
+                    );
+                    $this->db->where('id_modulo_vista', $row->id_modulo_vista);
+                    $this->db->update($this->nombre_tabla, $datos);
+                    $contador--;
+                }
+                echo json_encode("<span>El modulo se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
             }
         } catch(Exception $e){ 
             echo $e->getMessage(); // envio de mensaje de error
         }
     }
 
-    public function status_banco($id, $status)
+    public function status_modulo($id, $status)
     {
         $datos=array(
             'status'=>$status,
@@ -67,25 +78,85 @@ Class Modulos_model extends CI_Model
         $this->db->update('auditoria', $datos);
     }
 
-    public function eliminar_multiple_banco($id)
+    public function eliminar_multiple_modulos($id)
     {
         $eliminados=0;
         $noEliminados=0;
-        foreach($id as $banco)
+        foreach($id as $modulo)
         {
-            if(!$this->db->delete($this->nombre_tabla, array('id_banco' => $id))){
+            if(!$this->db->delete($this->nombre_tabla, array('id_modulo_vista' => $modulo))){
                 $eliminados++;
             }else{
                 $noEliminados++;
             }
         }
+        $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." ORDER BY posicion_modulo_vista DESC");
+        $contador = sizeof($query->result());
+        foreach($query->result() as $row)
+        {
+            $datos = array(
+                'posicion_modulo_vista' => $contador,
+            );
+            $this->db->where('id_modulo_vista', $row->id_modulo_vista);
+            $this->db->update($this->nombre_tabla, $datos);
+            $contador--;
+        }
         echo json_encode("<span>Registros eliminados: ".$eliminados."</span><br><span>Registros no eliminados (porque tienen dependencia en otras tablas): ".$noEliminados);
     }
 
-    public function status_multiple_banco($id, $status)
+    public function status_multiple_modulos($id, $status)
     {
-        $bancos=str_replace(' ', ',', $id);
-        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$bancos.") AND tabla='".$this->nombre_tabla."'");
+        $modulos=str_replace(' ', ',', $id);
+        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$modulos.") AND tabla='".$this->nombre_tabla."'");
+    }
+
+    public function posicionar_modulos($posicionar)
+    {
+        if($posicionar['tipo'] == 'insert')
+        {
+            $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE posicion_modulo_vista >= ".$posicionar['posicion']);
+            if(sizeof($query->result()) > 0){
+                foreach ($query->result() as $row)
+                {
+                    $datos=array(
+                        'posicion_modulo_vista' => $row->posicion_modulo_vista + 1,
+                    );
+                    $this->db->where('id_modulo_vista', $row->id_modulo_vista);
+                    $this->db->update($this->nombre_tabla, $datos);
+                }
+            }
+        }
+        else if($posicionar['tipo'] == 'update')
+        {
+            if($posicionar['final'] > $posicionar['inicial'])
+            {
+                $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE posicion_modulo_vista > ".$posicionar['inicial']." AND posicion_modulo_vista <= ".$posicionar['final']);
+                if(sizeof($query->result()) > 0){
+                    foreach ($query->result() as $row)
+                    {
+                        $datos=array(
+                            'posicion_modulo_vista' => $row->posicion_modulo_vista - 1,
+                        );
+                        $this->db->where('id_modulo_vista', $row->id_modulo_vista);
+                        $this->db->update($this->nombre_tabla, $datos);
+                    }
+                }
+            }
+            else if($posicionar['final'] < $posicionar['inicial'])
+            {
+                $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE posicion_modulo_vista >= ".$posicionar['final']." AND posicion_modulo_vista < ".$posicionar['inicial']);
+                if(sizeof($query->result()) > 0){
+                    foreach ($query->result() as $row)
+                    {
+                        $datos=array(
+                            'posicion_modulo_vista' => $row->posicion_modulo_vista + 1,
+                        );
+                        $this->db->where('id_modulo_vista', $row->id_modulo_vista);
+                        $this->db->update($this->nombre_tabla, $datos);
+                    }
+                }
+            }
+        }
     }
 
 }

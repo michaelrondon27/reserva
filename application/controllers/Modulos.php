@@ -34,46 +34,61 @@ class Modulos extends CI_Controller
     echo json_encode($contador);
   }
 
-  public function registrar_banco()
+  public function registrar_modulo()
   {
-    $this->reglas_bancos('insert');
-    $this->mensajes_reglas_banco();
+    $this->reglas_modulos('insert');
+    $this->mensajes_reglas_modulos();
     if($this->form_validation->run() == true){
-      $data=array(
-        'cod_banco' => $this->input->post('cod_banco'),
-        'nombre_banco' => strtoupper($this->input->post('nombre_banco')),
+      $posicionar = array(
+        'posicion' => $this->input->post('posicion_modulo_vista'),
+        'tipo' => 'insert',
       );
-      $this->Bancos_model->registrar_banco($data);
-      echo json_encode("<span>El Banco se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
+      $this->Modulos_model->posicionar_modulos($posicionar);
+      $data=array(
+        'nombre_modulo_vista' => strtoupper($this->input->post('nombre_modulo_vista')),
+        'descripcion_modulo_vista' => $this->input->post('descripcion_modulo_vista'),
+        'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
+      );
+      $this->Modulos_model->registrar_modulo($data);
+      echo json_encode("<span>El modulo se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
     }else{
       // enviar los errores
       echo validation_errors();
     }
   }
 
-  public function actualizar_banco()
+  public function actualizar_modulo()
   {
-    $this->reglas_bancos('update');
-    $this->mensajes_reglas_banco();
+    $this->reglas_modulos('update');
+    $this->mensajes_reglas_modulos();
     if($this->form_validation->run() == true){
-      $data=array(
-        'nombre_banco' => strtoupper($this->input->post('nombre_banco')),
+      $modulo_verificado=$this->Modulos_model->verificar_modulo(strtoupper($this->input->post('nombre_modulo_vista'))); //busca si el nombre del banco esta registrado en la base de datos
+      $posicionar = array(
+        'inicial' => $this->input->post('inicial'),
+        'tipo' => 'update',
+        'final' => $this->input->post('posicion_modulo_vista'),
       );
-      $banco_verificado=$this->Bancos_model->verificar_banco($data); //busca si el nombre del banco esta registrado en la base de datos
-      if(count($banco_verificado)>0){
+      $data=array(
+        'nombre_modulo_vista' => strtoupper($this->input->post('nombre_modulo_vista')),
+        'descripcion_modulo_vista' => $this->input->post('descripcion_modulo_vista'),
+        'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
+      );
+      if(count($modulo_verificado)>0){
         // si es mayor a cero, se verifica si el id recibido del formulario es igual al id que se verifico
-        if($banco_verificado[0]['id_banco']==$this->input->post('id_banco')){
+        if($modulo_verificado[0]['id_modulo_vista']==$this->input->post('id_modulo_vista')){
           //si son iguales, quiere decir que es el mismo registro
-          $this->Bancos_model->actualizar_banco($this->input->post('id_banco'), $data);
+          $this->Modulos_model->posicionar_modulos($posicionar);
+          $this->Modulos_model->actualizar_modulo($this->input->post('id_modulo_vista'), $data);
           echo json_encode("<span>El Banco se ha editado exitosamente!</span>"); // envio de mensaje exitoso
         }else{
           //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro
-          echo "<span>El nombre del banco ingresado ya se encuentra en uso!</span>";
+          echo "<span>El nombre del modulo ingresado ya se encuentra en uso!</span>";
         }
       }else{
+        $this->Modulos_model->posicionar_modulos($posicionar);
         // si conteo del array es igual a 0, se actualiza el registro
-        $this->Bancos_model->actualizar_banco($this->input->post('id_banco'), $data);
-        echo json_encode("<span>El Banco se ha editado exitosamente!</span>"); // envio de mensaje exitoso
+        $this->Modulos_model->actualizar_modulo($this->input->post('id_modulo_vista'), $data);
+        echo json_encode("<span>El modulo se ha editado exitosamente!</span>"); // envio de mensaje exitoso
       }
       
     }else{
@@ -82,43 +97,41 @@ class Modulos extends CI_Controller
     }
   }
 
-  public function reglas_bancos($method)
+  public function reglas_modulos($method)
   {
-    if($method=="insert"){
-      $this->form_validation->set_rules('cod_banco','Código Bancario','required|numeric|max_length[3]|is_unique[banco.cod_banco]');
-      $this->form_validation->set_rules('nombre_banco','Nombre o Razón Social','required|max_length[200]|min_length[6]|is_unique[banco.nombre_banco]');
-    }else if($method=="update"){
-      $this->form_validation->set_rules('nombre_banco','Nombre o Razón Social','required|max_length[200]|min_length[6]');
+    if($method == "insert"){
+      $this->form_validation->set_rules('nombre_modulo_vista','Nombre de Modulo','required|is_unique[modulo_vista.nombre_modulo_vista]');
+      $this->form_validation->set_rules('posicion_modulo_vista','Posición','required');
+    }else if($method == "update"){
+      $this->form_validation->set_rules('nombre_modulo_vista','Nombre de Modulo','required');
+      $this->form_validation->set_rules('posicion_modulo_vista','Posición','required');
     }
   }
 
-  public function mensajes_reglas_banco(){
+  public function mensajes_reglas_modulos(){
     $this->form_validation->set_message('required', 'El campo %s es obligatorio');
-    $this->form_validation->set_message('min_length', 'El Campo %s debe tener un Mínimo de %d Caracteres');
-    $this->form_validation->set_message('max_length', 'El Campo %s debe tener un Máximo de %d Caracteres');
-    $this->form_validation->set_message('numeric', 'El campo %s debe poseer solo numeros enteros');
     $this->form_validation->set_message('is_unique', 'El valor ingresado en el campo %s ya se encuentra en uso');
   }
 
-  public function eliminar_banco()
+  public function eliminar_modulo()
   {
-    $this->Bancos_model->eliminar_banco($this->input->post('id'));
+    $this->Modulos_model->eliminar_modulo($this->input->post('id'));
   }
 
-  public function status_banco()
+  public function status_modulo()
   {
-    $this->Bancos_model->status_banco($this->input->post('id'), $this->input->post('status'));
+    $this->Modulos_model->status_modulo($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 
-  public function eliminar_multiple_banco()
+  public function eliminar_multiple_modulos()
   {
-    $this->Bancos_model->eliminar_multiple_banco($this->input->post('id'));
+    $this->Modulos_model->eliminar_multiple_modulos($this->input->post('id'));
   }
 
-  public function status_multiple_banco()
+  public function status_multiple_modulos()
   {
-    $this->Bancos_model->status_multiple_banco($this->input->post('id'), $this->input->post('status'));
+    $this->Modulos_model->status_multiple_modulos($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 

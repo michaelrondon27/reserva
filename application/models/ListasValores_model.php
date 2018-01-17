@@ -78,7 +78,7 @@ Class ListasValores_model extends CI_Model{
         $noEliminados=0;
         foreach($id as $lval)
         {
-            if($this->db->delete($this->nombre_tabla, array('codlval' => $id))){
+            if($this->db->delete($this->nombre_tabla, array('codlval' => $lval))){
                 $eliminados++;
             }else{
                 $noEliminados++;

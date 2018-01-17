@@ -22,7 +22,7 @@
 		                                Gestión de Modulos
 		                            </h2>
 		                            <ul class="header-dropdown m-r--5">
-		                                <button class="btn btn-primary ocultar registrar" onclick="nuevoBanco()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
+		                                <button class="btn btn-primary ocultar registrar" onclick="nuevoModulo()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
 		                            </ul>
 		                        </div>
 		                        <div class="body">
@@ -41,11 +41,14 @@
 		                                    </thead>
 		                                    <tbody></tbody>
 		                                </table>
-		                                <div class="col-md-2">
-		                                	<button class="btn btn-warning ocultar actualizar" onclick="statusMultiple('Bancos/status_multiple_banco', 1, 'activar')">Activar seleccionados</button>
+		                                <div class="col-md-2 ocultar eliminar">
+		                                	<button class="btn btn-danger" onclick="eliminarMultiple('Modulos/eliminar_multiple_modulos')">Eliminar seleccionados</button>
 		                                </div>
-		                                <div class="col-md-2">
-		                                	<button class="btn btn-warning ocultar actualizar" onclick="statusMultiple('Bancos/status_multiple_banco', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                <div class="col-md-2 ocultar actualizar">
+		                                	<button class="btn btn-warning" onclick="statusMultiple('Modulos/status_multiple_modulos', 1, 'activar')">Activar seleccionados</button>
+		                                </div>
+		                                <div class="col-md-2 ocultar actualizar">
+		                                	<button class="btn btn-warning" onclick="statusMultiple('Modulos/status_multiple_modulos', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>
@@ -108,21 +111,27 @@
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-		                            	<div class="col-sm-6">
-		                            		<label>Código</label>
+		                            	<div class="col-sm-4">
+		                            		<label for="nombre_modulo_vista_consultar">Nombre*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="cod_banco_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="nombre_modulo_vista_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
-			                            <div class="col-sm-6">
-			                                <label>Nombre o Razón Social</label>
+			                            <div class="col-sm-4">
+			                                <label for="descripcion_modulo_vista_consultar">Descripción</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control mayusculas" id="nombre_banco_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="descripcion_modulo_vista_consultar" disabled>
 			                                    </div>
 			                                </div>
+			                            </div>
+			                            <div class="col-sm-4">
+			                                <label for="posicion_modulo_vista_consultar">Posición*</label>
+	                                        <select id="posicion_modulo_vista_consultar" required class="form-control form-group" disabled>
+	                                        	<option value="">Seleccione</option>
+	                                        </select>
 			                            </div>
                             			<br>
                             			<div class="col-sm-2 col-sm-offset-5">
@@ -144,24 +153,31 @@
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_banco_actualizar" id="form_banco_actualizar" method="post">
-			                            	<div class="col-sm-6">
-			                            		<label for="cod_banco">Código*</label>
+			                            <form name="form_modulo_actualizar" id="form_modulo_actualizar" method="post">
+			                            	<div class="col-sm-4">
+			                            		<label for="nombre_modulo_vista_actualizar">Nombre*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" id="cod_banco_editar" disabled>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_modulo_vista" id="nombre_modulo_vista_actualizar" placeholder="P. EJ. Modulo" required>
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <input type="hidden" class="form-control" name="id_banco" id="id_banco_editar">
-				                            <div class="col-sm-6">
-				                                <label for="nombre_banco">Nombre o Razón Social*</label>
+				                            <div class="col-sm-4">
+				                                <label for="descripcion_modulo_vista_actualizar">Descripción</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="nombre_banco" id="nombre_banco_editar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
+				                                        <input type="text" class="form-control mayusculas" name="descripcion_modulo_vista" id="descripcion_modulo_vista_actualizar" placeholder="P. EJ. Describir funciones">
 				                                    </div>
 				                                </div>
 				                            </div>
+				                            <div class="col-sm-4">
+				                                <label for="posicion_modulo_vista_actualizar">Posición*</label>
+		                                        <select id="posicion_modulo_vista_actualizar" required class="form-control form-group" name="posicion_modulo_vista">
+		                                        	<option value="">Seleccione</option>
+		                                        </select>
+				                            </div>
+				                            <input type="hidden" name="inicial" id="inicial">
+				                            <input type="hidden" name="id_modulo_vista" id="id_modulo_vista_actualizar">
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
 		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary">Regresar</button>
@@ -193,14 +209,14 @@
 			$("#<?php echo $permiso[0]->nombre_lista_vista ?>").attr('class', 'active');
 			var registrar = <?php echo $permiso[0]->registrar ?>,
 				actualizar = <?php echo $permiso[0]->actualizar ?>,
-				eliminar = <?php echo $permiso[0]->eliminar ?>;
+				borrar = <?php echo $permiso[0]->eliminar ?>;
 			if(registrar==0){
 				$(".registrar").removeClass('ocultar');
 			}
 			if(actualizar==0){
 				$(".actualizar").removeClass('ocultar');
 			}
-			if(eliminar==0){
+			if(borrar==0){
 				$(".eliminar").removeClass('ocultar');
 			}
 		</script>

@@ -72,10 +72,9 @@ Class Plazas_model extends CI_Model{
         $noEliminados=0;
         foreach($id as $plaza)
         {
-            try { 
-                $this->db->delete($this->nombre_tabla, array('id_plaza' => $plaza));
+            if($this->db->delete($this->nombre_tabla, array('id_plaza' => $plaza))){
                 $eliminados++;
-            } catch(QueryException $ex){ 
+            }else{
                 $noEliminados++;
             }
         }

@@ -7,7 +7,7 @@ Class Menu_model extends CI_Model
 
     public function modulos()
     {
-        $query = $this->db->query("SELECT * FROM modulo_vista ORDER BY posicion_modulo_vista ASC");
+        $query = $this->db->query("SELECT mv.* FROM modulo_vista mv INNER JOIN auditoria a ON mv.id_modulo_vista=a.cod_reg WHERE a.status=1 AND a.tabla='modulo_vista' ORDER BY posicion_modulo_vista ASC");
         return $query->result();
     }
 

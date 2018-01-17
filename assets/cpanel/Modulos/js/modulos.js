@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	listar();
-	registrar_banco();
-	actualizar_banco();
+	registrar_modulo();
+	actualizar_modulo();
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -40,13 +40,16 @@ $(document).ready(function(){
 				{"data": null,
 					render : function(data, type, row) {
 						var botones="<span class='consultar btn btn-xs btn-info' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
-						if(actualizar==0){
-							botones+="<span class='editar btn btn-xs btn-primary actualizar' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
-							if(data.status==1){
-								botones+="<span class='desactivar btn btn-xs btn-warning actualizar' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
-							}else if(data.status==2){
-								botones+="<span class='activar btn btn-xs btn-warning actualizar' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
+						if(actualizar == 0){
+							botones+="<span class='editar btn btn-xs btn-primary' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
+							if(data.status == 1){
+								botones+="<span class='desactivar btn btn-xs btn-warning' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
+							}else if(data.status == 2){
+								botones+="<span class='activar btn btn-xs btn-warning' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
 							}
+						}
+						if(borrar == 0){
+							return botones+="<span class='eliminar btn btn-xs btn-danger' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
 						}
 		              	return botones;
 		          	}
@@ -61,6 +64,7 @@ $(document).ready(function(){
 		});
 		consultar("#tabla tbody", table);
 		editar("#tabla tbody", table);
+		eliminar("#tabla tbody", table);
 		desactivar("#tabla tbody", table);
 		activar("#tabla tbody", table);
 	}
@@ -70,10 +74,10 @@ $(document).ready(function(){
 	/* 
 		Funcion que muestra el cuadro2 para mostrar el formulario de registrar.
 	*/
-	function nuevoBanco(cuadroOcultar, cuadroMostrar){
+	function nuevoModulo(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
 		limpiarFormularioRegistrar();
-		$("#cod_banco_registrar").focus();
+		$("#nombre_modulo_vista_registrar").focus();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -82,8 +86,7 @@ $(document).ready(function(){
 		Funcion para limpiar el formulario de registrar.
 	*/
 	function limpiarFormularioRegistrar(){
-		document.getElementById('cod_banco_registrar').value="";
-		document.getElementById('nombre_banco_registrar').value="";
+		$("#form_modulo_registrar")[0].reset();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -91,8 +94,8 @@ $(document).ready(function(){
 	/*
 		Funcion que realiza el envio del formulario de registro
 	*/
-	function registrar_banco(){
-		enviarFormulario("#form_banco_registrar", 'Bancos/registrar_banco', '#cuadro2');
+	function registrar_modulo(){
+		enviarFormulario("#form_modulo_registrar", 'Modulos/registrar_modulo', '#cuadro2');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -103,8 +106,9 @@ $(document).ready(function(){
 	function consultar(tbody, table){
 		$(tbody).on("click", "span.consultar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			document.getElementById('cod_banco_consultar').value=data.cod_banco;
-			document.getElementById('nombre_banco_consultar').value=data.nombre_banco;
+			document.getElementById('nombre_modulo_vista_consultar').value=data.nombre_modulo_vista;
+			document.getElementById('descripcion_modulo_vista_consultar').value=data.descripcion_modulo_vista;
+			$('#posicion_modulo_vista_consultar').find('option').remove().end().append('<option value="'+data.posicion_modulo_vista+'">'+data.posicion_modulo_vista+'</option>');
 			cuadros('#cuadro1', '#cuadro3');
 		});
 	}
@@ -117,12 +121,26 @@ $(document).ready(function(){
 	function editar(tbody, table){
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			document.getElementById('id_banco_editar').value=data.id_banco;
-			document.getElementById('cod_banco_editar').value=data.cod_banco;
-			document.getElementById('nombre_banco_editar').value=data.nombre_banco;
+			document.getElementById('nombre_modulo_vista_actualizar').value=data.nombre_modulo_vista;
+			document.getElementById('descripcion_modulo_vista_actualizar').value=data.descripcion_modulo_vista;
+			$("#posicion_modulo_vista_actualizar option[value='"+data.posicion_modulo_vista+"']").attr("selected","selected");
+			document.getElementById('inicial').value=data.posicion_modulo_vista;
+			document.getElementById('id_modulo_vista_actualizar').value=data.id_modulo_vista;
 			cuadros('#cuadro1', '#cuadro4');
-			$("#nombre_banco_editar").focus();
+			$("#nombre_modulo_vista_actualizar").focus();
 		});
+	}
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion que capta y envia los datos a eliminar
+	*/
+	function eliminar(tbody, table){
+		$(tbody).on("click", "span.eliminar", function(){
+            var data=table.row($(this).parents("tr")).data();
+            eliminarConfirmacion('Modulos/eliminar_modulo', data.id_modulo_vista, "¿Esta seguro de eliminar el registro?");
+        });
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -130,8 +148,8 @@ $(document).ready(function(){
 	/*
 		Funcion que realiza el envio del formulario de registro
 	*/
-	function actualizar_banco(){
-		enviarFormulario("#form_banco_actualizar", 'Bancos/actualizar_banco', '#cuadro4');
+	function actualizar_modulo(){
+		enviarFormulario("#form_modulo_actualizar", 'Modulos/actualizar_modulo', '#cuadro4');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -142,7 +160,7 @@ $(document).ready(function(){
 	function desactivar(tbody, table){
 		$(tbody).on("click", "span.desactivar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Bancos/status_banco', data.id_banco, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
+            statusConfirmacion('Modulos/status_modulo', data.id_modulo_vista, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -154,7 +172,7 @@ $(document).ready(function(){
 	function activar(tbody, table){
 		$(tbody).on("click", "span.activar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Bancos/status_banco', data.id_banco, 1, "¿Esta seguro de activar el registro?", 'activar');
+            statusConfirmacion('Modulos/status_modulo', data.id_modulo_vista, 1, "¿Esta seguro de activar el registro?", 'activar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -165,18 +183,22 @@ $(document).ready(function(){
 		despliega en un select para la seleccion de la posicion del modulo.
 	*/
 	function contarModulos(){
+		$('#posicion_modulo_vista_registrar').find('option').remove().end().append('<option value="">Seleccione</option>');
+		$('#posicion_modulo_vista_actualizar').find('option').remove().end().append('<option value="">Seleccione</option>');
 		$.ajax({
-                url:document.getElementById('ruta').value + 'Modulos/contar_modulos',
-                type:'POST',
-                dataType:'JSON',
-                success: function(respuesta){
-                    var selectRegistrar = Object.keys(respuesta).length +1;
-                    var selectActualizar = Object.keys(respuesta).length;
-                    eliminarOptions(document.getElementById('posicion_modulo_vista_registrar'));
-                    for(var i = 1; i <= selectRegistrar; i++){
-                    	agregarOptions("#posicion_modulo_vista_registrar", i, i);
-                    }
-                }
-            });
+	        url:document.getElementById('ruta').value + 'Modulos/contar_modulos',
+	        type:'POST',
+	        dataType:'JSON',
+	        success: function(respuesta){
+	            var selectRegistrar = Object.keys(respuesta).length +1;
+	            var selectActualizar = Object.keys(respuesta).length;
+	            for(var i = 1; i <= selectRegistrar; i++){
+	            	agregarOptions("#posicion_modulo_vista_registrar", i, i);
+	            }
+	            for(var i = 1; i <= selectActualizar; i++){
+	            	agregarOptions("#posicion_modulo_vista_actualizar", i, i);
+	            }
+	        }
+	    });
 	}
 /* ------------------------------------------------------------------------------- */
