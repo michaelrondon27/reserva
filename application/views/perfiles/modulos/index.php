@@ -1,10 +1,12 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
 <html>
 	<link href="<?=base_url();?>assets/template/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
-	<link href="<?=base_url();?>assets/template/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+	<?php if($permiso[0]->consultar==1): ?>
+		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
+	<?php endif ?>
 	<body class="theme-blue">
 		<input type="hidden" id="ruta" value="<?=base_url();?>" name="ruta">
 		<section class="content">
@@ -20,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                Gestión de Modulos
 		                            </h2>
 		                            <ul class="header-dropdown m-r--5">
-		                                <button class="btn btn-primary" onclick="nuevoBanco()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
+		                                <button class="btn btn-primary ocultar registrar" onclick="nuevoBanco()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
 		                            </ul>
 		                        </div>
 		                        <div class="body">
@@ -40,10 +42,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    <tbody></tbody>
 		                                </table>
 		                                <div class="col-md-2">
-		                                	<button class="btn btn-warning" onclick="statusMultiple('Bancos/status_multiple_banco', 1, 'activar')">Activar seleccionados</button>
+		                                	<button class="btn btn-warning ocultar actualizar" onclick="statusMultiple('Bancos/status_multiple_banco', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2">
-		                                	<button class="btn btn-warning" onclick="statusMultiple('Bancos/status_multiple_banco', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                	<button class="btn btn-warning ocultar actualizar" onclick="statusMultiple('Bancos/status_multiple_banco', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>
@@ -66,7 +68,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                            		<label for="nombre_modulo_vista_registrar">Nombre*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="nombre_modulo_vista" id="nombre_modulo_vista_registrar" placeholder="P. EJ. Modulo" required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_modulo_vista" id="nombre_modulo_vista_registrar" placeholder="P. EJ. Modulo" required>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -184,6 +186,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
-    <script src="<?=base_url();?>assets/template/plugins/bootstrap-select/js/bootstrap-select.js"></script>
-    <script src="<?=base_url();?>assets/cpanel/Modulos/js/modulos.js"></script>
+    <?php if($permiso[0]->consultar==0): ?>
+		<script src="<?=base_url();?>assets/cpanel/Modulos/js/modulos.js"></script>
+		<script>
+			$("#<?php echo $permiso[0]->nombre_modulo_vista ?>").attr('class', 'active');
+			$("#<?php echo $permiso[0]->nombre_lista_vista ?>").attr('class', 'active');
+			var registrar = <?php echo $permiso[0]->registrar ?>,
+				actualizar = <?php echo $permiso[0]->actualizar ?>,
+				eliminar = <?php echo $permiso[0]->eliminar ?>;
+			if(registrar==0){
+				$(".registrar").removeClass('ocultar');
+			}
+			if(actualizar==0){
+				$(".actualizar").removeClass('ocultar');
+			}
+			if(eliminar==0){
+				$(".eliminar").removeClass('ocultar');
+			}
+		</script>
+	<?php endif ?>
 </html>

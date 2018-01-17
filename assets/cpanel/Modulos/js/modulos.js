@@ -2,7 +2,6 @@ $(document).ready(function(){
 	listar();
 	registrar_banco();
 	actualizar_banco();
-	contarModulos();
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -10,6 +9,7 @@ $(document).ready(function(){
 		Funcion para cargar los datos de la base de datos en la tabla.
 	*/
 	function listar(cuadro){
+		contarModulos();
 		$('#tabla tbody').off('click');
 		cuadros(cuadro, "#cuadro1");
 		var url=document.getElementById('ruta').value; //obtiene la ruta del input hidden con la variable <?=base_url()?>
@@ -39,12 +39,14 @@ $(document).ready(function(){
 				{"data":"correo_usuario"},
 				{"data": null,
 					render : function(data, type, row) {
-						var botones="<span class='consultar btn btn-info' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
-						botones+="<span class='editar btn btn-primary' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
-						if(data.status==1){
-							botones+="<span class='desactivar btn btn-warning' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
-						}else if(data.status==2){
-							botones+="<span class='activar btn btn-warning' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
+						var botones="<span class='consultar btn btn-xs btn-info' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
+						if(actualizar==0){
+							botones+="<span class='editar btn btn-xs btn-primary actualizar' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
+							if(data.status==1){
+								botones+="<span class='desactivar btn btn-xs btn-warning actualizar' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
+							}else if(data.status==2){
+								botones+="<span class='activar btn btn-xs btn-warning actualizar' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
+							}
 						}
 		              	return botones;
 		          	}
@@ -168,7 +170,12 @@ $(document).ready(function(){
                 type:'POST',
                 dataType:'JSON',
                 success: function(respuesta){
-                    console.log(respuesta);
+                    var selectRegistrar = Object.keys(respuesta).length +1;
+                    var selectActualizar = Object.keys(respuesta).length;
+                    eliminarOptions(document.getElementById('posicion_modulo_vista_registrar'));
+                    for(var i = 1; i <= selectRegistrar; i++){
+                    	agregarOptions("#posicion_modulo_vista_registrar", i, i);
+                    }
                 }
             });
 	}

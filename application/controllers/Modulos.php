@@ -13,11 +13,12 @@ class Modulos extends CI_Controller
 
   public function index()
   {
+    $permiso['permiso'] = $this->Menu_model->verificar_permiso_vista('modulos', 1);
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas(1);
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
-    $this->load->view('perfiles/Modulos/index');
+    $this->load->view('perfiles/Modulos/index', $permiso);
     $this->load->view('cpanel/footer');
   }
 
@@ -29,7 +30,8 @@ class Modulos extends CI_Controller
 
   public function contar_modulos()
   {
-    $contador = 
+    $contador = $this->Menu_model->contar_modulos();
+    echo json_encode($contador);
   }
 
   public function registrar_banco()
