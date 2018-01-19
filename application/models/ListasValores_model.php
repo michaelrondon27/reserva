@@ -62,7 +62,7 @@ Class ListasValores_model extends CI_Model{
     public function eliminar_lval($id)
     {
         try { 
-            if($this->db->delete($this->nombre_tabla, array('codlval' => $id))){
+            if(!$this->db->delete($this->nombre_tabla, array('codlval' => $id))){
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
                 echo json_encode("<span>Se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso

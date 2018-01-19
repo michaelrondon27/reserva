@@ -200,7 +200,6 @@ class Usuarios extends CI_Controller
 
   public function mensajes_reglas_usuarios(){
     $this->form_validation->set_message('required', 'El campo %s es obligatorio');
-    $this->form_validation->set_message('min_length', 'El Campo %s debe tener un Mínimo de %d Caracteres');
     $this->form_validation->set_message('max_length', 'El Campo %s debe tener un Máximo de %d Caracteres');
     $this->form_validation->set_message('numeric', 'El campo %s debe poseer solo numeros enteros');
     $this->form_validation->set_message('is_unique', 'El valor ingresado en el campo %s ya se encuentra en uso');

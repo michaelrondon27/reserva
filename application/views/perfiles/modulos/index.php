@@ -57,7 +57,7 @@
 		            </div>
 		        <!-- Cierre del cuadro de la tabla -->
 
-		        <!-- Comienzo del cuadro de registrar banco -->
+		        <!-- Comienzo del cuadro de registrar Modulo -->
 					<div class="row clearfix ocultar" id="cuadro2">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
@@ -100,14 +100,14 @@
 		                    </div>
 		                </div>
 		            </div>
-		        <!-- Cierre del cuadro de registrar banco -->
+		        <!-- Cierre del cuadro de registrar Modulo -->
 
-		        <!-- Comienzo del cuadro de consultar banco -->
+		        <!-- Comienzo del cuadro de consultar Modulo -->
 					<div class="row clearfix ocultar" id="cuadro3">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Consultar Banco</h2>
+		                            <h2>Consultar Modulo</h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
@@ -142,14 +142,14 @@
 		                    </div>
 		                </div>
 		            </div>
-		        <!-- Cierre del cuadro de consultar banco -->
+		        <!-- Cierre del cuadro de consultar Modulo -->
 
-		        <!-- Comienzo del cuadro de editar banco -->
+		        <!-- Comienzo del cuadro de editar Modulo -->
 					<div class="row clearfix ocultar" id="cuadro4">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Editar de Banco</h2>
+		                            <h2>Editar de Modulo</h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
@@ -189,7 +189,7 @@
 		                    </div>
 		                </div>
 		            </div>
-		        <!-- Cierre del cuadro de editar banco -->
+		        <!-- Cierre del cuadro de editar Modulo -->
 			</div>
 		</section>
 	</body>

@@ -28,10 +28,10 @@ class ListaValores extends CI_Controller {
   {
     if($method=="insert"){
       $this->form_validation->set_rules('tipolval','Tipo de Valor','required');
-      $this->form_validation->set_rules('descriplval','Descripción','required|max_length[200]|min_length[2]');
+      $this->form_validation->set_rules('descriplval','Descripción','required|max_length[200]');
     }else if($method=="update"){
       $this->form_validation->set_rules('tipolval','Tipo de Valor','required');
-      $this->form_validation->set_rules('descriplval','Descripción','required|max_length[200]|min_length[2]');
+      $this->form_validation->set_rules('descriplval','Descripción','required|max_length[200]');
     }
   }
 

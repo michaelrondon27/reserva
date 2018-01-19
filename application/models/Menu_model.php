@@ -29,4 +29,10 @@ Class Menu_model extends CI_Model
         return $query->result();
     }
 
+    public function contador_listaVista($id)
+    {
+        $query = $this->db->query("SELECT * FROM lista_vista WHERE id_modulo_vista = ".$id);
+        return $query->result();
+    }
+
 }

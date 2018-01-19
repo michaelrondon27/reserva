@@ -79,9 +79,9 @@ class Bancos extends CI_Controller
   {
     if($method=="insert"){
       $this->form_validation->set_rules('cod_banco','Código Bancario','required|numeric|max_length[3]|is_unique[banco.cod_banco]');
-      $this->form_validation->set_rules('nombre_banco','Nombre o Razón Social','required|max_length[200]|min_length[6]|is_unique[banco.nombre_banco]');
+      $this->form_validation->set_rules('nombre_banco','Nombre o Razón Social','required|max_length[200]|is_unique[banco.nombre_banco]');
     }else if($method=="update"){
-      $this->form_validation->set_rules('nombre_banco','Nombre o Razón Social','required|max_length[200]|min_length[6]');
+      $this->form_validation->set_rules('nombre_banco','Nombre o Razón Social','required|max_length[200]');
     }
   }
 
