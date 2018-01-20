@@ -79,7 +79,7 @@ class Modulos extends CI_Controller
           //si son iguales, quiere decir que es el mismo registro
           $this->Modulos_model->posicionar_modulos($posicionar);
           $this->Modulos_model->actualizar_modulo($this->input->post('id_modulo_vista'), $data);
-          echo json_encode("<span>El Banco se ha editado exitosamente!</span>"); // envio de mensaje exitoso
+          echo json_encode("<span>El modulo se ha editado exitosamente!</span>"); // envio de mensaje exitoso
         }else{
           //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro
           echo "<span>El nombre del modulo ingresado ya se encuentra en uso!</span>";

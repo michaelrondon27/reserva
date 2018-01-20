@@ -20,7 +20,7 @@ Class ListaVista_model extends CI_Model
         return $query->result();
     }
         
-    public function registrar_modulo($data){
+    public function registrar_lista_vista($data){
         $this->db->insert($this->tabla_lista_vista, $data);
         $datos=array(
             'tabla' => $this->tabla_lista_vista,
@@ -31,21 +31,21 @@ Class ListaVista_model extends CI_Model
         $this->db->insert('auditoria', $datos);
     }
 
-    public function actualizar_modulo($id, $data)
+    public function actualizar_lista_vista($id, $data)
     {
-        $this->db->where('id_modulo_vista', $id);
-        $this->db->update($this->nombre_tabla, $data);
+        $this->db->where('id_lista_vista', $id);
+        $this->db->update($this->tabla_lista_vista, $data);
         $datos=array(
             'usr_regmod' => '1',
             'fec_regmod' => date('Y-m-d'),
         );
-        $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
+        $this->db->where('cod_reg', $id)->where('tabla', $this->tabla_lista_vista);
         $this->db->update('auditoria', $datos);
     }
 
-    public function verificar_modulo($data)
+    public function verificar_lista_vista($data)
     {
-        $query=$this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE nombre_modulo_vista='".$data."' LIMIT 1");
+        $query=$this->db->query("SELECT * FROM ".$this->tabla_lista_vista." WHERE nombre_lista_vista='".$data."' LIMIT 1");
         return $query->result_array();
     }
 
@@ -73,7 +73,7 @@ Class ListaVista_model extends CI_Model
         }
     }
 
-    public function status_modulo($id, $status)
+    public function status_lista_vista($id, $status)
     {
         $datos=array(
             'status'=>$status,
@@ -81,7 +81,7 @@ Class ListaVista_model extends CI_Model
             'usr_regmod' => '1',
             'fec_regmod' => date('Y-m-d'),
         );
-        $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
+        $this->db->where('cod_reg', $id)->where('tabla', $this->tabla_lista_vista);
         $this->db->update('auditoria', $datos);
     }
 
@@ -111,58 +111,92 @@ Class ListaVista_model extends CI_Model
         echo json_encode("<span>Registros eliminados: ".$eliminados."</span><br><span>Registros no eliminados (porque tienen dependencia en otras tablas): ".$noEliminados);
     }
 
-    public function status_multiple_modulos($id, $status)
+    public function status_multiple_lista_vista($id, $status)
     {
-        $modulos=str_replace(' ', ',', $id);
-        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$modulos.") AND tabla='".$this->nombre_tabla."'");
+        $listas_vistas=str_replace(' ', ',', $id);
+        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$listas_vistas.") AND tabla='".$this->tabla_lista_vista."'");
     }
 
-    public function posicionar_modulos($posicionar)
+    public function posicionar_lista_vista_segun_modulo($posicionar)
     {
-        if($posicionar['tipo'] == 'insert')
+        if ($posicionar['moduloInicial'] == $posicionar['moduloFinal'])
         {
-            $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE posicion_modulo_vista >= ".$posicionar['posicion']);
-            if(sizeof($query->result()) > 0){
-                foreach ($query->result() as $row)
-                {
-                    $datos=array(
-                        'posicion_modulo_vista' => $row->posicion_modulo_vista + 1,
-                    );
-                    $this->db->where('id_modulo_vista', $row->id_modulo_vista);
-                    $this->db->update($this->nombre_tabla, $datos);
-                }
+            if ($posicionar['posicionFinal'] > $posicionar['posicionInicial'])
+            {
+                $this->ordenar_lista_vista_resta('posicion_lista_vista > '.$posicionar['posicionInicial'].' AND posicion_lista_vista <= '.$posicionar['posicionFinal'].' AND id_modulo_vista = '.$posicionar['moduloFinal']);
+            }
+            else if ($posicionar['posicionFinal'] < $posicionar['posicionInicial'])
+            {
+                $this->ordenar_lista_vista_suma('posicion_lista_vista >= '.$posicionar['posicionFinal'].' AND posicion_lista_vista < '.$posicionar['posicionInicial'].' AND id_modulo_vista = '.$posicionar['moduloFinal']);
             }
         }
-        else if($posicionar['tipo'] == 'update')
+        else if ($posicionar['moduloInicial'] != $posicionar['moduloFinal'])
         {
-            if($posicionar['final'] > $posicionar['inicial'])
+            $datos = array(
+                'posicion' => $posicionar['posicionFinal'],
+                'modulo' => $posicionar['moduloFinal'],
+            );
+            $this->posicionar_lista_vista_nueva($datos);
+        }
+    }
+
+    public function ordenar_lista_vista_resta($sql)
+    {
+        $query = $this->db->query("SELECT * FROM ".$this->tabla_lista_vista." WHERE ".$sql);
+        if(sizeof($query->result()) > 0){
+            foreach ($query->result() as $row)
             {
-                $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE posicion_modulo_vista > ".$posicionar['inicial']." AND posicion_modulo_vista <= ".$posicionar['final']);
-                if(sizeof($query->result()) > 0){
-                    foreach ($query->result() as $row)
-                    {
-                        $datos=array(
-                            'posicion_modulo_vista' => $row->posicion_modulo_vista - 1,
-                        );
-                        $this->db->where('id_modulo_vista', $row->id_modulo_vista);
-                        $this->db->update($this->nombre_tabla, $datos);
-                    }
-                }
+                $datos=array(
+                    'posicion_lista_vista' => $row->posicion_lista_vista - 1,
+                );
+                $this->db->where('id_lista_vista', $row->id_lista_vista);
+                $this->db->update($this->tabla_lista_vista, $datos);
             }
-            else if($posicionar['final'] < $posicionar['inicial'])
+        }
+    }
+
+    public function ordenar_lista_vista_suma($sql)
+    {
+        $query = $this->db->query("SELECT * FROM ".$this->tabla_lista_vista." WHERE ".$sql);
+        if(sizeof($query->result()) > 0){
+            foreach ($query->result() as $row)
             {
-                $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE posicion_modulo_vista >= ".$posicionar['final']." AND posicion_modulo_vista < ".$posicionar['inicial']);
-                if(sizeof($query->result()) > 0){
-                    foreach ($query->result() as $row)
-                    {
-                        $datos=array(
-                            'posicion_modulo_vista' => $row->posicion_modulo_vista + 1,
-                        );
-                        $this->db->where('id_modulo_vista', $row->id_modulo_vista);
-                        $this->db->update($this->nombre_tabla, $datos);
-                    }
-                }
+                $datos=array(
+                    'posicion_lista_vista' => $row->posicion_lista_vista + 1,
+                );
+                $this->db->where('id_lista_vista', $row->id_lista_vista);
+                $this->db->update($this->tabla_lista_vista, $datos);
             }
+        }
+    }
+
+    public function posicionar_lista_vista_nueva($posicionar)
+    {
+        $query = $this->db->query("SELECT * FROM ".$this->tabla_lista_vista." WHERE posicion_lista_vista >= ".$posicionar['posicion']." AND id_modulo_vista = ".$posicionar['modulo']);
+        if(sizeof($query->result()) > 0){
+            foreach ($query->result() as $row)
+            {
+                $datos=array(
+                    'posicion_lista_vista' => $row->posicion_lista_vista + 1,
+                );
+                $this->db->where('id_lista_vista', $row->id_lista_vista);
+                $this->db->update($this->tabla_lista_vista, $datos);
+            }
+        }
+    }
+
+    public function ordernar_lista_vista($idModulo)
+    {
+        $query = $this->db->query("SELECT * FROM ".$this->tabla_lista_vista." WHERE id_modulo_vista = ".$idModulo." ORDER BY posicion_lista_vista DESC");
+        $contador = sizeof($query->result());
+        foreach($query->result() as $row)
+        {
+            $datos = array(
+                'posicion_lista_vista' => $contador,
+            );
+            $this->db->where('id_lista_vista', $row->id_lista_vista);
+            $this->db->update($this->tabla_lista_vista, $datos);
+            $contador--;
         }
     }
 

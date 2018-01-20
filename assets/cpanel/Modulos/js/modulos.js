@@ -40,17 +40,14 @@ $(document).ready(function(){
 				{"data": null,
 					render : function(data, type, row) {
 						var botones="<span class='consultar btn btn-xs btn-info' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
-						if(actualizar == 0){
+						if(actualizar == 0)
 							botones+="<span class='editar btn btn-xs btn-primary' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
-							if(data.status == 1){
+							if(data.status == 1)
 								botones+="<span class='desactivar btn btn-xs btn-warning' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
-							}else if(data.status == 2){
+							else if(data.status == 2)
 								botones+="<span class='activar btn btn-xs btn-warning' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
-							}
-						}
-						if(borrar == 0){
+						if(borrar == 0)
 							return botones+="<span class='eliminar btn btn-xs btn-danger' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
-						}
 		              	return botones;
 		          	}
 				}
@@ -189,15 +186,16 @@ $(document).ready(function(){
 	        url:document.getElementById('ruta').value + 'Modulos/contar_modulos',
 	        type:'POST',
 	        dataType:'JSON',
+	        error: function() {
+				contarModulos();
+	        },
 	        success: function(respuesta){
 	            var selectRegistrar = Object.keys(respuesta).length +1;
 	            var selectActualizar = Object.keys(respuesta).length;
-	            for(var i = 1; i <= selectRegistrar; i++){
+	            for(var i = 1; i <= selectRegistrar; i++)
 	            	agregarOptions("#posicion_modulo_vista_registrar", i, i);
-	            }
-	            for(var i = 1; i <= selectActualizar; i++){
+	            for(var i = 1; i <= selectActualizar; i++)
 	            	agregarOptions("#posicion_modulo_vista_actualizar", i, i);
-	            }
 	        }
 	    });
 	}

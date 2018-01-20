@@ -47,14 +47,14 @@
                     </a>
                 </li>
                 <?php foreach($modulos as $modulo): ?>
-                    <li id="<?php echo $modulo->nombre_modulo_vista; ?>">
+                    <li id="mv<?php echo $modulo->id_modulo_vista; ?>">
                         <a href="javascript:void(0);" class="menu-toggle">
                             <span><?php echo $modulo->nombre_modulo_vista; ?></span>
                         </a>
                         <ul class="ml-menu">
                             <?php foreach($vistas as $vista): ?>
                                 <?php if($modulo->id_modulo_vista==$vista->id_modulo_vista): ?>
-                                    <li id="<?php echo $vista->nombre_lista_vista; ?>">
+                                    <li id="lv<?php echo $vista->id_lista_vista; ?>">
                                         <a href="<?=base_url();?><?php echo $vista->url_lista_vista; ?>"><?php echo $vista->nombre_lista_vista; ?></a>
                                     </li>
                                 <?php endif ?>

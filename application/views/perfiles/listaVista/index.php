@@ -43,13 +43,13 @@
 		                                    <tbody></tbody>
 		                                </table>
 		                                <div class="col-md-2 ocultar eliminar">
-		                                	<button class="btn btn-danger" onclick="eliminarMultiple('Modulos/eliminar_multiple_modulos')">Eliminar seleccionados</button>
+		                                	<button class="btn btn-danger" onclick="eliminarMultiple('ListaVista/eliminar_multiple_modulos')">Eliminar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 ocultar actualizar">
-		                                	<button class="btn btn-warning" onclick="statusMultiple('Modulos/status_multiple_modulos', 1, 'activar')">Activar seleccionados</button>
+		                                	<button class="btn btn-warning" onclick="statusMultiple('ListaVista/status_multiple_lista_vista', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 ocultar actualizar">
-		                                	<button class="btn btn-warning" onclick="statusMultiple('Modulos/status_multiple_modulos', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                	<button class="btn btn-warning" onclick="statusMultiple('ListaVista/status_multiple_lista_vista', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>
@@ -67,7 +67,7 @@
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_modulo_registrar" id="form_modulo_registrar" method="post">
+			                            <form name="form_lista_vista_registrar" id="form_lista_vista_registrar" method="post">
 			                            	<div class="col-sm-4">
 			                            		<label for="nombre_lista_vista_registrar">Nombre*</label>
 				                                <div class="form-group">
@@ -77,10 +77,10 @@
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-4">
-				                                <label for="descripcion_modulo_vista_registrar">Descripción</label>
+				                                <label for="descripcion_lista_vista_registrar">Descripción</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="descripcion_modulo_vista" id="descripcion_modulo_vista_registrar" placeholder="P. EJ. Describir funciones">
+				                                        <input type="text" class="form-control mayusculas" name="descripcion_lista_vista" id="descripcion_lista_vista_registrar" placeholder="P. EJ. Describir funciones">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -88,13 +88,13 @@
 				                                <label for="url_lista_vista_registrar">URL*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="url_lista_vista" id="url_lista_vista_registrar" placeholder="P. EJ. URL">
+				                                        <input type="text" class="form-control" name="url_lista_vista" id="url_lista_vista_registrar" required placeholder="P. EJ. URL">
 				                                    </div>
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-4">
 				                                <label for="id_modulo_vista_registrar">Modulo*</label>
-		                                        <select id="id_modulo_vista_registrar" required class="form-control form-group" name="id_modulo_vista" onchange="contador_listaVista(this.value, 'registrar')">
+		                                        <select id="id_modulo_vista_registrar" required class="form-control form-group" name="id_modulo_vista" onchange="contador_listaVista(this.value, 'registrar', 0)">
 		                                        	<option value="">Seleccione</option>
 		                                        	<?php foreach($modulos as $modulo): ?>
 		                                        		<option value="<?php echo $modulo->id_modulo_vista ?>"><?php echo $modulo->nombre_modulo_vista?></option>
@@ -102,14 +102,15 @@
 		                                        </select>
 				                            </div>
 				                            <div class="col-sm-4">
-				                                <label for="posicion_modulo_vista_registrar">Posición*</label>
-		                                        <select id="posicion_modulo_vista_registrar" required class="form-control form-group" name="posicion_modulo_vista">
+				                                <label for="posicion_lista_vista_registrar">Posición*</label>
+		                                        <select id="posicion_lista_vista_registrar" required class="form-control form-group" name="posicion_lista_vista">
 		                                        	<option value="">Seleccione</option>
 		                                        </select>
+		                                        <span class="text-info">Debe seleccionar un modulo</span>
 				                            </div>
 				                            <div class="col-sm-4">
-				                                <label for="visibilidad_lista_vista_consultar">Visible</label>
-		                                        <select id="visibilidad_lista_vista_consultar" required class="form-control form-group" name="visibilidad_lista_vista">
+				                                <label for="visibilidad_lista_vista_registrar">Visible</label>
+		                                        <select id="visibilidad_lista_vista_registrar" class="form-control form-group" name="visibilidad_lista_vista">
 		                                        	<option value="">Seleccione</option>
 		                                        	<option value="0">SI</option>
 		                                        	<option value="1">NO</option>
@@ -204,31 +205,58 @@
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_modulo_actualizar" id="form_modulo_actualizar" method="post">
+			                            <form name="form_lista_vista_actualizar" id="form_lista_vista_actualizar" method="post">
 			                            	<div class="col-sm-4">
-			                            		<label for="nombre_modulo_vista_actualizar">Nombre*</label>
+			                            		<label for="nombre_lista_vista_actualizar">Nombre*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="nombre_modulo_vista" id="nombre_modulo_vista_actualizar" placeholder="P. EJ. Modulo" required>
+				                                        <input type="text" class="form-control" name="nombre_lista_vista" id="nombre_lista_vista_actualizar" placeholder="P. EJ. NOMBRE" required>
 				                                    </div>
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-4">
-				                                <label for="descripcion_modulo_vista_actualizar">Descripción</label>
+				                                <label for="descripcion_lista_vista_actualizar">Descripción</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="descripcion_modulo_vista" id="descripcion_modulo_vista_actualizar" placeholder="P. EJ. Describir funciones">
+				                                        <input type="text" class="form-control mayusculas" name="descripcion_lista_vista" id="descripcion_lista_vista_actualizar" placeholder="P. EJ. Describir funciones">
 				                                    </div>
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-4">
-				                                <label for="posicion_modulo_vista_actualizar">Posición*</label>
-		                                        <select id="posicion_modulo_vista_actualizar" required class="form-control form-group" name="posicion_modulo_vista">
+				                                <label for="url_lista_vista_actualizar">URL*</label>
+				                                <div class="form-group">
+				                                    <div class="form-line">
+				                                        <input type="text" class="form-control" name="url_lista_vista" id="url_lista_vista_actualizar" required placeholder="P. EJ. URL">
+				                                    </div>
+				                                </div>
+				                            </div>
+				                            <div class="col-sm-4">
+				                                <label for="id_modulo_vista_actualizar">Modulo*</label>
+		                                        <select id="id_modulo_vista_actualizar" required class="form-control form-group" name="id_modulo_vista" onchange="contador_listaVista(this.value, 'actualizar', 0)">
 		                                        	<option value="">Seleccione</option>
+		                                        	<?php foreach($modulos as $modulo): ?>
+		                                        		<option value="<?php echo $modulo->id_modulo_vista ?>"><?php echo $modulo->nombre_modulo_vista?></option>
+		                                        	<?php endforeach ?>
 		                                        </select>
 				                            </div>
-				                            <input type="hidden" name="inicial" id="inicial">
-				                            <input type="hidden" name="id_modulo_vista" id="id_modulo_vista_actualizar">
+				                            <div class="col-sm-4">
+				                                <label for="posicion_lista_vista_actualizar">Posición*</label>
+		                                        <select id="posicion_lista_vista_actualizar" required class="form-control form-group" name="posicion_lista_vista">
+		                                        	<option value="">Seleccione</option>
+		                                        </select>
+		                                        <span class="text-info">Debe seleccionar un modulo</span>
+				                            </div>
+				                            <div class="col-sm-4">
+				                                <label for="visibilidad_lista_vista_actualizar">Visible</label>
+		                                        <select id="visibilidad_lista_vista_actualizar" class="form-control form-group" name="visibilidad_lista_vista">
+		                                        	<option value="">Seleccione</option>
+		                                        	<option value="0">SI</option>
+		                                        	<option value="1">NO</option>
+		                                        </select>
+				                            </div>
+				                            <input type="hidden" name="id_lista_vista" id="id_lista_vista_actualizar">
+				                            <input type="hidden" name="id_modulo_vista_hidden" id="id_modulo_vista_hidden">
+				                            <input type="hidden" name="posicion_lista_vista_hidden" id="posicion_lista_vista_hidden">
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
 		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary">Regresar</button>
@@ -256,20 +284,17 @@
     <?php if($permiso[0]->consultar==0): ?>
 		<script src="<?=base_url();?>assets/cpanel/ListaVista/js/listaVista.js"></script>
 		<script>
-			$("#<?php echo $permiso[0]->nombre_modulo_vista ?>").attr('class', 'active');
-			$("#<?php echo $permiso[0]->nombre_lista_vista ?>").attr('class', 'active');
+			$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
+			$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
 			var registrar = <?php echo $permiso[0]->registrar ?>,
 				actualizar = <?php echo $permiso[0]->actualizar ?>,
 				borrar = <?php echo $permiso[0]->eliminar ?>;
-			if(registrar==0){
+			if(registrar==0)
 				$(".registrar").removeClass('ocultar');
-			}
-			if(actualizar==0){
+			if(actualizar==0)
 				$(".actualizar").removeClass('ocultar');
-			}
-			if(borrar==0){
+			if(borrar==0)
 				$(".eliminar").removeClass('ocultar');
-			}
 		</script>
 	<?php endif ?>
 </html>

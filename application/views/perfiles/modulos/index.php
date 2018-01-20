@@ -205,20 +205,17 @@
     <?php if($permiso[0]->consultar==0): ?>
 		<script src="<?=base_url();?>assets/cpanel/Modulos/js/modulos.js"></script>
 		<script>
-			$("#<?php echo $permiso[0]->nombre_modulo_vista ?>").attr('class', 'active');
-			$("#<?php echo $permiso[0]->nombre_lista_vista ?>").attr('class', 'active');
+			$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
+			$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
 			var registrar = <?php echo $permiso[0]->registrar ?>,
 				actualizar = <?php echo $permiso[0]->actualizar ?>,
 				borrar = <?php echo $permiso[0]->eliminar ?>;
-			if(registrar==0){
+			if(registrar==0)
 				$(".registrar").removeClass('ocultar');
-			}
-			if(actualizar==0){
+			if(actualizar==0)
 				$(".actualizar").removeClass('ocultar');
-			}
-			if(borrar==0){
+			if(borrar==0)
 				$(".eliminar").removeClass('ocultar');
-			}
 		</script>
 	<?php endif ?>
 </html>

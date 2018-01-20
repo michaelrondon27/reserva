@@ -39,14 +39,11 @@
         numeros="";
         especiales="";//los numeros de esta linea son especiales y es para las flechas
         teclado_escpecial=false;
-        for(var i in especiales){
-            if (key==especiales[i]) {
+        for(var i in especiales)
+            if (key==especiales[i])
                 teclado_escpecial=true;
-            }
-        }
-        if (numeros.indexOf(teclado)==-1 && !teclado_escpecial) {
+        if (numeros.indexOf(teclado)==-1 && !teclado_escpecial)
             return false;
-        }
     }
 /* ------------------------------------------------------------------------------- */
 
@@ -61,14 +58,11 @@
         numeros="1234567890.-";
         especiales="8-9-17-37-38-46";//los numeros de esta linea son especiales y es para las flechass
         teclado_escpecial=false;
-        for(var i in especiales){
-            if (key==especiales[i]) {
+        for(var i in especiales)
+            if (key==especiales[i])
                 teclado_escpecial=true;
-            }
-        }
-        if (numeros.indexOf(teclado)==-1 && !teclado_escpecial) {
+        if (numeros.indexOf(teclado)==-1 && !teclado_escpecial)
             return false;
-        }
     }
 /* ------------------------------------------------------------------------------- */
 
@@ -83,14 +77,11 @@
         numeros="qwertyuiopasdfghjklñzxcvbnmQWERTYUIOPASDFGHJKLÑZXCVBNM ";
         especiales="8-9-17-37-38-46";//los numeros de esta linea son especiales y es para las flechass
         teclado_escpecial=false;
-        for(var i in especiales){
-            if (key==especiales[i]) {
+        for(var i in especiales)
+            if (key==especiales[i])
                 teclado_escpecial=true;
-            }
-        }
-        if (numeros.indexOf(teclado)==-1 && !teclado_escpecial) {
+        if (numeros.indexOf(teclado)==-1 && !teclado_escpecial)
             return false;
-        }
     }
 /* ------------------------------------------------------------------------------- */
 
@@ -138,19 +129,16 @@
                 error: function (repuesta) {
                     $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
                     var errores=repuesta.responseText;
-                    if(errores!=""){
+                    if(errores!="")
                         mensajes('danger', errores);
-                    }else{
-                        mensajes('danger', "<span>Ha ocurrido un error, por favor intentelo de nuevo.</span>");
-
-                    }                    
+                    else
+                        mensajes('danger', "<span>Ha ocurrido un error, por favor intentelo de nuevo.</span>");        
                 },
                 success: function(respuesta){
                     $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
                     mensajes('success', respuesta);
-                    if(cuadro!=""){
+                    if(cuadro!="")
                         listar(cuadro);
-                    }
                 }
             });
         });
@@ -294,9 +282,9 @@
         var id=$(".checkitem:checked").map(function(){
             return $(this).val();
         }).get();
-        if(Object.keys(id).length>0){
+        if(Object.keys(id).length>0)
             eliminarConfirmacion(controlador, id, "¿Esta seguro de eliminar los registros seleccionados?");
-        }else{
+        else
             swal({
                 title: "Debe seleccionar al menos una fila.",
                 type: "warning",
@@ -304,7 +292,6 @@
                 confirmButtonText: "Aceptar!",
                 closeOnConfirm: true
             });
-        }
     }
 /* ------------------------------------------------------------------------------- */
 
@@ -316,9 +303,9 @@
         var id=$(".checkitem:checked").map(function(){
             return $(this).val();
         }).get().join(' ');
-        if(Object.keys(id).length>0){
+        if(Object.keys(id).length>0)
             statusConfirmacion(controlador, id, status, "¿Esta seguro de "+confirmButton+" los registros seleccionados?", confirmButton);
-        }else{
+        else
             swal({
                 title: "Debe seleccionar al menos una fila.",
                 type: "warning",
@@ -326,7 +313,6 @@
                 confirmButtonText: "Aceptar!",
                 closeOnConfirm: true
             });
-        }
     }
 /* ------------------------------------------------------------------------------- */
 
@@ -445,11 +431,11 @@
         var correo1 = $(validar).val(),
             correo2 = $(confirmar).val(),
             resultado = $(error);
-        if(correo1==correo2){
+        if(correo1==correo2) {
             $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
             resultado.removeClass('focused error');
             $(".correoError").html('');
-        }else{
+        } else {
             $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
             resultado.addClass('focused error');
             $(".correoError").html('Los correos no coinciden');
@@ -463,11 +449,11 @@
         var clave1 = $(validar).val(),
             clave2 = $(confirmar).val(),
             resultado = $(error);
-        if(clave1==clave2){
+        if(clave1==clave2) {
             $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
             resultado.removeClass('focused error');
             $(".claveError").html('');
-        }else{
+        } else {
             $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
             resultado.addClass('focused error');
             $(".claveError").html('Las contraseñas no coinciden');

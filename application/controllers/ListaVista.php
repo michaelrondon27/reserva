@@ -35,61 +35,86 @@ class ListaVista extends CI_Controller
     echo json_encode($contador);
   }
 
-  public function registrar_modulo()
+  public function registrar_lista_vista()
   {
-    $this->reglas_modulos('insert');
-    $this->mensajes_reglas_modulos();
-    if($this->form_validation->run() == true){
+    $this->reglas_lista_vista('insert');
+    $this->mensajes_reglas_lista_vista();
+    if ($this->form_validation->run() == true){
       $posicionar = array(
-        'posicion' => $this->input->post('posicion_modulo_vista'),
-        'tipo' => 'insert',
+        'modulo' => $this->input->post('id_modulo_vista'),
+        'posicion' => $this->input->post('posicion_lista_vista'),
       );
-      $this->Modulos_model->posicionar_modulos($posicionar);
-      $data=array(
-        'nombre_modulo_vista' => strtoupper($this->input->post('nombre_modulo_vista')),
-        'descripcion_modulo_vista' => $this->input->post('descripcion_modulo_vista'),
-        'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
+      $this->ListaVista_model->posicionar_lista_vista_nueva($posicionar);
+      if($this->input->post('visibilidad_lista_vista') == ""){
+        $visible = 1;
+      }else{
+        $visible = $this->input->post('visibilidad_lista_vista');
+      }
+      $data = array(
+        'nombre_lista_vista' => $this->input->post('nombre_lista_vista'),
+        'descripcion_lista_vista' => $this->input->post('descripcion_lista_vista'),
+        'url_lista_vista' => $this->input->post('url_lista_vista'),
+        'id_modulo_vista' => $this->input->post('id_modulo_vista'),
+        'posicion_lista_vista' => $this->input->post('posicion_lista_vista'),
+        'visibilidad_lista_vista' => $visible,
+        'nombre_oculto_lista_vista' => strtolower($this->input->post('nombre_lista_vista')),
       );
-      $this->Modulos_model->registrar_modulo($data);
-      echo json_encode("<span>El modulo se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
+      $this->ListaVista_model->registrar_lista_vista($data);
+      echo json_encode("<span>Se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
     }else{
       // enviar los errores
       echo validation_errors();
     }
   }
 
-  public function actualizar_modulo()
+  public function actualizar_lista_vista()
   {
-    $this->reglas_modulos('update');
-    $this->mensajes_reglas_modulos();
+    $this->reglas_lista_vista('update');
+    $this->mensajes_reglas_lista_vista();
     if($this->form_validation->run() == true){
-      $modulo_verificado=$this->Modulos_model->verificar_modulo(strtoupper($this->input->post('nombre_modulo_vista'))); //busca si el nombre del banco esta registrado en la base de datos
+      $lista_vista_verificado=$this->ListaVista_model->verificar_lista_vista($this->input->post('nombre_lista_vista')); //busca si el nombre del banco esta registrado en la base de datos
       $posicionar = array(
-        'inicial' => $this->input->post('inicial'),
-        'tipo' => 'update',
-        'final' => $this->input->post('posicion_modulo_vista'),
+        'moduloInicial' => $this->input->post('id_modulo_vista_hidden'),
+        'moduloFinal' => $this->input->post('id_modulo_vista'),
+        'posicionInicial' => $this->input->post('posicion_lista_vista_hidden'),
+        'posicionFinal' => $this->input->post('posicion_lista_vista'),
       );
-      $data=array(
-        'nombre_modulo_vista' => strtoupper($this->input->post('nombre_modulo_vista')),
-        'descripcion_modulo_vista' => $this->input->post('descripcion_modulo_vista'),
-        'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
+      if($this->input->post('visibilidad_lista_vista') == ""){
+        $visible = 1;
+      }else{
+        $visible = $this->input->post('visibilidad_lista_vista');
+      }
+      $data = array(
+        'nombre_lista_vista' => $this->input->post('nombre_lista_vista'),
+        'descripcion_lista_vista' => $this->input->post('descripcion_lista_vista'),
+        'url_lista_vista' => $this->input->post('url_lista_vista'),
+        'id_modulo_vista' => $this->input->post('id_modulo_vista'),
+        'posicion_lista_vista' => $this->input->post('posicion_lista_vista'),
+        'visibilidad_lista_vista' => $visible,
       );
-      if(count($modulo_verificado)>0){
+      if(count($lista_vista_verificado)>0){
         // si es mayor a cero, se verifica si el id recibido del formulario es igual al id que se verifico
-        if($modulo_verificado[0]['id_modulo_vista']==$this->input->post('id_modulo_vista')){
+        if($lista_vista_verificado[0]['id_lista_vista']==$this->input->post('id_lista_vista')){
+          $this->ListaVista_model->posicionar_lista_vista_segun_modulo($posicionar);
           //si son iguales, quiere decir que es el mismo registro
-          $this->Modulos_model->posicionar_modulos($posicionar);
-          $this->Modulos_model->actualizar_modulo($this->input->post('id_modulo_vista'), $data);
-          echo json_encode("<span>El Banco se ha editado exitosamente!</span>"); // envio de mensaje exitoso
+          $this->ListaVista_model->actualizar_lista_vista($this->input->post('id_lista_vista'), $data);
+          if($posicionar['moduloInicial'] != $posicionar['moduloFinal']){
+            $this->ListaVista_model->ordernar_lista_vista($posicionar['moduloInicial']);
+          }
+          echo json_encode("<span>Se ha editado exitosamente!</span>"); // envio de mensaje exitoso
         }else{
           //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro
-          echo "<span>El nombre del modulo ingresado ya se encuentra en uso!</span>";
+          echo "<span>El nombre de la lista vista ingresado ya se encuentra en uso!</span>";
         }
       }else{
-        $this->Modulos_model->posicionar_modulos($posicionar);
+        $this->ListaVista_model->posicionar_lista_vista_segun_modulo($posicionar);
         // si conteo del array es igual a 0, se actualiza el registro
-        $this->Modulos_model->actualizar_modulo($this->input->post('id_modulo_vista'), $data);
-        echo json_encode("<span>El modulo se ha editado exitosamente!</span>"); // envio de mensaje exitoso
+        $this->ListaVista_model->actualizar_lista_vista($this->input->post('id_lista_vista'), $data);
+        $this->ListaVista_model->posicionar_lista_vista_segun_modulo($posicionar['moduloInicial']);
+        if($posicionar['moduloInicial'] != $posicionar['moduloFinal']){
+            $this->ListaVista_model->ordernar_lista_vista($posicionar['moduloInicial']);
+          }
+        echo json_encode("<span>Se ha editado exitosamente!</span>"); // envio de mensaje exitoso
       }
       
     }else{
@@ -98,18 +123,22 @@ class ListaVista extends CI_Controller
     }
   }
 
-  public function reglas_modulos($method)
+  public function reglas_lista_vista($method)
   {
     if($method == "insert"){
-      $this->form_validation->set_rules('nombre_modulo_vista','Nombre de Modulo','required|is_unique[modulo_vista.nombre_modulo_vista]');
-      $this->form_validation->set_rules('posicion_modulo_vista','Posición','required');
+      $this->form_validation->set_rules('nombre_lista_vista','Nombre de Lista Vista','required|is_unique[lista_vista.nombre_lista_vista]');
+      $this->form_validation->set_rules('url_lista_vista','URL','required');
+      $this->form_validation->set_rules('id_modulo_vista','Modulo','required');
+      $this->form_validation->set_rules('posicion_lista_vista','Posición','required');
     }else if($method == "update"){
-      $this->form_validation->set_rules('nombre_modulo_vista','Nombre de Modulo','required');
-      $this->form_validation->set_rules('posicion_modulo_vista','Posición','required');
+      $this->form_validation->set_rules('nombre_lista_vista','Nombre de Lista Vista','required');
+      $this->form_validation->set_rules('url_lista_vista','URL','required');
+      $this->form_validation->set_rules('id_modulo_vista','Modulo','required');
+      $this->form_validation->set_rules('posicion_lista_vista','Posición','required');
     }
   }
 
-  public function mensajes_reglas_modulos(){
+  public function mensajes_reglas_lista_vista(){
     $this->form_validation->set_message('required', 'El campo %s es obligatorio');
     $this->form_validation->set_message('is_unique', 'El valor ingresado en el campo %s ya se encuentra en uso');
   }
@@ -119,9 +148,9 @@ class ListaVista extends CI_Controller
     $this->Modulos_model->eliminar_modulo($this->input->post('id'));
   }
 
-  public function status_modulo()
+  public function status_lista_vista()
   {
-    $this->Modulos_model->status_modulo($this->input->post('id'), $this->input->post('status'));
+    $this->ListaVista_model->status_lista_vista($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 
@@ -130,9 +159,9 @@ class ListaVista extends CI_Controller
     $this->Modulos_model->eliminar_multiple_modulos($this->input->post('id'));
   }
 
-  public function status_multiple_modulos()
+  public function status_multiple_lista_vista()
   {
-    $this->Modulos_model->status_multiple_modulos($this->input->post('id'), $this->input->post('status'));
+    $this->ListaVista_model->status_multiple_lista_vista($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 

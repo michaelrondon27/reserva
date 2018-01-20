@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	listar();
-	registrar_modulo();
-	actualizar_modulo();
+	registrar_lista_vista();
+	actualizar_lista_vista();
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -40,17 +40,14 @@ $(document).ready(function(){
 				{"data": null,
 					render : function(data, type, row) {
 						var botones="<span class='consultar btn btn-xs btn-info' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
-						if(actualizar == 0){
+						if(actualizar == 0)
 							botones+="<span class='editar btn btn-xs btn-primary' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
-							if(data.status == 1){
+							if(data.status == 1)
 								botones+="<span class='desactivar btn btn-xs btn-warning' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
-							}else if(data.status == 2){
+							else if(data.status == 2)
 								botones+="<span class='activar btn btn-xs btn-warning' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
-							}
-						}
-						if(borrar == 0){
+						if(borrar == 0)
 							return botones+="<span class='eliminar btn btn-xs btn-danger' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
-						}
 		              	return botones;
 		          	}
 				}
@@ -86,7 +83,7 @@ $(document).ready(function(){
 		Funcion para limpiar el formulario de registrar.
 	*/
 	function limpiarFormularioRegistrar(){
-		$("#form_modulo_registrar")[0].reset();
+		$("#form_lista_vista_registrar")[0].reset();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -94,8 +91,8 @@ $(document).ready(function(){
 	/*
 		Funcion que realiza el envio del formulario de registro
 	*/
-	function registrar_modulo(){
-		enviarFormulario("#form_modulo_registrar", 'Modulos/registrar_modulo', '#cuadro2');
+	function registrar_lista_vista(){
+		enviarFormulario("#form_lista_vista_registrar", 'ListaVista/registrar_lista_vista', '#cuadro2');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -124,13 +121,17 @@ $(document).ready(function(){
 	function editar(tbody, table){
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			document.getElementById('nombre_modulo_vista_actualizar').value=data.nombre_modulo_vista;
-			document.getElementById('descripcion_modulo_vista_actualizar').value=data.descripcion_modulo_vista;
-			$("#posicion_modulo_vista_actualizar option[value='"+data.posicion_modulo_vista+"']").attr("selected","selected");
-			document.getElementById('inicial').value=data.posicion_modulo_vista;
-			document.getElementById('id_modulo_vista_actualizar').value=data.id_modulo_vista;
+			contador_listaVista(data.id_modulo_vista, 'actualizar', data.posicion_lista_vista);
+			document.getElementById('nombre_lista_vista_actualizar').value=data.nombre_lista_vista;
+			document.getElementById('descripcion_lista_vista_actualizar').value=data.descripcion_lista_vista;
+			document.getElementById('url_lista_vista_actualizar').value=data.url_lista_vista;
+			$("#id_modulo_vista_actualizar option[value='"+data.id_modulo_vista+"']").attr("selected","selected");
+			$("#visibilidad_lista_vista_actualizar option[value='"+data.visibilidad_lista_vista+"']").attr("selected","selected");
+			document.getElementById('id_modulo_vista_hidden').value=data.id_modulo_vista;
+			document.getElementById('posicion_lista_vista_hidden').value=data.posicion_lista_vista;
+			document.getElementById('id_lista_vista_actualizar').value=data.id_lista_vista;
 			cuadros('#cuadro1', '#cuadro4');
-			$("#nombre_modulo_vista_actualizar").focus();
+			$("#nombre_lista_vista_actualizar").focus();
 		});
 	}
 /* ------------------------------------------------------------------------------- */
@@ -151,8 +152,8 @@ $(document).ready(function(){
 	/*
 		Funcion que realiza el envio del formulario de registro
 	*/
-	function actualizar_modulo(){
-		enviarFormulario("#form_modulo_actualizar", 'Modulos/actualizar_modulo', '#cuadro4');
+	function actualizar_lista_vista(){
+		enviarFormulario("#form_lista_vista_actualizar", 'ListaVista/actualizar_lista_vista', '#cuadro4');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -163,7 +164,7 @@ $(document).ready(function(){
 	function desactivar(tbody, table){
 		$(tbody).on("click", "span.desactivar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Modulos/status_modulo', data.id_modulo_vista, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
+            statusConfirmacion('ListaVista/status_lista_vista', data.id_lista_vista, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -175,7 +176,7 @@ $(document).ready(function(){
 	function activar(tbody, table){
 		$(tbody).on("click", "span.activar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Modulos/status_modulo', data.id_modulo_vista, 1, "¿Esta seguro de activar el registro?", 'activar');
+            statusConfirmacion('ListaVista/status_lista_vista', data.id_lista_vista, 1, "¿Esta seguro de activar el registro?", 'activar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -185,9 +186,9 @@ $(document).ready(function(){
 		Funcion que hace un count de las lista vista por modulos registrados y el resultado se 
 		despliega en un select para la seleccion de la posicion de la lista vista.
 	*/
-	function contador_listaVista(value, select){
-		$('#posicion_modulo_vista_registrar').find('option').remove().end().append('<option value="">Seleccione</option>');
-		$('#posicion_modulo_vista_actualizar').find('option').remove().end().append('<option value="">Seleccione</option>');
+	function contador_listaVista(value, select, selected){
+		$('#posicion_lista_vista_registrar').find('option').remove().end().append('<option value="">Seleccione</option>');
+		$('#posicion_lista_vista_actualizar').find('option').remove().end().append('<option value="">Seleccione</option>');
 		if (value != "") {
 			$.ajax({
 		        url:document.getElementById('ruta').value + 'ListaVista/contador_listaVista',
@@ -199,12 +200,14 @@ $(document).ready(function(){
                 },
 		        success: function (respuesta) {
 		            var contador = Object.keys(respuesta).length;
-		            if (select == 'registrar') {
+		            if (select == 'registrar' || (selected == 0 && value != document.getElementById('id_modulo_vista_hidden').value))
 		            	contador++;
-		            }
-		            for (var i = 1; i <= contador; i++) {
-		            	agregarOptions("#posicion_modulo_vista_" + select, i, i);
-		            }
+		            for (var i = 1; i <= contador; i++)
+		            	agregarOptions("#posicion_lista_vista_" + select, i, i);
+		            if (select == 'actualizar')
+		            	$("#posicion_lista_vista_actualizar option[value='"+selected+"']").attr("selected","selected");
+		            if (value == document.getElementById('id_modulo_vista_hidden').value)
+		            	$("#posicion_lista_vista_actualizar option[value='"+document.getElementById('posicion_lista_vista_hidden').value+"']").attr("selected","selected");
 		        }
 		    });
 		} else {

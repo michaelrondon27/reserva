@@ -25,7 +25,7 @@ Class Menu_model extends CI_Model
 
     public function verificar_permiso_vista($modulo, $rol)
     {
-        $query = $this->db->query("SELECT ro.*, lv.nombre_lista_vista, mv.nombre_modulo_vista FROM rol_operaciones ro INNER JOIN lista_vista lv ON ro.id_lista_vista=lv.id_lista_vista INNER JOIN modulo_vista mv ON lv.id_modulo_vista=mv.id_modulo_vista WHERE ro.id_rol=".$rol." AND lv.nombre_oculto_lista_vista='".$modulo."'");
+        $query = $this->db->query("SELECT ro.*, lv.id_lista_vista, mv.id_modulo_vista FROM rol_operaciones ro INNER JOIN lista_vista lv ON ro.id_lista_vista=lv.id_lista_vista INNER JOIN modulo_vista mv ON lv.id_modulo_vista=mv.id_modulo_vista WHERE ro.id_rol=".$rol." AND lv.nombre_oculto_lista_vista='".$modulo."'");
         return $query->result();
     }
 
