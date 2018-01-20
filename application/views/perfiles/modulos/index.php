@@ -22,7 +22,7 @@
 		                                Gestión de Modulos
 		                            </h2>
 		                            <ul class="header-dropdown m-r--5">
-		                                <button class="btn btn-primary ocultar registrar" onclick="nuevoModulo()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
+		                                <button class="btn btn-primary ocultar registrar waves-effect" onclick="nuevoModulo()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
 		                            </ul>
 		                        </div>
 		                        <div class="body">
@@ -42,13 +42,13 @@
 		                                    <tbody></tbody>
 		                                </table>
 		                                <div class="col-md-2 ocultar eliminar">
-		                                	<button class="btn btn-danger" onclick="eliminarMultiple('Modulos/eliminar_multiple_modulos')">Eliminar seleccionados</button>
+		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('Modulos/eliminar_multiple_modulos')">Eliminar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 ocultar actualizar">
-		                                	<button class="btn btn-warning" onclick="statusMultiple('Modulos/status_multiple_modulos', 1, 'activar')">Activar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Modulos/status_multiple_modulos', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 ocultar actualizar">
-		                                	<button class="btn btn-warning" onclick="statusMultiple('Modulos/status_multiple_modulos', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Modulos/status_multiple_modulos', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>
@@ -91,8 +91,8 @@
 				                            </div>
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
-		                                        <button type="button" onclick="regresar('#cuadro2')" class="btn btn-primary">Regresar</button>
-		                                        <input type="submit" value="Guardar" class="btn btn-success">
+		                                        <button type="button" onclick="regresar('#cuadro2')" class="btn btn-primary waves-effect">Regresar</button>
+		                                        <input type="submit" value="Guardar" class="btn btn-success waves-effect">
 			                                </div>
 			                            </form>
 			                        </div>
@@ -135,7 +135,7 @@
 			                            </div>
                             			<br>
                             			<div class="col-sm-2 col-sm-offset-5">
-	                                        <button type="button" onclick="regresar('#cuadro3')" class="btn btn-primary">Regresar</button>
+	                                        <button type="button" onclick="regresar('#cuadro3')" class="btn btn-primary waves-effect">Regresar</button>
 		                                </div>
 			                        </div>
 		                        </div>
@@ -180,8 +180,8 @@
 				                            <input type="hidden" name="id_modulo_vista" id="id_modulo_vista_actualizar">
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
-		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary">Regresar</button>
-		                                        <input type="submit" value="Guardar" class="btn btn-success">
+		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary waves-effect">Regresar</button>
+		                                        <input type="submit" value="Guardar" class="btn btn-success waves-effect">
 			                                </div>
 			                            </form>
 			                        </div>

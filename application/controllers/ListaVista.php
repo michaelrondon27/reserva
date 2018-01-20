@@ -143,9 +143,13 @@ class ListaVista extends CI_Controller
     $this->form_validation->set_message('is_unique', 'El valor ingresado en el campo %s ya se encuentra en uso');
   }
 
-  public function eliminar_modulo()
+  public function eliminar_lista_vista()
   {
-    $this->Modulos_model->eliminar_modulo($this->input->post('id'));
+    $data = array(
+      'id_lista_vista' => $this->input->post('id[0]'),
+      'id_modulo_vista' => $this->input->post('id[1]'),
+    );
+    $this->ListaVista_model->eliminar_lista_vista($data);
   }
 
   public function status_lista_vista()
@@ -154,9 +158,9 @@ class ListaVista extends CI_Controller
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 
-  public function eliminar_multiple_modulos()
+  public function eliminar_multiple_lista_vista()
   {
-    $this->Modulos_model->eliminar_multiple_modulos($this->input->post('id'));
+    $this->ListaVista_model->eliminar_multiple_lista_vista($this->input->post('id'));
   }
 
   public function status_multiple_lista_vista()

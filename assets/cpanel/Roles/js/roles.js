@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	listar();
-	registrar_lista_vista();
-	actualizar_lista_vista();
+	registrar_modulo();
+	actualizar_modulo();
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -18,27 +18,35 @@ $(document).ready(function(){
 			"serverSide":false,
 			"ajax":{
 				"method":"POST",
-				"url":url+"ListaVista/listado_listaVista",
+				"url":url+"Roles/listado_roles",
 				"dataSrc":""
 			},
 			"columns":[
-				{"data": "id_lista_vista",
+				{"data": "id_rol",
 					render : function(data, type, row) {
 						return "<input type='checkbox' class='checkitem chk-col-blue' id='item"+data+"' value='"+data+"'><label for='item"+data+"'></label>"
 					}
 				},
-				{"data":"nombre_lista_vista"},
-				{"data":"descripcion_lista_vista",
+				{"data":"nombre_rol"},
+				{"data":"descripcion_rol",
 					render : function(data, type, row) {
 						var descripcion = data;
 						if (data != null)
-							if (data.length > 20)
-								descripcion = data.substr(0,19) + "..."
+							if (data.length > 30)
+								descripcion = data.substr(0,29) + "..."
 						return descripcion;
 					}
 				},
-				{"data":"nombre_modulo_vista"},
-				{"data":"posicion_lista_vista"},
+				{"data":null,
+					render : function(data, type, row) {
+						var nombre = data.nombre_lista_vista;
+						if (data.nombre_lista_vista != null)
+							if (data.nombre_lista_vista.length > 25)
+								nombre = data.nombre_lista_vista.substr(0,24) + "..."
+							nombre += " <span onclick='modalOperaciones(" + data.id_rol + ", \"" + "#resultados" + "\")' class='badge bg-blue waves-effect' style='cursor: pointer;' data-toggle='tooltip' title='Ver más.'><i class='fa fa-plus'></i></span>";
+						return nombre
+					}
+				},
 				{"data":"fec_regins",
 					render : function(data, type, row) {
 						return cambiarFormatoFecha(data);
@@ -50,9 +58,9 @@ $(document).ready(function(){
 						var botones="<span class='consultar btn btn-xs btn-info waves-effect' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
 						if(actualizar == 0)
 							botones+="<span class='editar btn btn-xs btn-primary waves-effect' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
-						if(data.status == 1 actualizar == 0)
+						if(data.status == 1 && actualizar == 0)
 							botones+="<span class='desactivar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
-						else if(data.status == 2 actualizar == 0)
+						else if(data.status == 2 && actualizar == 0)
 							botones+="<span class='activar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
 						if(borrar == 0)
 							return botones+="<span class='eliminar btn btn-xs btn-danger waves-effect' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
@@ -79,7 +87,7 @@ $(document).ready(function(){
 	/* 
 		Funcion que muestra el cuadro2 para mostrar el formulario de registrar.
 	*/
-	function nuevoListaVista(cuadroOcultar, cuadroMostrar){
+	function nuevoModulo(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
 		limpiarFormularioRegistrar();
 		$("#nombre_modulo_vista_registrar").focus();
@@ -91,7 +99,7 @@ $(document).ready(function(){
 		Funcion para limpiar el formulario de registrar.
 	*/
 	function limpiarFormularioRegistrar(){
-		$("#form_lista_vista_registrar")[0].reset();
+		$("#form_modulo_registrar")[0].reset();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -99,8 +107,8 @@ $(document).ready(function(){
 	/*
 		Funcion que realiza el envio del formulario de registro
 	*/
-	function registrar_lista_vista(){
-		enviarFormulario("#form_lista_vista_registrar", 'ListaVista/registrar_lista_vista', '#cuadro2');
+	function registrar_modulo(){
+		enviarFormulario("#form_modulo_registrar", 'Modulos/registrar_modulo', '#cuadro2');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -111,12 +119,9 @@ $(document).ready(function(){
 	function consultar(tbody, table){
 		$(tbody).on("click", "span.consultar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			document.getElementById('nombre_lista_vista_consultar').value=data.nombre_lista_vista;
-			document.getElementById('descripcion_lista_vista_consultar').value=data.descripcion_lista_vista;
-			$('#posicion_lista_vista_consultar').find('option').remove().end().append('<option value="'+data.posicion_lista_vista+'">'+data.posicion_lista_vista+'</option>');
-			document.getElementById('url_lista_vista_consultar').value=data.url_lista_vista;
-			$("#visibilidad_lista_vista_consultar option[value='"+data.visibilidad_lista_vista+"']").attr("selected","selected");
-			$("#id_modulo_vista_consultar option[value='"+data.id_modulo_vista+"']").attr("selected","selected");
+			document.getElementById('nombre_rol_consultar').value=data.nombre_rol;
+			document.getElementById('descripcion_rol_consultar').value=data.descripcion_rol;
+			modalOperaciones(data.id_rol, '#operaciones_consultar');
 			cuadros('#cuadro1', '#cuadro3');
 		});
 	}
@@ -129,17 +134,13 @@ $(document).ready(function(){
 	function editar(tbody, table){
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			contador_listaVista(data.id_modulo_vista, 'actualizar', data.posicion_lista_vista);
-			document.getElementById('nombre_lista_vista_actualizar').value=data.nombre_lista_vista;
-			document.getElementById('descripcion_lista_vista_actualizar').value=data.descripcion_lista_vista;
-			document.getElementById('url_lista_vista_actualizar').value=data.url_lista_vista;
-			$("#id_modulo_vista_actualizar option[value='"+data.id_modulo_vista+"']").attr("selected","selected");
-			$("#visibilidad_lista_vista_actualizar option[value='"+data.visibilidad_lista_vista+"']").attr("selected","selected");
-			document.getElementById('id_modulo_vista_hidden').value=data.id_modulo_vista;
-			document.getElementById('posicion_lista_vista_hidden').value=data.posicion_lista_vista;
-			document.getElementById('id_lista_vista_actualizar').value=data.id_lista_vista;
+			document.getElementById('nombre_modulo_vista_actualizar').value=data.nombre_modulo_vista;
+			document.getElementById('descripcion_modulo_vista_actualizar').value=data.descripcion_modulo_vista;
+			$("#posicion_modulo_vista_actualizar option[value='"+data.posicion_modulo_vista+"']").attr("selected","selected");
+			document.getElementById('inicial').value=data.posicion_modulo_vista;
+			document.getElementById('id_modulo_vista_actualizar').value=data.id_modulo_vista;
 			cuadros('#cuadro1', '#cuadro4');
-			$("#nombre_lista_vista_actualizar").focus();
+			$("#nombre_modulo_vista_actualizar").focus();
 		});
 	}
 /* ------------------------------------------------------------------------------- */
@@ -150,12 +151,8 @@ $(document).ready(function(){
 	*/
 	function eliminar(tbody, table){
 		$(tbody).on("click", "span.eliminar", function(){
-            var data = table.row($(this).parents("tr")).data();
-            var datos = [
-            	data.id_lista_vista,
-            	data.id_modulo_vista
-            ];
-            eliminarConfirmacion('ListaVista/eliminar_lista_vista', datos, "¿Esta seguro de eliminar el registro?");
+            var data=table.row($(this).parents("tr")).data();
+            eliminarConfirmacion('Modulos/eliminar_modulo', data.id_modulo_vista, "¿Esta seguro de eliminar el registro?");
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -164,8 +161,8 @@ $(document).ready(function(){
 	/*
 		Funcion que realiza el envio del formulario de registro
 	*/
-	function actualizar_lista_vista(){
-		enviarFormulario("#form_lista_vista_actualizar", 'ListaVista/actualizar_lista_vista', '#cuadro4');
+	function actualizar_modulo(){
+		enviarFormulario("#form_modulo_actualizar", 'Modulos/actualizar_modulo', '#cuadro4');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -176,7 +173,7 @@ $(document).ready(function(){
 	function desactivar(tbody, table){
 		$(tbody).on("click", "span.desactivar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('ListaVista/status_lista_vista', data.id_lista_vista, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
+            statusConfirmacion('Modulos/status_modulo', data.id_modulo_vista, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -188,43 +185,60 @@ $(document).ready(function(){
 	function activar(tbody, table){
 		$(tbody).on("click", "span.activar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('ListaVista/status_lista_vista', data.id_lista_vista, 1, "¿Esta seguro de activar el registro?", 'activar');
+            statusConfirmacion('Modulos/status_modulo', data.id_modulo_vista, 1, "¿Esta seguro de activar el registro?", 'activar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------------- */
 	/*
-		Funcion que hace un count de las lista vista por modulos registrados y el resultado se 
-		despliega en un select para la seleccion de la posicion de la lista vista.
+		Funcion que hace una busqueda de loas operaciones que hace cada rol pasado
+		por parametro.
 	*/
-	function contador_listaVista(value, select, selected){
-		$('#posicion_lista_vista_registrar').find('option').remove().end().append('<option value="">Seleccione</option>');
-		$('#posicion_lista_vista_actualizar').find('option').remove().end().append('<option value="">Seleccione</option>');
-		if (value != "") {
-			$.ajax({
-		        url:document.getElementById('ruta').value + 'ListaVista/contador_listaVista',
-		        type:'POST',
-		        dataType:'JSON',
-		        data:{'id': value},
-		        error: function () {
-                    contador_listaVista(value, select);
-                },
-		        success: function (respuesta) {
-		            var contador = Object.keys(respuesta).length;
-		            if (select == 'registrar' || (selected == 0 && value != document.getElementById('id_modulo_vista_hidden').value))
-		            	contador++;
-		            for (var i = 1; i <= contador; i++)
-		            	agregarOptions("#posicion_lista_vista_" + select, i, i);
-		            if (select == 'actualizar')
-		            	$("#posicion_lista_vista_actualizar option[value='"+selected+"']").attr("selected","selected");
-		            if (value == document.getElementById('id_modulo_vista_hidden').value)
-		            	$("#posicion_lista_vista_actualizar option[value='"+document.getElementById('posicion_lista_vista_hidden').value+"']").attr("selected","selected");
-		        }
-		    });
-		} else {
-			warning('¡Debe seleccionar un modulo!');
-		}
+	function modalOperaciones(id, div){
+		if (div == "#resultados")
+			$("#modalOperaciones").modal('show');
+		$.ajax({
+	        url:document.getElementById('ruta').value + 'Roles/operaciones_rol',
+	        type:'POST',
+	        dataType:'JSON',
+	        data: {'id' : id},
+	        beforeSend: function() {
+	        	$(div).html(loading());
+	        },
+	        error: function() {
+                var html ='<div class="alert alert-danger" role="alert">';
+		        html += '<span>¡Se ha producido un error!. Presiona <strong style="text-decoration: underline;" onclick="modalOperaciones(' + id + ')">aquí</strong> para intentarlo de nuevo</span>';
+		        html += '</div>';
+		        $(div).html(html);
+	        },
+	        success: function(respuesta){
+	            var table = "<table class='table table-bordered table-striped table-hover'><thead><tr>";
+	            table += "<th>Nombre</th><th>Consultar</th><th>Registrar</th><th>Actualizar</th><th>Eliminar</th></tr></thead><tbody>";
+	            respuesta.forEach(function(operacion, index){
+	            	table += '<tr><th>' + operacion.nombre_lista_vista + '</th>';
+	            	table += '<th>' + validarPermisoListaVista(operacion.consultar) + '</th>';
+	            	table += '<th>' + validarPermisoListaVista(operacion.registrar) + '</th>';
+	            	table += '<th>' + validarPermisoListaVista(operacion.actualizar) + '</th>';
+	            	table += '<th>' + validarPermisoListaVista(operacion.eliminar) + '</th><tr>';
+	            });
+	            table += '</tbody></table>';
+	            $(div).html(table);
+	        }
+	    });
 	}
 /* ------------------------------------------------------------------------------- */
 
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion que valida true o false de las operaciones que hacen por lista vista.
+	*/
+	function validarPermisoListaVista(operacion){
+		var check = '<i class="fa fa-check-square-o col-green" aria-hidden="true"></i>';
+	    var close = '<i class="fa fa-times col-red" aria-hidden="true"></i>';
+	    if(operacion == 0)
+	    	return check;
+	    else if (operacion == 1)
+	    	return close;
+	}
+/* ------------------------------------------------------------------------------- */

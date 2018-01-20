@@ -20,7 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                Gestión de Bancos
 		                            </h2>
 		                            <ul class="header-dropdown m-r--5">
-		                                <button class="btn btn-primary" onclick="nuevoBanco()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
+		                                <button class="btn btn-primary waves-effect" onclick="nuevoBanco()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
 		                            </ul>
 		                        </div>
 		                        <div class="body">
@@ -39,13 +39,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    <tbody></tbody>
 		                                </table>
 		                                <div class="col-md-2">
-		                                	<button class="btn btn-danger" onclick="eliminarMultiple('Bancos/eliminar_multiple_banco')">Eliminar seleccionados</button>
+		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('Bancos/eliminar_multiple_banco')">Eliminar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2">
-		                                	<button class="btn btn-warning" onclick="statusMultiple('Bancos/status_multiple_banco', 1, 'activar')">Activar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Bancos/status_multiple_banco', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2">
-		                                	<button class="btn btn-warning" onclick="statusMultiple('Bancos/status_multiple_banco', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Bancos/status_multiple_banco', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>
@@ -82,8 +82,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                            </div>
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
-		                                        <button type="button" onclick="regresar('#cuadro2')" class="btn btn-primary">Regresar</button>
-		                                        <input type="submit" value="Guardar" class="btn btn-success">
+		                                        <button type="button" onclick="regresar('#cuadro2')" class="btn btn-primary waves-effect">Regresar</button>
+		                                        <input type="submit" value="Guardar" class="btn btn-success waves-effect">
 			                                </div>
 			                            </form>
 			                        </div>
@@ -120,7 +120,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                            </div>
                             			<br>
                             			<div class="col-sm-2 col-sm-offset-5">
-	                                        <button type="button" onclick="regresar('#cuadro3')" class="btn btn-primary">Regresar</button>
+	                                        <button type="button" onclick="regresar('#cuadro3')" class="btn btn-primary waves-effect">Regresar</button>
 		                                </div>
 			                        </div>
 		                        </div>
@@ -158,8 +158,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                            </div>
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
-		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary">Regresar</button>
-		                                        <input type="submit" value="Guardar" class="btn btn-success">
+		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary waves-effect">Regresar</button>
+		                                        <input type="submit" value="Guardar" class="btn btn-success waves-effect">
 			                                </div>
 			                            </form>
 			                        </div>

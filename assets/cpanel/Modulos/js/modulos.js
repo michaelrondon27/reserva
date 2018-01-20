@@ -29,7 +29,15 @@ $(document).ready(function(){
 					}
 				},
 				{"data":"nombre_modulo_vista"},
-				{"data":"descripcion_modulo_vista"},
+				{"data":"descripcion_modulo_vista",
+					render : function(data, type, row) {
+						var descripcion = data;
+						if (data != null)
+							if (data.length > 40)
+								descripcion = data.substr(0,39) + "..."
+						return descripcion;
+					}
+				},
 				{"data":"posicion_modulo_vista"},
 				{"data":"fec_regins",
 					render : function(data, type, row) {
@@ -39,15 +47,15 @@ $(document).ready(function(){
 				{"data":"correo_usuario"},
 				{"data": null,
 					render : function(data, type, row) {
-						var botones="<span class='consultar btn btn-xs btn-info' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
+						var botones="<span class='consultar btn btn-xs btn-info waves-effect' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
 						if(actualizar == 0)
-							botones+="<span class='editar btn btn-xs btn-primary' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
-							if(data.status == 1)
-								botones+="<span class='desactivar btn btn-xs btn-warning' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
-							else if(data.status == 2)
-								botones+="<span class='activar btn btn-xs btn-warning' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
+							botones+="<span class='editar btn btn-xs btn-primary waves-effect' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
+						if(data.status == 1 && actualizar == 0)
+							botones+="<span class='desactivar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
+						else if(data.status == 2 && actualizar == 0)
+							botones+="<span class='activar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
 						if(borrar == 0)
-							return botones+="<span class='eliminar btn btn-xs btn-danger' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
+							return botones+="<span class='eliminar btn btn-xs btn-danger waves-effect' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
 		              	return botones;
 		          	}
 				}

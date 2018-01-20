@@ -1,9 +1,12 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
 <html>
 	<link href="<?=base_url();?>assets/template/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+	<?php if($permiso[0]->consultar==1): ?>
+		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
+	<?php endif ?>
 	<body class="theme-blue">
 		<input type="hidden" id="ruta" value="<?=base_url();?>" name="ruta">
 		<section class="content">
@@ -16,10 +19,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                    <div class="card">
 		                        <div class="header">
 		                            <h2>
-		                                Gestión de Plazas Bancarias
+		                                Gestión de Roles
 		                            </h2>
 		                            <ul class="header-dropdown m-r--5">
-		                                <button class="btn btn-primary waves-effect" onclick="nuevoPlaza()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
+		                                <button class="btn btn-primary ocultar registrar waves-effect" onclick="nuevoRol()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
 		                            </ul>
 		                        </div>
 		                        <div class="body">
@@ -28,23 +31,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    <thead>
 		                                        <tr>
 		                                        	<th style="text-align: center; padding: 0px 10px 0px 5px;"><input type="checkbox" id="checkall" class="chk-col-blue"/><label for="checkall"></label></th>
-		                                            <th>Código</th>
-		                                            <th>Nombre</th>
+		                                            <th>Nombre de Rol</th>
+		                                            <th>Descripción</th>
+		                                            <th>Operaciones</th>
 		                                            <th>Fecha de Registro</th>
 		                                            <th>Registrado Por</th>
-		                                            <th>Acciones</th>
+		                                            <th style="width: 17%;">Acciones</th>
 		                                        </tr>
 		                                    </thead>
 		                                    <tbody></tbody>
 		                                </table>
-		                                <div class="col-md-2">
-		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('plaza/eliminar_multiple_plaza')">Eliminar seleccionados</button>
+		                                <div class="col-md-2 ocultar eliminar">
+		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('Modulos/eliminar_multiple_modulos')">Eliminar seleccionados</button>
 		                                </div>
-		                                <div class="col-md-2">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('plaza/status_multiple_plaza', 1, 'activar')">Activar seleccionados</button>
+		                                <div class="col-md-2 ocultar actualizar">
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Modulos/status_multiple_modulos', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
-		                                <div class="col-md-2">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('plaza/status_multiple_plaza', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                <div class="col-md-2 ocultar actualizar">
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Modulos/status_multiple_modulos', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>
@@ -53,31 +57,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		            </div>
 		        <!-- Cierre del cuadro de la tabla -->
 
-		        <!-- Comienzo del cuadro de registrar plaza bancaria -->
+		        <!-- Comienzo del cuadro de registrar Modulo -->
 					<div class="row clearfix ocultar" id="cuadro2">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Registro de Plaza Bancaria</h2>
+		                            <h2>Registro de Modulo</h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_plaza_registrar" id="form_plaza_registrar" method="post">
-			                            	<div class="col-sm-6">
-			                            		<label for="cod_plaza">Código*</label>
+			                            <form name="form_modulo_registrar" id="form_modulo_registrar" method="post">
+			                            	<div class="col-sm-4">
+			                            		<label for="nombre_modulo_vista_registrar">Nombre*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="cod_plaza" id="cod_plaza_registrar" onkeypress='return solonumeros(event)' maxlength="4" placeholder="P. EJ. 002" required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_modulo_vista" id="nombre_modulo_vista_registrar" placeholder="P. EJ. Modulo" required>
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <div class="col-sm-6">
-				                                <label for="nombre_plaza">Nombre*</label>
+				                            <div class="col-sm-4">
+				                                <label for="descripcion_modulo_vista_registrar">Descripción</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="nombre_plaza" id="nombre_plaza_registrar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
+				                                        <input type="text" class="form-control mayusculas" name="descripcion_modulo_vista" id="descripcion_modulo_vista_registrar" placeholder="P. EJ. Describir funciones">
 				                                    </div>
 				                                </div>
+				                            </div>
+				                            <div class="col-sm-4">
+				                                <label for="posicion_modulo_vista_registrar">Posición*</label>
+		                                        <select id="posicion_modulo_vista_registrar" required class="form-control form-group" name="posicion_modulo_vista">
+		                                        	<option value="">Seleccione</option>
+		                                        </select>
 				                            </div>
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
@@ -90,33 +100,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                    </div>
 		                </div>
 		            </div>
-		        <!-- Cierre del cuadro de registrar plaza bancaria -->
+		        <!-- Cierre del cuadro de registrar Modulo -->
 
-		        <!-- Comienzo del cuadro de consultar plaza bancaria -->
+		        <!-- Comienzo del cuadro de consultar Modulo -->
 					<div class="row clearfix ocultar" id="cuadro3">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Consultar Plaza Bancaria</h2>
+		                            <h2>Consultar Rol</h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
 		                            	<div class="col-sm-6">
-		                            		<label>Código</label>
+		                            		<label for="nombre_rol_consultar">Nombre*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="cod_plaza_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="nombre_rol_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
 			                            <div class="col-sm-6">
-			                                <label>Nombre</label>
+			                                <label for="descripcion_rol_consultar">Descripción</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control mayusculas" id="nombre_plaza_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="descripcion_rol_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
+			                            <div class="col-sm-12" id="operaciones_consultar"></div>
                             			<br>
                             			<div class="col-sm-2 col-sm-offset-5">
 	                                        <button type="button" onclick="regresar('#cuadro3')" class="btn btn-primary waves-effect">Regresar</button>
@@ -126,35 +137,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                    </div>
 		                </div>
 		            </div>
-		        <!-- Cierre del cuadro de consultar plaza bancaria -->
+		        <!-- Cierre del cuadro de consultar Modulo -->
 
-		        <!-- Comienzo del cuadro de editar plaza bancaria -->
+		        <!-- Comienzo del cuadro de editar Modulo -->
 					<div class="row clearfix ocultar" id="cuadro4">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Editar de Plaza Bancaria</h2>
+		                            <h2>Editar de Modulo</h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_plaza_actualizar" id="form_plaza_actualizar" method="post">
-			                            	<div class="col-sm-6">
-			                            		<label for="cod_plaza">Código*</label>
+			                            <form name="form_modulo_actualizar" id="form_modulo_actualizar" method="post">
+			                            	<div class="col-sm-4">
+			                            		<label for="nombre_modulo_vista_actualizar">Nombre*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" id="cod_plaza_editar" disabled>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_modulo_vista" id="nombre_modulo_vista_actualizar" placeholder="P. EJ. Modulo" required>
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <input type="hidden" class="form-control" name="id_plaza" id="id_plaza_editar">
-				                            <div class="col-sm-6">
-				                                <label for="nombre_plaza">Nombre*</label>
+				                            <div class="col-sm-4">
+				                                <label for="descripcion_modulo_vista_actualizar">Descripción</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="nombre_plaza" id="nombre_plaza_editar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
+				                                        <input type="text" class="form-control mayusculas" name="descripcion_modulo_vista" id="descripcion_modulo_vista_actualizar" placeholder="P. EJ. Describir funciones">
 				                                    </div>
 				                                </div>
 				                            </div>
+				                            <div class="col-sm-4">
+				                                <label for="posicion_modulo_vista_actualizar">Posición*</label>
+		                                        <select id="posicion_modulo_vista_actualizar" required class="form-control form-group" name="posicion_modulo_vista">
+		                                        	<option value="">Seleccione</option>
+		                                        </select>
+				                            </div>
+				                            <input type="hidden" name="inicial" id="inicial">
+				                            <input type="hidden" name="id_modulo_vista" id="id_modulo_vista_actualizar">
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
 		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary waves-effect">Regresar</button>
@@ -166,7 +184,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                    </div>
 		                </div>
 		            </div>
-		        <!-- Cierre del cuadro de editar plaza bancaria -->
+		        <!-- Cierre del cuadro de editar Modulo -->
+
+		        <!-- Comienzo deñ Modal de Operaciones -->
+					<div class="modal fade" id="modalOperaciones" tabindex="-1" role="dialog">
+		                <div class="modal-dialog modal-lg" role="document">
+		                    <div class="modal-content">
+		                        <div class="modal-header">
+		                            <h4 class="modal-title" id="largeModalLabel">Operaciones</h4>
+		                        </div>
+		                        <div class="modal-body" id="resultados"></div>
+		                        <div class="modal-footer">
+		                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		        <!-- Cierre del Modal de Operaciones -->
 			</div>
 		</section>
 	</body>
@@ -179,5 +213,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
-    <script src="<?=base_url();?>assets/cpanel/Plaza/js/plaza.js"></script>
+    <?php if($permiso[0]->consultar==0): ?>
+		<script src="<?=base_url();?>assets/cpanel/Roles/js/roles.js"></script>
+		<script>
+			$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
+			$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
+			var registrar = <?php echo $permiso[0]->registrar ?>,
+				actualizar = <?php echo $permiso[0]->actualizar ?>,
+				borrar = <?php echo $permiso[0]->eliminar ?>;
+			if(registrar==0)
+				$(".registrar").removeClass('ocultar');
+			if(actualizar==0)
+				$(".actualizar").removeClass('ocultar');
+			if(borrar==0)
+				$(".eliminar").removeClass('ocultar');
+		</script>
+	<?php endif ?>
 </html>

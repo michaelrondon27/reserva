@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                </div>
 			                            </div>
 			                            <div class="col-sm-4 col-sm-offset-5">
-	                                        <input type="submit" value="Actualizar" class="btn btn-success">
+	                                        <input type="submit" value="Actualizar" class="btn btn-success waves-effect">
 		                                </div>
 		                            </form>
 		                        </div>

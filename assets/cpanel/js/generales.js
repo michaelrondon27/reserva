@@ -491,3 +491,16 @@
         }
     }
 /* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
+        Funcion que muestra un loading.
+    */
+    function loading(){
+        var loading = '<div class="demo-preloader" style="text-align: center;"><div class="preloader pl-size-xl">';
+        loading += '<div class="spinner-layer pl-blue"><div class="circle-clipper left">';
+        loading += '<div class="circle"></div></div><div class="circle-clipper right">';
+        loading += '<div class="circle"></div></div></div></div></div>';
+        return loading;
+    }
+/* ------------------------------------------------------------------------------- */

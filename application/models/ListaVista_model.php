@@ -49,23 +49,13 @@ Class ListaVista_model extends CI_Model
         return $query->result_array();
     }
 
-    public function eliminar_modulo($id)
+    public function eliminar_lista_vista($data)
     {
         try { 
-            if(!$this->db->delete($this->nombre_tabla, array('id_modulo_vista' => $id))){
+            if(!$this->db->delete($this->tabla_lista_vista, array('id_lista_vista' => $data['id_lista_vista']))){
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
-                $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." ORDER BY posicion_modulo_vista DESC");
-                $contador = sizeof($query->result());
-                foreach($query->result() as $row)
-                {
-                    $datos = array(
-                        'posicion_modulo_vista' => $contador,
-                    );
-                    $this->db->where('id_modulo_vista', $row->id_modulo_vista);
-                    $this->db->update($this->nombre_tabla, $datos);
-                    $contador--;
-                }
+                $this->ordernar_lista_vista($data['id_modulo_vista']);
                 echo json_encode("<span>El modulo se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
             }
         } catch(Exception $e){ 
@@ -85,29 +75,19 @@ Class ListaVista_model extends CI_Model
         $this->db->update('auditoria', $datos);
     }
 
-    public function eliminar_multiple_modulos($id)
+    public function eliminar_multiple_lista_vista($id)
     {
         $eliminados=0;
         $noEliminados=0;
-        foreach($id as $modulo)
+        foreach($id as $listaVista)
         {
-            if(!$this->db->delete($this->nombre_tabla, array('id_modulo_vista' => $modulo))){
+            if(!$this->db->delete($this->tabla_lista_vista, array('id_lista_vista' => $listaVista))){
                 $eliminados++;
             }else{
                 $noEliminados++;
             }
         }
-        $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." ORDER BY posicion_modulo_vista DESC");
-        $contador = sizeof($query->result());
-        foreach($query->result() as $row)
-        {
-            $datos = array(
-                'posicion_modulo_vista' => $contador,
-            );
-            $this->db->where('id_modulo_vista', $row->id_modulo_vista);
-            $this->db->update($this->nombre_tabla, $datos);
-            $contador--;
-        }
+        $this->ordernar_todas_listas_vistas();
         echo json_encode("<span>Registros eliminados: ".$eliminados."</span><br><span>Registros no eliminados (porque tienen dependencia en otras tablas): ".$noEliminados);
     }
 
@@ -143,7 +123,7 @@ Class ListaVista_model extends CI_Model
     public function ordenar_lista_vista_resta($sql)
     {
         $query = $this->db->query("SELECT * FROM ".$this->tabla_lista_vista." WHERE ".$sql);
-        if(sizeof($query->result()) > 0){
+        if (sizeof($query->result()) > 0) {
             foreach ($query->result() as $row)
             {
                 $datos=array(
@@ -158,7 +138,7 @@ Class ListaVista_model extends CI_Model
     public function ordenar_lista_vista_suma($sql)
     {
         $query = $this->db->query("SELECT * FROM ".$this->tabla_lista_vista." WHERE ".$sql);
-        if(sizeof($query->result()) > 0){
+        if (sizeof($query->result()) > 0) {
             foreach ($query->result() as $row)
             {
                 $datos=array(
@@ -173,7 +153,7 @@ Class ListaVista_model extends CI_Model
     public function posicionar_lista_vista_nueva($posicionar)
     {
         $query = $this->db->query("SELECT * FROM ".$this->tabla_lista_vista." WHERE posicion_lista_vista >= ".$posicionar['posicion']." AND id_modulo_vista = ".$posicionar['modulo']);
-        if(sizeof($query->result()) > 0){
+        if (sizeof($query->result()) > 0) {
             foreach ($query->result() as $row)
             {
                 $datos=array(
@@ -197,6 +177,27 @@ Class ListaVista_model extends CI_Model
             $this->db->where('id_lista_vista', $row->id_lista_vista);
             $this->db->update($this->tabla_lista_vista, $datos);
             $contador--;
+        }
+    }
+
+    public function ordernar_todas_listas_vistas()
+    {
+        $modulos = $this->db->query("SELECT id_modulo_vista FROM ".$this->tabla_modulo);
+        if (sizeof($modulos->result()) > 0) {
+            foreach ($modulos->result() as $modulo) {
+                $listasVistas = $this->db->query("SELECT id_lista_vista FROM ".$this->tabla_lista_vista." WHERE id_modulo_vista = ".$modulo->id_modulo_vista." ORDER BY posicion_lista_vista DESC");
+                $contador = sizeof($listasVistas->result());
+                if ($contador > 0) {
+                    foreach ($listasVistas->result() as $listaVista) {
+                        $datos = array(
+                            'posicion_lista_vista' => $contador,
+                        );
+                        $this->db->where('id_lista_vista', $listaVista->id_lista_vista);
+                        $this->db->update($this->tabla_lista_vista, $datos);
+                        $contador--;
+                    }
+                }
+            }
         }
     }
 
