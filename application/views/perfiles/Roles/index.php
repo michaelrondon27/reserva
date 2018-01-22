@@ -42,13 +42,13 @@
 		                                    <tbody></tbody>
 		                                </table>
 		                                <div class="col-md-2 ocultar eliminar">
-		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('Modulos/eliminar_multiple_modulos')">Eliminar seleccionados</button>
+		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('Roles/eliminar_multiple_roles')">Eliminar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 ocultar actualizar">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Modulos/status_multiple_modulos', 1, 'activar')">Activar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Roles/status_multiple_roles', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 ocultar actualizar">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Modulos/status_multiple_modulos', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Roles/status_multiple_roles', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>
@@ -71,7 +71,7 @@
 			                            		<label for="nombre_rol_registrar">Nombre de Rol*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="nombre_rol" id="nombre_rol_registrar" placeholder="P. EJ. Modulo" required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_rol" id="nombre_rol_registrar" placeholder="P. EJ. ROL" required>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -167,35 +167,58 @@
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Editar de Modulo</h2>
+		                            <h2>Editar de Rol</h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_modulo_actualizar" id="form_modulo_actualizar" method="post">
-			                            	<div class="col-sm-4">
-			                            		<label for="nombre_modulo_vista_actualizar">Nombre*</label>
+			                            <form name="form_rol_actualizar" id="form_rol_actualizar" method="post">
+			                            	<div class="col-sm-6">
+			                            		<label for="nombre_rol_actualizar">Nombre de Rol*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="nombre_modulo_vista" id="nombre_modulo_vista_actualizar" placeholder="P. EJ. Modulo" required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_rol" id="nombre_rol_actualizar" placeholder="P. EJ. Rol" required>
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <div class="col-sm-4">
-				                                <label for="descripcion_modulo_vista_actualizar">Descripción</label>
+				                            <div class="col-sm-6">
+				                                <label for="descripcion_rol_actualizar">Descripción</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="descripcion_modulo_vista" id="descripcion_modulo_vista_actualizar" placeholder="P. EJ. Describir funciones">
+				                                        <input type="text" class="form-control mayusculas" name="descripcion_rol_actualizar" id="descripcion_rol_actualizar" placeholder="P. EJ. Describir funciones">
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <div class="col-sm-4">
-				                                <label for="posicion_modulo_vista_actualizar">Posición*</label>
-		                                        <select id="posicion_modulo_vista_actualizar" required class="form-control form-group" name="posicion_modulo_vista">
-		                                        	<option value="">Seleccione</option>
-		                                        </select>
+				                            <input type="hidden" name="id_rol" id="id_rol_actualizar">
+				                            <div id="esperarLoading" class="col-sm-12"></div>
+				                            <div class="col-sm-12 ocultar" id="listarRoles">
+				                            	<div class="col-sm-4">
+					                                <label for="lista_vista_actualizar">Lista Vista</label>
+			                                        <select id="lista_vista_actualizar" class="form-control form-group">
+			                                        	<option value="">Seleccione</option>
+			                                        	<?php foreach($listasVistas as $listaVista): ?>
+			                                        		<option value="<?php echo $listaVista->id_lista_vista ?>"><?php echo $listaVista->nombre_lista_vista?></option>
+			                                        	<?php endforeach ?>
+			                                        </select>
+					                            </div>
+					                            <div class="col-sm-2" style="padding-top: 25px;">
+					                            	<button type="button" class="btn btn-primary waves-effect" onclick="agregarListaVista('#lista_vista_actualizar', '#tableActualizar')">Agregar</button>
+					                            </div>
+					                            <div class="col-sm-12">
+					                            	<table class="table table-bordered table-striped table-hover" id="tableActualizar">
+					                            		<thead>
+					                            			<tr>
+					                            				<th>Lista Vista</th>
+					                            				<th>Consultar</th>
+					                            				<th>Registrar</th>
+					                            				<th>Actualizar</th>
+					                            				<th>Eliminar</th>
+					                            				<th>&nbsp;</th>
+					                            			</tr>
+					                            		</thead>
+					                            		<tbody></tbody>
+					                            	</table>
+					                            </div>
 				                            </div>
-				                            <input type="hidden" name="inicial" id="inicial">
-				                            <input type="hidden" name="id_modulo_vista" id="id_modulo_vista_actualizar">
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
 		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary waves-effect">Regresar</button>

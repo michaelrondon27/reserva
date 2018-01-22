@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	listar();
 	registrar_rol();
-	actualizar_modulo();
+	actualizar_rol();
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -22,9 +22,12 @@ $(document).ready(function(){
 				"dataSrc":""
 			},
 			"columns":[
-				{"data": "id_rol",
+				{"data": null,
 					render : function(data, type, row) {
-						return "<input type='checkbox' class='checkitem chk-col-blue' id='item"+data+"' value='"+data+"'><label for='item"+data+"'></label>"
+						var checkbox = "";
+						if (data.editable_rol == 0)
+							checkbox = "<input type='checkbox' class='checkitem chk-col-blue' id='item"+data.id_rol+"' value='"+data.id_rol+"'><label for='item"+data.id_rol+"'></label>"
+						return checkbox;
 					}
 				},
 				{"data":"nombre_rol"},
@@ -32,20 +35,23 @@ $(document).ready(function(){
 					render : function(data, type, row) {
 						var descripcion = data;
 						if (data != null)
-							if (data.length > 30)
-								descripcion = data.substr(0,29) + "..."
+							if (data.length > 20)
+								descripcion = data.substr(0,19) + "..."
 						return descripcion;
 					}
 				},
 				{"data":null,
 					render : function(data, type, row) {
-						var nombre = data.nombre_lista_vista;
-						if (data.nombre_lista_vista != null)
-							if (data.nombre_lista_vista.length > 25)
-								nombre = data.nombre_lista_vista.substr(0,24) + "..."
-							if(consultar == 0)
-								nombre += " <span onclick='modalOperaciones(" + data.id_rol + ", \"" + "#resultados" + "\")' class='badge bg-blue waves-effect' style='cursor: pointer;' data-toggle='tooltip' title='Ver más.'><i class='fa fa-plus'></i></span>";
-						return nombre
+						var nombre = "";
+						if (data.nombre_lista_vista[0].nombre_lista_vista != null){
+							if (data.nombre_lista_vista[0].nombre_lista_vista.length > 20){
+								nombre = data.nombre_lista_vista[0].nombre_lista_vista.substr(0,19) + "...";
+							}
+							if(consultar == 0){
+								nombre += " <span onclick='modalOperaciones(" + data.id_rol + ", \"" + "#resultados" + "\")' class='badge bg-blue waves-effect' style='cursor: pointer;' data-toggle='tooltip' title='Ver más.'><i class='fa fa-plus' style='margin-top:2px'></i></span>";
+							}
+						}
+						return nombre;
 					}
 				},
 				{"data":"fec_regins",
@@ -59,13 +65,13 @@ $(document).ready(function(){
 						var botones = "";
 						if(consultar == 0)
 							botones += "<span class='consultar btn btn-xs btn-info waves-effect' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
-						if(actualizar == 0)
+						if(actualizar == 0 && data.editable_rol == 0)
 							botones += "<span class='editar btn btn-xs btn-primary waves-effect' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
-						if(data.status == 1 && actualizar == 0)
+						if(data.status == 1 && actualizar == 0 && data.editable_rol == 0)
 							botones += "<span class='desactivar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
-						else if(data.status == 2 && actualizar == 0)
+						else if(data.status == 2 && actualizar == 0 && data.editable_rol == 0)
 							botones+="<span class='activar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
-						if(borrar == 0)
+						if(borrar == 0 && data.editable_rol == 0)
 							return botones += "<span class='eliminar btn btn-xs btn-danger waves-effect' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
 		              	return botones;
 		          	}
@@ -127,8 +133,6 @@ $(document).ready(function(){
             	lista_vista.push(verificarCheckbox('eliminar' + id));
 				objeto.push(lista_vista);
 			});
-            console.log(nombre);
-            console.log(descripcion);
             $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
             $.ajax({
                 url: document.getElementById('ruta').value + 'Roles/registrar_rol',
@@ -181,15 +185,15 @@ $(document).ready(function(){
 		Funcion que muestra el cuadro4 para editar el banco.
 	*/
 	function editar(tbody, table){
+		$("#tableActualizar tbody tr").remove(); 
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			document.getElementById('nombre_modulo_vista_actualizar').value=data.nombre_modulo_vista;
-			document.getElementById('descripcion_modulo_vista_actualizar').value=data.descripcion_modulo_vista;
-			$("#posicion_modulo_vista_actualizar option[value='"+data.posicion_modulo_vista+"']").attr("selected","selected");
-			document.getElementById('inicial').value=data.posicion_modulo_vista;
-			document.getElementById('id_modulo_vista_actualizar').value=data.id_modulo_vista;
+			document.getElementById('nombre_rol_actualizar').value=data.nombre_rol;
+			document.getElementById('descripcion_rol_actualizar').value=data.descripcion_rol;
+			document.getElementById('id_rol_actualizar').value=data.id_rol;
+			listarOperacionesEditar(data.id_rol);
 			cuadros('#cuadro1', '#cuadro4');
-			$("#nombre_modulo_vista_actualizar").focus();
+			$("#nombre_rol_actualizar").focus();
 		});
 	}
 /* ------------------------------------------------------------------------------- */
@@ -201,7 +205,7 @@ $(document).ready(function(){
 	function eliminar(tbody, table){
 		$(tbody).on("click", "span.eliminar", function(){
             var data=table.row($(this).parents("tr")).data();
-            eliminarConfirmacion('Modulos/eliminar_modulo', data.id_modulo_vista, "¿Esta seguro de eliminar el registro?");
+            eliminarConfirmacion('Roles/eliminar_rol', data.id_rol, "¿Esta seguro de eliminar el registro?");
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -210,8 +214,53 @@ $(document).ready(function(){
 	/*
 		Funcion que realiza el envio del formulario de registro
 	*/
-	function actualizar_modulo(){
-		enviarFormulario("#form_modulo_actualizar", 'Modulos/actualizar_modulo', '#cuadro4');
+	function actualizar_rol(){
+		$("#form_rol_actualizar").submit(function(e){
+            e.preventDefault(); //previene el comportamiento por defecto del formulario al darle click al input submit
+            var id = $("#id_rol_actualizar").val();
+            var nombre = $("#nombre_rol_actualizar").val();
+            var descripcion = $("#descripcion_rol_actualizar").val();
+            var objeto = [];
+            $("#tableActualizar tbody tr").each(function() {
+            	var lista_vista = [];
+            	var id = $(this).find(".id_lista_vista").val();
+            	lista_vista.push(id);
+            	lista_vista.push(verificarCheckbox('consultar' + id));
+            	lista_vista.push(verificarCheckbox('registrar' + id));
+            	lista_vista.push(verificarCheckbox('actualizar' + id));
+            	lista_vista.push(verificarCheckbox('eliminar' + id));
+				objeto.push(lista_vista);
+			});
+            $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
+            $.ajax({
+                url: document.getElementById('ruta').value + 'Roles/actualizar_rol',
+                type: 'POST',
+                dataType:'JSON',
+                data:{
+                	'id_rol' : id,
+                	'nombre_rol' : nombre,
+                	'descripcion_rol' : descripcion,
+                	'permisos' : objeto
+                },
+                cache:false,
+                beforeSend: function(){
+                    mensajes('info', '<span>Guardando datos, espere por favor... <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>');
+                },
+                error: function (repuesta) {
+                    $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
+                    var errores=repuesta.responseText;
+                    if(errores!="")
+                        mensajes('danger', errores);
+                    else
+                        mensajes('danger', "<span>Ha ocurrido un error, por favor intentelo de nuevo.</span>");        
+                },
+                success: function(respuesta){
+                    $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
+                    mensajes('success', respuesta);
+                    listar('#cuadro4');
+                }
+            });
+        });
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -222,7 +271,7 @@ $(document).ready(function(){
 	function desactivar(tbody, table){
 		$(tbody).on("click", "span.desactivar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Modulos/status_modulo', data.id_modulo_vista, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
+            statusConfirmacion('Roles/status_rol', data.id_rol, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -234,7 +283,7 @@ $(document).ready(function(){
 	function activar(tbody, table){
 		$(tbody).on("click", "span.activar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Modulos/status_modulo', data.id_modulo_vista, 1, "¿Esta seguro de activar el registro?", 'activar');
+            statusConfirmacion('Roles/status_rol', data.id_rol, 1, "¿Esta seguro de activar el registro?", 'activar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -301,17 +350,17 @@ $(document).ready(function(){
 		var text = $(select + " option:selected").html();
 		var validado = false;
 		if (value != "") {
-			$("#tableRegistrar tbody tr").each(function() {
+			$(tabla + " tbody tr").each(function() {
 			  	if (value == $(this).find(".id_lista_vista").val())
 			  		validado = true;
 			});
 			if (!validado) {
 				var html = "<tr id='r" + value + "'><td>" + text + " <input type='hidden' class='id_lista_vista' name='id_lista_vista' value='" + value + "'></td>";
-				html += "<td>" + agregarCheckbox(value, 'consultar') + "</td>";
-				html += "<td>" + agregarCheckbox(value, 'registrar') + "</td>";
-				html += "<td>" + agregarCheckbox(value, 'actualizar') + "</td>";
-				html += "<td>" + agregarCheckbox(value, 'eliminar') + "</td>";
-				html += "<td><button type='button' class='btn btn-danger waves-effect' onclick='eliminarListaVista(\"" + "#r" + value + "\")'>Quitar</button></td></tr>";
+				html += "<td>" + agregarCheckbox(value, 'consultar', 1) + "</td>";
+				html += "<td>" + agregarCheckbox(value, 'registrar', 1) + "</td>";
+				html += "<td>" + agregarCheckbox(value, 'actualizar', 1) + "</td>";
+				html += "<td>" + agregarCheckbox(value, 'eliminar', 1) + "</td>";
+				html += "<td><button type='button' class='btn btn-danger waves-effect' onclick='eliminarListaVista(\"" + "#r" + value + "\")'>Eliminar</button></td></tr>";
 				$(tabla + " tbody").append(html);
 			} else {
 				warning('¡La opción selecciona ya se encuentra agregada!');
@@ -328,8 +377,11 @@ $(document).ready(function(){
 	/*
 		Funcion con codigo para generar un checkbox
 	*/
-	function agregarCheckbox(id, campo){
-		return "<input type='checkbox' name='" + campo + "' class='checkitem chk-col-blue' id='" + campo + id + "' value='0'><label for='" + campo + id + "'></label>";
+	function agregarCheckbox(id, campo, checked){
+		if(checked == 1)
+			return "<input type='checkbox' name='" + campo + "' class='checkitem chk-col-blue' id='" + campo + id + "' value='0'><label for='" + campo + id + "'></label>";
+		else if (checked == 0)
+			return "<input type='checkbox' name='" + campo + "' class='checkitem chk-col-blue' id='" + campo + id + "' value='0' checked><label for='" + campo + id + "'></label>";
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -351,5 +403,91 @@ $(document).ready(function(){
 			return 0
 		else
 			return 1
+	}
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion que hace una busqueda de las operaciones que tiene el rol por cada
+		lista vista y mostrar los resultados para su edicion
+	*/
+	function listarOperacionesEditar(id){
+		$.ajax({
+	        url:document.getElementById('ruta').value + 'Roles/operaciones_rol',
+	        type:'POST',
+	        dataType:'JSON',
+	        data: {'id' : id},
+	        beforeSend: function() {
+	        	$("#esperarLoading").html(loading());
+	        },
+	        error: function() {
+                var html ='<div class="alert alert-danger" role="alert">';
+		        html += '<span>¡Se ha producido un error!. Presiona <strong style="text-decoration: underline;" onclick="listarOperacionesEditar(' + id + ')">aquí</strong> para intentarlo de nuevo</span>';
+		        html += '</div>';
+		        $("#esperarLoading").html(html);
+	        },
+	        success: function(respuesta){
+	        	$("#esperarLoading").html('');
+	        	$("#listarRoles").removeClass('ocultar');
+	        	respuesta.forEach(function(operacion, index){
+	        		var html = "<tr id='r" + operacion.id_lista_vista + "'><td>" + operacion.nombre_lista_vista + " <input type='hidden' class='id_lista_vista' name='id_lista_vista' value='" + operacion.id_lista_vista + "'></td>";
+					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'consultar', operacion.consultar) + "</td>";
+					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'registrar', operacion.registrar) + "</td>";
+					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'actualizar', operacion.actualizar) + "</td>";
+					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'eliminar', operacion.eliminar) + "</td>";
+					html += "<td><button type='button' class='btn btn-danger waves-effect' onclick='eliminarRolOperacion(" + operacion.id_rol_operaciones + ", " + id + ")'>Eliminar</button></td></tr>";
+					$("#tableActualizar tbody").append(html);
+	        	});
+	        }
+	    });
+	}
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion que hace una busqueda de las operaciones que tiene el rol por cada
+		lista vista y mostrar los resultados para su edicion
+	*/
+	function eliminarRolOperacion(id_rol_operacion, id_rol){
+		swal({
+            title: '¿Esta seguro de eliminar este registro?',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, Eliminar!",
+            cancelButtonText: "No, Cancelar!",
+            closeOnConfirm: true,
+            closeOnCancel: false
+        },
+        function(isConfirm){
+            if (isConfirm) {
+                swal.close();
+                $("#listarRoles").addClass('ocultar');
+                $.ajax({
+                    url: document.getElementById('ruta').value + "Roles/eliminar_rol_operacion",
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data:{
+                        'id' : id_rol_operacion,
+                    },
+                    beforeSend: function(){
+                        $("#esperarLoading").html(loading());
+                    },
+                    error: function (repuesta) {
+                        var errores=repuesta.responseText;
+                        mensajes('danger', errores);
+                        $("#esperarLoading").html('');
+                        $("#listarRoles").removeClass('ocultar');
+                    },
+                    success: function(respuesta){
+                        mensajes('success', respuesta);
+                        $("#tableActualizar tbody tr").remove(); 
+                        listarOperacionesEditar(id_rol);
+                    }
+                });
+            } else {
+                swal("Cancelado", "No se ha eliminado el registro", "error");
+            }
+        });
 	}
 /* ------------------------------------------------------------------------------- */

@@ -81,7 +81,7 @@ Class ListaVista_model extends CI_Model
         $noEliminados=0;
         foreach($id as $listaVista)
         {
-            if(!$this->db->delete($this->tabla_lista_vista, array('id_lista_vista' => $listaVista))){
+            if($this->db->delete($this->tabla_lista_vista, array('id_lista_vista' => $listaVista))){
                 $eliminados++;
             }else{
                 $noEliminados++;

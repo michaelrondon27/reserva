@@ -19,25 +19,25 @@ Class Usuarios_model extends CI_Model
 
     public function nacionalidades()
     {
-        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='NACIONALIDAD' AND a.status=1 AND tabla='".$this->tabla_lval."'");
+        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='NACIONALIDAD' AND a.status=1 AND a.tabla='".$this->tabla_lval."'");
         return $query->result();
     }
 
     public function estados_civiles()
     {
-        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='EDOCIVIL' AND a.status=1 AND tabla='".$this->tabla_lval."'");
+        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='EDOCIVIL' AND a.status=1 AND a.tabla='".$this->tabla_lval."'");
         return $query->result();
     }
 
     public function sexos()
     {
-        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='SEXO' AND a.status=1 AND tabla='".$this->tabla_lval."'");
+        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='SEXO' AND a.status=1 AND a.tabla='".$this->tabla_lval."'");
         return $query->result();
     }
 
     public function roles()
     {
-        $query = $this->db->query("SELECT * FROM ".$this->tabla_roles);
+        $query = $this->db->query("SELECT * FROM ".$this->tabla_roles." r INNER JOIN auditoria a ON r.id_rol=a.cod_reg WHERE a.tabla='".$this->tabla_roles."'");
         return $query->result();
     }
 
@@ -132,10 +132,10 @@ Class Usuarios_model extends CI_Model
         $noEliminados=0;
         foreach($id as $usuario)
         {
-            if(!$this->db->delete($this->tabla_usuario, array('id_usuario' => $usuario))){
-                $noEliminados++;
-            }else{
+            if($this->db->delete($this->tabla_usuario, array('id_usuario' => $usuario))){
                 $eliminados++;
+            }else{
+                $noEliminados++;
             }
         }
         echo json_encode("<span>Registros eliminados: ".$eliminados."</span><br><span>Registros no eliminados (porque tienen dependencia en otras tablas): ".$noEliminados);

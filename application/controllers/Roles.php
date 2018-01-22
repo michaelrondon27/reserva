@@ -47,40 +47,17 @@ class Roles extends CI_Controller
     }
   }
 
-  public function actualizar_modulo()
+  public function actualizar_rol()
   {
-    $this->reglas_modulos();
-    $this->mensajes_reglas_modulos();
+    $this->reglas_roles();
+    $this->mensajes_reglas_roles();
     if($this->form_validation->run() == true){
-      $modulo_verificado=$this->Modulos_model->verificar_modulo(strtoupper($this->input->post('nombre_modulo_vista'))); //busca si el nombre del banco esta registrado en la base de datos
-      $posicionar = array(
-        'inicial' => $this->input->post('inicial'),
-        'tipo' => 'update',
-        'final' => $this->input->post('posicion_modulo_vista'),
+      $rol = array(
+        'nombre_rol' => strtoupper($this->input->post('nombre_rol')),
+        'descripcion_rol' => strtoupper($this->input->post('descripcion_rol')),
       );
-      $data=array(
-        'nombre_modulo_vista' => strtoupper($this->input->post('nombre_modulo_vista')),
-        'descripcion_modulo_vista' => $this->input->post('descripcion_modulo_vista'),
-        'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
-      );
-      if(count($modulo_verificado)>0){
-        // si es mayor a cero, se verifica si el id recibido del formulario es igual al id que se verifico
-        if($modulo_verificado[0]['id_modulo_vista']==$this->input->post('id_modulo_vista')){
-          //si son iguales, quiere decir que es el mismo registro
-          $this->Modulos_model->posicionar_modulos($posicionar);
-          $this->Modulos_model->actualizar_modulo($this->input->post('id_modulo_vista'), $data);
-          echo json_encode("<span>El modulo se ha editado exitosamente!</span>"); // envio de mensaje exitoso
-        }else{
-          //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro
-          echo "<span>El nombre del modulo ingresado ya se encuentra en uso!</span>";
-        }
-      }else{
-        $this->Modulos_model->posicionar_modulos($posicionar);
-        // si conteo del array es igual a 0, se actualiza el registro
-        $this->Modulos_model->actualizar_modulo($this->input->post('id_modulo_vista'), $data);
-        echo json_encode("<span>El modulo se ha editado exitosamente!</span>"); // envio de mensaje exitoso
-      }
-      
+      $this->Roles_model->actualizar_rol($this->input->post('id_rol'), $rol, $this->input->post('permisos'));
+      echo json_encode("<span>El Rol se ha editado exitosamente!</span>"); // envio de mensaje exitoso
     }else{
       // enviar los errores
       echo validation_errors();
@@ -96,25 +73,25 @@ class Roles extends CI_Controller
     $this->form_validation->set_message('required', 'El campo %s es obligatorio');
   }
 
-  public function eliminar_modulo()
+  public function eliminar_rol()
   {
-    $this->Modulos_model->eliminar_modulo($this->input->post('id'));
+    $this->Roles_model->eliminar_rol($this->input->post('id'));
   }
 
-  public function status_modulo()
+  public function status_rol()
   {
-    $this->Modulos_model->status_modulo($this->input->post('id'), $this->input->post('status'));
+    $this->Roles_model->status_rol($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 
-  public function eliminar_multiple_modulos()
+  public function eliminar_multiple_roles()
   {
-    $this->Modulos_model->eliminar_multiple_modulos($this->input->post('id'));
+    $this->Roles_model->eliminar_multiple_roles($this->input->post('id'));
   }
 
-  public function status_multiple_modulos()
+  public function status_multiple_roles()
   {
-    $this->Modulos_model->status_multiple_modulos($this->input->post('id'), $this->input->post('status'));
+    $this->Roles_model->status_multiple_roles($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 
@@ -124,4 +101,9 @@ class Roles extends CI_Controller
     echo json_encode($operaciones);
   }
 
-}//Fin class Bancos
+  public function eliminar_rol_operacion()
+  {
+    $this->Roles_model->eliminar_rol_operacion($this->input->post('id'));
+  }
+
+}

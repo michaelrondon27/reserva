@@ -84,7 +84,7 @@ Class Modulos_model extends CI_Model
         $noEliminados=0;
         foreach($id as $modulo)
         {
-            if(!$this->db->delete($this->nombre_tabla, array('id_modulo_vista' => $modulo))){
+            if($this->db->delete($this->nombre_tabla, array('id_modulo_vista' => $modulo))){
                 $eliminados++;
             }else{
                 $noEliminados++;
