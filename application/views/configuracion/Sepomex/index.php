@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
 <html>
+	<?php if($permiso[0]->consultar==1 && $permiso[0]->actualizar==1): ?>
+		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
+	<?php endif ?>
 	<body class="theme-blue">
 		<input type="hidden" id="ruta" value="<?=base_url();?>" name="ruta">
 		<section class="content">
@@ -48,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                    </div>
 			                                </div>
 			                            </div>
-			                            <div class="col-sm-4 col-sm-offset-5">
+			                            <div class="col-sm-4 col-sm-offset-5 actualizar ocultar">
 	                                        <input type="submit" value="Actualizar" class="btn btn-success waves-effect">
 		                                </div>
 		                            </form>
@@ -61,4 +64,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</section>
 	</body>
     <script src="<?=base_url();?>assets/cpanel/Sepomex/js/sepomex.js"></script>
+    <script>
+		$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
+		$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
+		var actualizar = <?php echo $permiso[0]->actualizar ?>;
+		if(actualizar==0)
+			$(".actualizar").removeClass('ocultar');
+	</script>
 </html>

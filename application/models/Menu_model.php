@@ -13,7 +13,7 @@ Class Menu_model extends CI_Model
 
     public function vistas($idUsuario)
     {
-        $query = $this->db->query("SELECT lv.* FROM usuario u INNER JOIN rol r ON u.id_rol=r.id_rol INNER JOIN rol_operaciones ro ON r.id_rol=ro.id_rol INNER JOIN lista_vista lv ON ro.id_lista_vista=lv.id_lista_vista WHERE u.id_usuario=$idUsuario AND lv.visibilidad_lista_vista=0 AND ro.consultar=0 ORDER BY lv.posicion_lista_vista ASC");
+        $query = $this->db->query("SELECT lv.* FROM usuario u INNER JOIN rol r ON u.id_rol=r.id_rol INNER JOIN rol_operaciones ro ON r.id_rol=ro.id_rol INNER JOIN lista_vista lv ON ro.id_lista_vista=lv.id_lista_vista WHERE u.id_usuario=$idUsuario AND lv.visibilidad_lista_vista=0 AND (ro.consultar=0 OR ro.registrar=0 OR ro.actualizar=0 OR eliminar=0) ORDER BY lv.posicion_lista_vista ASC");
         return $query->result();
     }
 

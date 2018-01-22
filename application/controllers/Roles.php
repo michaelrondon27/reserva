@@ -13,12 +13,13 @@ class Roles extends CI_Controller
 
   public function index()
   {
-    $permiso['permiso'] = $this->Menu_model->verificar_permiso_vista('roles', 1);
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('roles', 1);
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas(1);
+    $datos['listasVistas'] = $this->Roles_model->listas_vistas();
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
-    $this->load->view('perfiles/Roles/index', $permiso);
+    $this->load->view('perfiles/Roles/index', $datos);
     $this->load->view('cpanel/footer');
   }
 
@@ -28,29 +29,18 @@ class Roles extends CI_Controller
     echo json_encode($listado);
   }
 
-  public function contar_modulos()
+  public function registrar_rol()
   {
-    $contador = $this->Menu_model->contar_modulos();
-    echo json_encode($contador);
-  }
-
-  public function registrar_modulo()
-  {
-    $this->reglas_modulos('insert');
-    $this->mensajes_reglas_modulos();
+    $this->reglas_roles();
+    $this->mensajes_reglas_roles();
     if($this->form_validation->run() == true){
-      $posicionar = array(
-        'posicion' => $this->input->post('posicion_modulo_vista'),
-        'tipo' => 'insert',
-      );
-      $this->Modulos_model->posicionar_modulos($posicionar);
       $data=array(
-        'nombre_modulo_vista' => strtoupper($this->input->post('nombre_modulo_vista')),
-        'descripcion_modulo_vista' => $this->input->post('descripcion_modulo_vista'),
-        'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
+        'nombre_rol' => strtoupper($this->input->post('nombre_rol')),
+        'descripcion_rol' => strtoupper($this->input->post('descripcion_rol')),
+        'editable_rol' => 0,
       );
-      $this->Modulos_model->registrar_modulo($data);
-      echo json_encode("<span>El modulo se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
+      $this->Roles_model->registrar_rol($data, $this->input->post('permisos'));
+      echo json_encode("<span>El Rol se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
     }else{
       // enviar los errores
       echo validation_errors();
@@ -59,7 +49,7 @@ class Roles extends CI_Controller
 
   public function actualizar_modulo()
   {
-    $this->reglas_modulos('update');
+    $this->reglas_modulos();
     $this->mensajes_reglas_modulos();
     if($this->form_validation->run() == true){
       $modulo_verificado=$this->Modulos_model->verificar_modulo(strtoupper($this->input->post('nombre_modulo_vista'))); //busca si el nombre del banco esta registrado en la base de datos
@@ -97,20 +87,13 @@ class Roles extends CI_Controller
     }
   }
 
-  public function reglas_modulos($method)
+  public function reglas_roles()
   {
-    if($method == "insert"){
-      $this->form_validation->set_rules('nombre_modulo_vista','Nombre de Modulo','required|is_unique[modulo_vista.nombre_modulo_vista]');
-      $this->form_validation->set_rules('posicion_modulo_vista','Posición','required');
-    }else if($method == "update"){
-      $this->form_validation->set_rules('nombre_modulo_vista','Nombre de Modulo','required');
-      $this->form_validation->set_rules('posicion_modulo_vista','Posición','required');
-    }
+    $this->form_validation->set_rules('nombre_rol','Nombre de Rol','required');
   }
 
-  public function mensajes_reglas_modulos(){
+  public function mensajes_reglas_roles(){
     $this->form_validation->set_message('required', 'El campo %s es obligatorio');
-    $this->form_validation->set_message('is_unique', 'El valor ingresado en el campo %s ya se encuentra en uso');
   }
 
   public function eliminar_modulo()

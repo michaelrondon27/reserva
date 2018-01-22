@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 	<link href="<?=base_url();?>assets/template/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
-	<?php if($permiso[0]->consultar==1): ?>
+	<?php if($permiso[0]->consultar==1 && $permiso[0]->registrar==1 && $permiso[0]->actualizar==1 && $permiso[0]->eliminar==1): ?>
 		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
 	<?php endif ?>
 	<body class="theme-blue">
@@ -202,20 +202,19 @@
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
-    <?php if($permiso[0]->consultar==0): ?>
-		<script src="<?=base_url();?>assets/cpanel/Modulos/js/modulos.js"></script>
-		<script>
-			$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
-			$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
-			var registrar = <?php echo $permiso[0]->registrar ?>,
-				actualizar = <?php echo $permiso[0]->actualizar ?>,
-				borrar = <?php echo $permiso[0]->eliminar ?>;
-			if(registrar==0)
-				$(".registrar").removeClass('ocultar');
-			if(actualizar==0)
-				$(".actualizar").removeClass('ocultar');
-			if(borrar==0)
-				$(".eliminar").removeClass('ocultar');
-		</script>
-	<?php endif ?>
+	<script src="<?=base_url();?>assets/cpanel/Modulos/js/modulos.js"></script>
+	<script>
+		$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
+		$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
+		var consultar = <?php echo $permiso[0]->consultar ?>,
+			registrar = <?php echo $permiso[0]->registrar ?>,
+			actualizar = <?php echo $permiso[0]->actualizar ?>,
+			borrar = <?php echo $permiso[0]->eliminar ?>;
+		if(registrar==0)
+			$(".registrar").removeClass('ocultar');
+		if(actualizar==0)
+			$(".actualizar").removeClass('ocultar');
+		if(borrar==0)
+			$(".eliminar").removeClass('ocultar');
+	</script>
 </html>

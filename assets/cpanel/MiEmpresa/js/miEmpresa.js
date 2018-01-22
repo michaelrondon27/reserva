@@ -1,6 +1,4 @@
 $(document).ready(function(){
-	$("#configuracion").attr('class', 'active');
-	$("#miEmpresa").attr('class', 'active');
     telefonoInput('.telefono');
 	listar();
 	actualizar_mi_empresa();

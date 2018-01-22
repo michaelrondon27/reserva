@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	listar();
-	registrar_modulo();
+	registrar_rol();
 	actualizar_modulo();
 });
 
@@ -43,7 +43,8 @@ $(document).ready(function(){
 						if (data.nombre_lista_vista != null)
 							if (data.nombre_lista_vista.length > 25)
 								nombre = data.nombre_lista_vista.substr(0,24) + "..."
-							nombre += " <span onclick='modalOperaciones(" + data.id_rol + ", \"" + "#resultados" + "\")' class='badge bg-blue waves-effect' style='cursor: pointer;' data-toggle='tooltip' title='Ver más.'><i class='fa fa-plus'></i></span>";
+							if(consultar == 0)
+								nombre += " <span onclick='modalOperaciones(" + data.id_rol + ", \"" + "#resultados" + "\")' class='badge bg-blue waves-effect' style='cursor: pointer;' data-toggle='tooltip' title='Ver más.'><i class='fa fa-plus'></i></span>";
 						return nombre
 					}
 				},
@@ -55,15 +56,17 @@ $(document).ready(function(){
 				{"data":"correo_usuario"},
 				{"data": null,
 					render : function(data, type, row) {
-						var botones="<span class='consultar btn btn-xs btn-info waves-effect' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
+						var botones = "";
+						if(consultar == 0)
+							botones += "<span class='consultar btn btn-xs btn-info waves-effect' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
 						if(actualizar == 0)
-							botones+="<span class='editar btn btn-xs btn-primary waves-effect' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
+							botones += "<span class='editar btn btn-xs btn-primary waves-effect' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
 						if(data.status == 1 && actualizar == 0)
-							botones+="<span class='desactivar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
+							botones += "<span class='desactivar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
 						else if(data.status == 2 && actualizar == 0)
 							botones+="<span class='activar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
 						if(borrar == 0)
-							return botones+="<span class='eliminar btn btn-xs btn-danger waves-effect' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
+							return botones += "<span class='eliminar btn btn-xs btn-danger waves-effect' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
 		              	return botones;
 		          	}
 				}
@@ -75,7 +78,7 @@ $(document).ready(function(){
 				'copy', 'csv', 'excel', 'pdf', 'print'
 			]
 		});
-		consultar("#tabla tbody", table);
+		ver("#tabla tbody", table);
 		editar("#tabla tbody", table);
 		eliminar("#tabla tbody", table);
 		desactivar("#tabla tbody", table);
@@ -87,10 +90,10 @@ $(document).ready(function(){
 	/* 
 		Funcion que muestra el cuadro2 para mostrar el formulario de registrar.
 	*/
-	function nuevoModulo(cuadroOcultar, cuadroMostrar){
+	function nuevoRol(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
 		limpiarFormularioRegistrar();
-		$("#nombre_modulo_vista_registrar").focus();
+		$("#nombre_rol_registrar").focus();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -99,7 +102,8 @@ $(document).ready(function(){
 		Funcion para limpiar el formulario de registrar.
 	*/
 	function limpiarFormularioRegistrar(){
-		$("#form_modulo_registrar")[0].reset();
+		$("#form_rol_registrar")[0].reset();
+		$("#tableRegistrar tbody tr").remove(); 
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -107,8 +111,53 @@ $(document).ready(function(){
 	/*
 		Funcion que realiza el envio del formulario de registro
 	*/
-	function registrar_modulo(){
-		enviarFormulario("#form_modulo_registrar", 'Modulos/registrar_modulo', '#cuadro2');
+	function registrar_rol(){
+		$("#form_rol_registrar").submit(function(e){
+            e.preventDefault(); //previene el comportamiento por defecto del formulario al darle click al input submit
+            var nombre = $("#nombre_rol_registrar").val();
+            var descripcion = $("#descripcion_rol_registrar").val();
+            var objeto = [];
+            $("#tableRegistrar tbody tr").each(function() {
+            	var lista_vista = [];
+            	var id = $(this).find(".id_lista_vista").val();
+            	lista_vista.push(id);
+            	lista_vista.push(verificarCheckbox('consultar' + id));
+            	lista_vista.push(verificarCheckbox('registrar' + id));
+            	lista_vista.push(verificarCheckbox('actualizar' + id));
+            	lista_vista.push(verificarCheckbox('eliminar' + id));
+				objeto.push(lista_vista);
+			});
+            console.log(nombre);
+            console.log(descripcion);
+            $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
+            $.ajax({
+                url: document.getElementById('ruta').value + 'Roles/registrar_rol',
+                type: 'POST',
+                dataType:'JSON',
+                data:{
+                	'nombre_rol' : nombre,
+                	'descripcion_rol' : descripcion,
+                	'permisos' : objeto
+                },
+                cache:false,
+                beforeSend: function(){
+                    mensajes('info', '<span>Guardando datos, espere por favor... <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>');
+                },
+                error: function (repuesta) {
+                    $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
+                    var errores=repuesta.responseText;
+                    if(errores!="")
+                        mensajes('danger', errores);
+                    else
+                        mensajes('danger', "<span>Ha ocurrido un error, por favor intentelo de nuevo.</span>");        
+                },
+                success: function(respuesta){
+                    $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
+                    mensajes('success', respuesta);
+                    listar('#cuadro2');
+                }
+            });
+        });
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -116,7 +165,7 @@ $(document).ready(function(){
 	/* 
 		Funcion que muestra el cuadro3 para la consulta del banco.
 	*/
-	function consultar(tbody, table){
+	function ver(tbody, table){
 		$(tbody).on("click", "span.consultar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
 			document.getElementById('nombre_rol_consultar').value=data.nombre_rol;
@@ -240,5 +289,67 @@ $(document).ready(function(){
 	    	return check;
 	    else if (operacion == 1)
 	    	return close;
+	}
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion que agrega las lista ista a la tabla
+	*/
+	function agregarListaVista(select, tabla){
+		var value = $(select).val();
+		var text = $(select + " option:selected").html();
+		var validado = false;
+		if (value != "") {
+			$("#tableRegistrar tbody tr").each(function() {
+			  	if (value == $(this).find(".id_lista_vista").val())
+			  		validado = true;
+			});
+			if (!validado) {
+				var html = "<tr id='r" + value + "'><td>" + text + " <input type='hidden' class='id_lista_vista' name='id_lista_vista' value='" + value + "'></td>";
+				html += "<td>" + agregarCheckbox(value, 'consultar') + "</td>";
+				html += "<td>" + agregarCheckbox(value, 'registrar') + "</td>";
+				html += "<td>" + agregarCheckbox(value, 'actualizar') + "</td>";
+				html += "<td>" + agregarCheckbox(value, 'eliminar') + "</td>";
+				html += "<td><button type='button' class='btn btn-danger waves-effect' onclick='eliminarListaVista(\"" + "#r" + value + "\")'>Quitar</button></td></tr>";
+				$(tabla + " tbody").append(html);
+			} else {
+				warning('¡La opción selecciona ya se encuentra agregada!');
+			}
+			$(select + " option[value='']").attr("selected","selected");
+		} else {
+			warning('¡Debe seleccionar una opción!');
+		}
+	}
+/* ------------------------------------------------------------------------------- */
+
+
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion con codigo para generar un checkbox
+	*/
+	function agregarCheckbox(id, campo){
+		return "<input type='checkbox' name='" + campo + "' class='checkitem chk-col-blue' id='" + campo + id + "' value='0'><label for='" + campo + id + "'></label>";
+	}
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion que agrega las lista ista a la tabla
+	*/
+	function eliminarListaVista(tr){
+		$(tr).remove(); 
+	}
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion que verificar checkbox
+	*/
+	function verificarCheckbox(checkbox){
+		if (document.getElementById(checkbox).checked)
+			return 0
+		else
+			return 1
 	}
 /* ------------------------------------------------------------------------------- */

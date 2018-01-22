@@ -7,19 +7,23 @@ class Usuarios extends CI_Controller
     parent::__construct();
     $this->load->database();
     $this->load->model('Usuarios_model');
+    $this->load->model('Menu_model');
     $this->load->library('encrypt');
     $this->load->library('form_validation');
   }
 
   public function index()
   {
-    $data['nacionalidades'] = $this->Usuarios_model->nacionalidades();
-    $data['estadosCiviles'] = $this->Usuarios_model->estados_civiles();
-    $data['sexos'] = $this->Usuarios_model->sexos();
-    $data['roles'] = $this->Usuarios_model->roles();
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('sepomex', 1);
+    $data['modulos'] = $this->Menu_model->modulos();
+    $data['vistas'] = $this->Menu_model->vistas(1);
+    $datos['nacionalidades'] = $this->Usuarios_model->nacionalidades();
+    $datos['estadosCiviles'] = $this->Usuarios_model->estados_civiles();
+    $datos['sexos'] = $this->Usuarios_model->sexos();
+    $datos['roles'] = $this->Usuarios_model->roles();
     $this->load->view('cpanel/header');
-    $this->load->view('cpanel/menu');
-    $this->load->view('perfiles/Usuarios/index', $data);
+    $this->load->view('cpanel/menu', $data);
+    $this->load->view('perfiles/Usuarios/index', $datos);
     $this->load->view('cpanel/footer');
   }
 

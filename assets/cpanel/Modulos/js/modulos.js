@@ -47,15 +47,17 @@ $(document).ready(function(){
 				{"data":"correo_usuario"},
 				{"data": null,
 					render : function(data, type, row) {
-						var botones="<span class='consultar btn btn-xs btn-info waves-effect' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
+						var botones = "";
+						if(consultar == 0)
+							botones += "<span class='consultar btn btn-xs btn-info waves-effect' data-toggle='tooltip' title='Consultar'><i class='fa fa-eye' style='margin-bottom:5px'></i></span> ";
 						if(actualizar == 0)
-							botones+="<span class='editar btn btn-xs btn-primary waves-effect' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
+							botones += "<span class='editar btn btn-xs btn-primary waves-effect' data-toggle='tooltip' title='Editar'><i class='fa fa-pencil-square-o' style='margin-bottom:5px'></i></span> ";
 						if(data.status == 1 && actualizar == 0)
-							botones+="<span class='desactivar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
+							botones += "<span class='desactivar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Desactivar'><i class='fa fa-lock' style='margin-bottom:5px'></i></span> ";
 						else if(data.status == 2 && actualizar == 0)
-							botones+="<span class='activar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
+							botones += "<span class='activar btn btn-xs btn-warning waves-effect' data-toggle='tooltip' title='Activar'><i class='fa fa-unlock' style='margin-bottom:5px'></i></span> ";
 						if(borrar == 0)
-							return botones+="<span class='eliminar btn btn-xs btn-danger waves-effect' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
+							botones += "<span class='eliminar btn btn-xs btn-danger waves-effect' data-toggle='tooltip' title='Eliminar'><i class='fa fa-trash-o' style='margin-bottom:5px'></i></span>";
 		              	return botones;
 		          	}
 				}
@@ -67,7 +69,7 @@ $(document).ready(function(){
 				'copy', 'csv', 'excel', 'pdf', 'print'
 			]
 		});
-		consultar("#tabla tbody", table);
+		ver("#tabla tbody", table);
 		editar("#tabla tbody", table);
 		eliminar("#tabla tbody", table);
 		desactivar("#tabla tbody", table);
@@ -108,7 +110,7 @@ $(document).ready(function(){
 	/* 
 		Funcion que muestra el cuadro3 para la consulta del banco.
 	*/
-	function consultar(tbody, table){
+	function ver(tbody, table){
 		$(tbody).on("click", "span.consultar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
 			document.getElementById('nombre_modulo_vista_consultar').value=data.nombre_modulo_vista;

@@ -7,14 +7,18 @@ class Plaza extends CI_Controller
     parent::__construct();
     $this->load->database();
     $this->load->model('Plazas_model');
+    $this->load->model('Menu_model');
     $this->load->library('form_validation');
   }
 
   public function index()
   {
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('plazas bancarias', 1);
+    $data['modulos'] = $this->Menu_model->modulos();
+    $data['vistas'] = $this->Menu_model->vistas(1);
     $this->load->view('cpanel/header');
-    $this->load->view('cpanel/menu');
-    $this->load->view('configuracion/Plaza/index');
+    $this->load->view('cpanel/menu', $data);
+    $this->load->view('configuracion/Plaza/index', $datos);
     $this->load->view('cpanel/footer');
   }
 

@@ -6,15 +6,19 @@ class ListaValores extends CI_Controller {
       parent::__construct();
       $this->load->database();
       $this->load->model('ListasValores_model');
+      $this->load->model('Menu_model');
       $this->load->library('form_validation');
   }
 
 	public function index()
 	{
-    $data['tipolval']=$this->ListasValores_model->tipolval();
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('lista valores', 1);
+    $data['modulos'] = $this->Menu_model->modulos();
+    $data['vistas'] = $this->Menu_model->vistas(1);
+    $datos['tipolval']=$this->ListasValores_model->tipolval();
     $this->load->view('cpanel/header');
-    $this->load->view('cpanel/menu');
-    $this->load->view('configuracion/ListaValores/index', $data);
+    $this->load->view('cpanel/menu', $data);
+    $this->load->view('configuracion/ListaValores/index', $datos);
     $this->load->view('cpanel/footer');
 	}
 

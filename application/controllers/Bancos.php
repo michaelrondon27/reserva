@@ -13,11 +13,12 @@ class Bancos extends CI_Controller
 
   public function index()
   {
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('bancos', 1);
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas(1);
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
-    $this->load->view('configuracion/Bancos/index');
+    $this->load->view('configuracion/Bancos/index', $datos);
     $this->load->view('cpanel/footer');
   }
 

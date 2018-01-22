@@ -4,7 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!DOCTYPE html>
 <html>
 	<link href="<?=base_url();?>assets/template/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
-	<link href="<?=base_url();?>assets/template/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+	<?php if($permiso[0]->consultar==1 && $permiso[0]->registrar==1 && $permiso[0]->actualizar==1 && $permiso[0]->eliminar==1): ?>
+		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
+	<?php endif ?>
 	<body class="theme-blue">
 		<input type="hidden" id="ruta" value="<?=base_url();?>" name="ruta">
 		<section class="content">
@@ -20,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                Gestión de Bancos
 		                            </h2>
 		                            <ul class="header-dropdown m-r--5">
-		                                <button class="btn btn-primary waves-effect" onclick="nuevoBanco()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
+		                                <button class="btn btn-primary waves-effect registrar ocultar" onclick="nuevoBanco()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
 		                            </ul>
 		                        </div>
 		                        <div class="body">
@@ -38,13 +40,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    </thead>
 		                                    <tbody></tbody>
 		                                </table>
-		                                <div class="col-md-2">
+		                                <div class="col-md-2 eliminar ocultar">
 		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('Bancos/eliminar_multiple_banco')">Eliminar seleccionados</button>
 		                                </div>
-		                                <div class="col-md-2">
+		                                <div class="col-md-2 actualizar ocultar">
 		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Bancos/status_multiple_banco', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
-		                                <div class="col-md-2">
+		                                <div class="col-md-2 actualizar ocultar">
 		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Bancos/status_multiple_banco', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
@@ -180,6 +182,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
-    <script src="<?=base_url();?>assets/template/plugins/bootstrap-select/js/bootstrap-select.js"></script>
     <script src="<?=base_url();?>assets/cpanel/Bancos/js/bancos.js"></script>
+    <script>
+		$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
+		$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
+		var consultar = <?php echo $permiso[0]->consultar ?>,
+			registrar = <?php echo $permiso[0]->registrar ?>,
+			actualizar = <?php echo $permiso[0]->actualizar ?>,
+			borrar = <?php echo $permiso[0]->eliminar ?>;
+		if(registrar==0)
+			$(".registrar").removeClass('ocultar');
+		if(actualizar==0)
+			$(".actualizar").removeClass('ocultar');
+		if(borrar==0)
+			$(".eliminar").removeClass('ocultar');
+	</script>
 </html>

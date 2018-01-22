@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 	<link href="<?=base_url();?>assets/template/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
-	<?php if($permiso[0]->consultar==1): ?>
+	<?php if($permiso[0]->consultar==1 && $permiso[0]->registrar==1 && $permiso[0]->actualizar==1 && $permiso[0]->eliminar==1): ?>
 		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
 	<?php endif ?>
 	<body class="theme-blue">
@@ -62,32 +62,55 @@
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Registro de Modulo</h2>
+		                            <h2>Registro de Rol</h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_modulo_registrar" id="form_modulo_registrar" method="post">
-			                            	<div class="col-sm-4">
-			                            		<label for="nombre_modulo_vista_registrar">Nombre*</label>
+			                            <form name="form_rol_registrar" id="form_rol_registrar" method="post">
+			                            	<div class="col-sm-6">
+			                            		<label for="nombre_rol_registrar">Nombre de Rol*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="nombre_modulo_vista" id="nombre_modulo_vista_registrar" placeholder="P. EJ. Modulo" required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre_rol" id="nombre_rol_registrar" placeholder="P. EJ. Modulo" required>
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <div class="col-sm-4">
-				                                <label for="descripcion_modulo_vista_registrar">Descripción</label>
+				                            <div class="col-sm-6">
+				                                <label for="descripcion_rol_registrar">Descripción</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="descripcion_modulo_vista" id="descripcion_modulo_vista_registrar" placeholder="P. EJ. Describir funciones">
+				                                        <input type="text" class="form-control mayusculas" name="descripcion_rol" id="descripcion_rol_registrar" placeholder="P. EJ. Describir funciones">
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <div class="col-sm-4">
-				                                <label for="posicion_modulo_vista_registrar">Posición*</label>
-		                                        <select id="posicion_modulo_vista_registrar" required class="form-control form-group" name="posicion_modulo_vista">
-		                                        	<option value="">Seleccione</option>
-		                                        </select>
+				                            <div class="col-sm-12">
+				                            	<div class="col-sm-4">
+					                                <label for="lista_vista_registrar">Lista Vista</label>
+			                                        <select id="lista_vista_registrar" class="form-control form-group">
+			                                        	<option value="">Seleccione</option>
+			                                        	<?php foreach($listasVistas as $listaVista): ?>
+			                                        		<option value="<?php echo $listaVista->id_lista_vista ?>"><?php echo $listaVista->nombre_lista_vista?></option>
+			                                        	<?php endforeach ?>
+			                                        </select>
+					                            </div>
+					                            <div class="col-sm-2" style="padding-top: 25px;">
+					                            	<button type="button" class="btn btn-primary waves-effect" onclick="agregarListaVista('#lista_vista_registrar', '#tableRegistrar')">Agregar</button>
+					                            </div>
+					                            <div class="col-sm-12">
+					                            	<table class="table table-bordered table-striped table-hover" id="tableRegistrar">
+					                            		<thead>
+					                            			<tr>
+					                            				<th>Lista Vista</th>
+					                            				<th>Consultar</th>
+					                            				<th>Registrar</th>
+					                            				<th>Actualizar</th>
+					                            				<th>Eliminar</th>
+					                            				<th>&nbsp;</th>
+					                            			</tr>
+					                            		</thead>
+					                            		<tbody></tbody>
+					                            	</table>
+					                            </div>
 				                            </div>
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
@@ -112,7 +135,7 @@
 		                        <div class="body">
 		                        	<div class="table-responsive">
 		                            	<div class="col-sm-6">
-		                            		<label for="nombre_rol_consultar">Nombre*</label>
+		                            		<label for="nombre_rol_consultar">Nombre de Rol*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
 			                                        <input type="text" class="form-control mayusculas" id="nombre_rol_consultar" disabled>
@@ -213,20 +236,19 @@
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
-    <?php if($permiso[0]->consultar==0): ?>
-		<script src="<?=base_url();?>assets/cpanel/Roles/js/roles.js"></script>
-		<script>
-			$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
-			$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
-			var registrar = <?php echo $permiso[0]->registrar ?>,
-				actualizar = <?php echo $permiso[0]->actualizar ?>,
-				borrar = <?php echo $permiso[0]->eliminar ?>;
-			if(registrar==0)
-				$(".registrar").removeClass('ocultar');
-			if(actualizar==0)
-				$(".actualizar").removeClass('ocultar');
-			if(borrar==0)
-				$(".eliminar").removeClass('ocultar');
-		</script>
-	<?php endif ?>
+	<script src="<?=base_url();?>assets/cpanel/Roles/js/roles.js"></script>
+	<script>
+		$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
+		$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
+		var consultar = <?php echo $permiso[0]->consultar ?>,
+			registrar = <?php echo $permiso[0]->registrar ?>,
+			actualizar = <?php echo $permiso[0]->actualizar ?>,
+			borrar = <?php echo $permiso[0]->eliminar ?>;
+		if(registrar==0)
+			$(".registrar").removeClass('ocultar');
+		if(actualizar==0)
+			$(".actualizar").removeClass('ocultar');
+		if(borrar==0)
+			$(".eliminar").removeClass('ocultar');
+	</script>
 </html>

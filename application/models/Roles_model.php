@@ -13,17 +13,36 @@ Class Roles_model extends CI_Model
     {
         $query = $this->db->query("SELECT r.*, a.fec_regins, u.correo_usuario, a.status, GROUP_CONCAT(lv.nombre_lista_vista SEPARATOR '-') AS nombre_lista_vista FROM ".$this->tabla_rol." r INNER JOIN auditoria a ON r.id_rol=a.cod_reg INNER JOIN usuario u ON a.usr_regins=u.id_usuario INNER JOIN ".$this->tabla_rol_operaciones." ro ON r.id_rol=ro.id_rol INNER JOIN ".$this->tabla_lista_vista." lv ON ro.id_lista_vista=lv.id_lista_vista WHERE a.tabla='".$this->tabla_rol."' GROUP BY r.nombre_rol");
         return $query->result();
-    }   
+    }
+
+    public function listas_vistas()
+    {
+        $query = $this->db->query("SELECT * FROM ".$this->tabla_lista_vista);
+        return $query->result();
+    }
         
-    public function registrar_modulo($data){
-        $this->db->insert($this->nombre_tabla, $data);
+    public function registrar_rol($data, $permisos){
+        $this->db->insert($this->tabla_rol, $data);
+        $rol = $this->db->insert_id();
         $datos=array(
-            'tabla' => $this->nombre_tabla,
-            'cod_reg' => $this->db->insert_id(),
+            'tabla' => $this->tabla_rol,
+            'cod_reg' => $rol,
             'usr_regins' => '1',
             'fec_regins' => date('Y-m-d'),
         );
         $this->db->insert('auditoria', $datos);
+        foreach($permisos as $permiso)
+        {
+            $array = array(
+                'id_rol' => $rol,
+                'id_lista_vista' => $permiso[0],
+                'consultar' => $permiso[1],
+                'registrar' => $permiso[2],
+                'actualizar' => $permiso[3],
+                'eliminar' => $permiso[4],
+            );
+            $this->db->insert($this->tabla_rol_operaciones, $array);
+        }
     }
 
     public function actualizar_modulo($id, $data)

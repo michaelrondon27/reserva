@@ -1,6 +1,4 @@
 $(document).ready(function(){
-	$("#configuracion").attr('class', 'active');
-	$("#sepomex").attr('class', 'active');
 	enviarSepomex();
 });
 

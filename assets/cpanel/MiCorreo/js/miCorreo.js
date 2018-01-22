@@ -1,6 +1,4 @@
 $(document).ready(function(){
-	$("#configuracion").attr('class', 'active');
-	$("#miCorreo").attr('class', 'active');
 	listar();
 	actualizar_mi_correo();
 });
