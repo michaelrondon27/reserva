@@ -1,21 +1,25 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Plaza extends CI_Controller
+class PlazasBancarias extends CI_Controller
 {
 	function __construct()
 	{
     parent::__construct();
     $this->load->database();
+    $this->load->library('session');
     $this->load->model('Plazas_model');
     $this->load->model('Menu_model');
     $this->load->library('form_validation');
+    if (!$this->session->userdata("login")) {
+      redirect(base_url());
+    }
   }
 
   public function index()
   {
-    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('plazas bancarias', 1);
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('plazasbancarias', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
-    $data['vistas'] = $this->Menu_model->vistas(1);
+    $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('configuracion/Plaza/index', $datos);

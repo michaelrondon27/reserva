@@ -8,14 +8,20 @@ Class ListasValores_model extends CI_Model{
         
     public function listado_valores()
     {
-        $query=$this->db->query("SELECT lv.codlval, lv.tipolval, lv.descriplval, a.fec_regins, u.correo_usuario, a.status, tlv.descriplval as descriptipolval FROM ".$this->nombre_tabla." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg INNER JOIN usuario u ON a.usr_regins=u.id_usuario INNER JOIN tipolval tlv ON tlv.tipolval=lv.tipolval WHERE a.tabla='".$this->nombre_tabla."'");
-        return $query->result();
+        $this->db->where('a.tabla', $this->nombre_tabla);
+        $this->db->select('lv.codlval, lv.tipolval, lv.descriplval, a.fec_regins, u.correo_usuario, a.status, tlv.descriplval as descriptipolval');
+        $this->db->from($this->nombre_tabla . " lv");
+        $this->db->join('auditoria a', 'lv.codlval = a.cod_reg');
+        $this->db->join('usuario u', 'a.usr_regins = u.id_usuario');
+        $this->db->join('tipolval tlv', 'tlv.tipolval = lv.tipolval');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
 
     public function tipolval()
     {
-        $query=$this->db->query("SELECT * FROM tipolval");
-        return $query->result();
+        $resultados = $this->db->get('tipolval');
+        return $resultados->result();
     }
 
     public function registrar_lval($data){
@@ -23,7 +29,7 @@ Class ListasValores_model extends CI_Model{
         $datos=array(
             'tabla' => $this->nombre_tabla,
             'cod_reg' => $this->db->insert_id(),
-            'usr_regins' => '1',
+            'usr_regins' => $this->session->userdata('id_usuario'),
             'fec_regins' => date('Y-m-d'),
         );
         $this->db->insert('auditoria', $datos);
@@ -40,7 +46,7 @@ Class ListasValores_model extends CI_Model{
         $this->db->where('codlval', $id);
         $this->db->update($this->nombre_tabla, $data);
         $datos=array(
-            'usr_regmod' => '1',
+            'usr_regmod' => $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
@@ -49,10 +55,10 @@ Class ListasValores_model extends CI_Model{
 
     public function status_lval($id, $status)
     {
-        $datos=array(
-            'status'=>$status,
-            'fec_status'=> date('Y-m-d'),
-            'usr_regmod' => '1',
+        $datos = array(
+            'status' => $status,
+            'fec_status' => date('Y-m-d'),
+            'usr_regmod' => $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
@@ -90,7 +96,7 @@ Class ListasValores_model extends CI_Model{
     public function status_multiple_lval($id, $status)
     {
         $lval=str_replace(' ', ',', $id);
-        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$lval.") AND tabla='".$this->nombre_tabla."'");
+        $this->db->query("UPDATE auditoria SET status = " . $status . ", fec_status = " . date('Y-m-d') . ", usr_regmod = " . $this->session->userdata('id_usuario') . ", fec_regmod = " . date('Y-m-d') . " WHERE cod_reg in (" . $lval . ") AND tabla='" . $this->nombre_tabla . "'");
     }
 }
 ?>

@@ -8,8 +8,11 @@ Class Sepomex_model extends CI_Model{
         
     public function verificar_codigo_postal($d_codigo, $id_asenta_cpcons)
     {
-        $query=$this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE d_codigo='".$d_codigo."' AND id_asenta_cpcons='".$id_asenta_cpcons."' LIMIT 1");
-        return $query->result_array();
+        $this->db->where('d_codigo', $d_codigo);
+        $this->db->where('id_asenta_cpcons', $id_asenta_cpcons);
+        $this->db->limit(1);
+        $resultados = $this->db->get($this->nombre_tabla);
+        return $resultados->result_array();
     }
 
     public function registrar_codigo_postal($data)
@@ -18,7 +21,7 @@ Class Sepomex_model extends CI_Model{
         $datos=array(
             'tabla' => $this->nombre_tabla,
             'cod_reg' => $this->db->insert_id(),
-            'usr_regins' => '1',
+            'usr_regins' => $this->session->userdata('id_usuario'),
             'fec_regins' => date('Y-m-d'),
         );
         $this->db->insert('auditoria', $datos);

@@ -28,11 +28,15 @@ Class MiEmpresa_model extends CI_Model{
 
     public function buscar_mi_empresa()
     {
-        $query=$this->db->query("SELECT e.*, c.*, cp.* FROM ".$this->tabla_empresa." e INNER JOIN ".$this->tabla_contacto." c ON e.id_contacto=c.id_contacto INNER JOIN codigo_postal cp ON c.id_codigo_postal=cp.id_codigo_postal LIMIT 1");
-        $empresa=$query->result();
+        $this->db->select(' e.*, c.*, cp.*');
+        $this->db->from($this->tabla_empresa . " e");
+        $this->db->limit(1);
+        $this->db->join($this->tabla_contacto . " c", 'e.id_contacto = c.id_contacto');
+        $this->db->join("codigo_postal cp", 'c.id_codigo_postal = cp.id_codigo_postal');
+        $empresa = $this->db->get();
         $data=array();
-        if($empresa!=""){
-            foreach($query->result_array() as $row){
+        if($empresa->num_rows() > 0){
+            foreach($empresa->result_array() as $row){
                 $estados=$this->db->query("SELECT DISTINCT d_estado FROM codigo_postal WHERE d_codigo='".$row['d_codigo']."'");
                 $estados->result();
                 $ciudades=$this->db->query("SELECT DISTINCT d_ciudad FROM codigo_postal WHERE d_codigo='".$row['d_codigo']."'");
@@ -63,7 +67,7 @@ Class MiEmpresa_model extends CI_Model{
                 $datosContacto=array(
                     'tabla' => $this->tabla_contacto,
                     'cod_reg' => $idContacto,
-                    'usr_regins' => '1',
+                    'usr_regins' =>  $this->session->userdata('id_usuario'),
                     'fec_regins' => date('Y-m-d'),
                 );
                 $this->db->insert('auditoria', $datosContacto);
@@ -80,7 +84,7 @@ Class MiEmpresa_model extends CI_Model{
                 $datosEmpresa=array(
                     'tabla' => $this->tabla_empresa,
                     'cod_reg' => $this->db->insert_id(),
-                    'usr_regins' => '1',
+                    'usr_regins' =>  $this->session->userdata('id_usuario'),
                     'fec_regins' => date('Y-m-d'),
                 );
                 $this->db->insert('auditoria', $datosEmpresa);
@@ -97,7 +101,7 @@ Class MiEmpresa_model extends CI_Model{
                 );
                 $this->db->update($this->tabla_empresa, $dataEmpresa);
                 $datosEmpresa=array(
-                    'usr_regmod' => '1',
+                    'usr_regmod' =>  $this->session->userdata('id_usuario'),
                     'fec_regmod' => date('Y-m-d'),
                 );
                 $this->db->where('cod_reg', $idEmpresa)->where('tabla', $this->tabla_empresa);
@@ -109,7 +113,7 @@ Class MiEmpresa_model extends CI_Model{
                 $this->db->where('id_contacto', $idContacto);
                 $this->db->update($this->tabla_contacto, $dataContacto);
                 $datosContacto=array(
-                    'usr_regmod' => '1',
+                    'usr_regmod' =>  $this->session->userdata('id_usuario'),
                     'fec_regmod' => date('Y-m-d'),
                 );
                 $this->db->where('cod_reg', $idContacto)->where('tabla', $this->tabla_contacto);

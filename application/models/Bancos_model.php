@@ -91,13 +91,8 @@ Class Bancos_model extends CI_Model
 
     public function status_multiple_banco($id, $status)
     {
-        $data = array(
-            'status' => $status,
-        );
         $bancos = str_replace(' ', ',', $id);
-        $this->db->where_in('cod_reg', $bancos);
-        $this->db->where('tabla', $this->nombre_tabla);
-        $this->db->update('auditoria', $data);
+        $this->db->query("UPDATE auditoria SET status = " . $status . ", fec_status = " . date('Y-m-d') . ", usr_regmod = " . $this->session->userdata('id_usuario') . ", fec_regmod = " . date('Y-m-d') . " WHERE cod_reg in (" . $bancos . ") AND tabla='" . $this->nombre_tabla . "'");
     }
 
 }
