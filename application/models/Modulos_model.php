@@ -9,16 +9,21 @@ Class Modulos_model extends CI_Model
 
     public function listar_modulos()
     {
-        $query = $this->db->query("SELECT mv.*, a.fec_regins, u.correo_usuario, a.status FROM ".$this->nombre_tabla." mv INNER JOIN auditoria a ON mv.id_modulo_vista=a.cod_reg INNER JOIN usuario u ON a.usr_regins=u.id_usuario WHERE a.tabla='".$this->nombre_tabla."'");
-        return $query->result();
+        $this->db->where('a.tabla', $this->nombre_tabla);
+        $this->db->select('mv.*, a.fec_regins, u.correo_usuario, a.status');
+        $this->db->from($this->nombre_tabla . ' mv');
+        $this->db->join('auditoria a', 'mv.id_modulo_vista = a.cod_reg');
+        $this->db->join('usuario u', 'a.usr_regins = u.id_usuario');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }   
         
     public function registrar_modulo($data){
         $this->db->insert($this->nombre_tabla, $data);
-        $datos=array(
+        $datos = array(
             'tabla' => $this->nombre_tabla,
             'cod_reg' => $this->db->insert_id(),
-            'usr_regins' => '1',
+            'usr_regins' => $this->session->userdata('id_usuario'),
             'fec_regins' => date('Y-m-d'),
         );
         $this->db->insert('auditoria', $datos);
@@ -28,18 +33,20 @@ Class Modulos_model extends CI_Model
     {
         $this->db->where('id_modulo_vista', $id);
         $this->db->update($this->nombre_tabla, $data);
-        $datos=array(
-            'usr_regmod' => '1',
+        $datos = array(
+            'usr_regmod' => $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
         $this->db->update('auditoria', $datos);
     }
 
-    public function verificar_modulo($data)
+    public function verificar_modulo($nombre_modulo_vista)
     {
-        $query=$this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE nombre_modulo_vista='".$data."' LIMIT 1");
-        return $query->result_array();
+        $this->db->where('nombre_modulo_vista', $nombre_modulo_vista);
+        $this->db->limit(1);
+        $resultados = $this->db->get($this->nombre_tabla);
+        return $resultados->result_array();
     }
 
     public function eliminar_modulo($id)
@@ -48,9 +55,10 @@ Class Modulos_model extends CI_Model
             if(!$this->db->delete($this->nombre_tabla, array('id_modulo_vista' => $id))){
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
-                $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." ORDER BY posicion_modulo_vista DESC");
-                $contador = sizeof($query->result());
-                foreach($query->result() as $row)
+                $this->db->order_by('posicion_modulo_vista', 'DESC');
+                $resultados = $this->db->get($this->nombre_tabla);
+                $contador = $resultados->num_rows();
+                foreach($resultados->result() as $row)
                 {
                     $datos = array(
                         'posicion_modulo_vista' => $contador,
@@ -68,10 +76,10 @@ Class Modulos_model extends CI_Model
 
     public function status_modulo($id, $status)
     {
-        $datos=array(
+        $datos = array(
             'status'=>$status,
             'fec_status'=> date('Y-m-d'),
-            'usr_regmod' => '1',
+            'usr_regmod' => $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
@@ -90,8 +98,9 @@ Class Modulos_model extends CI_Model
                 $noEliminados++;
             }
         }
-        $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." ORDER BY posicion_modulo_vista DESC");
-        $contador = sizeof($query->result());
+        $this->db->order_by('posicion_modulo_vista', 'DESC');
+        $resultados = $this->db->get($this->nombre_tabla);
+        $contador = $resultados->num_rows();
         foreach($query->result() as $row)
         {
             $datos = array(
@@ -106,17 +115,23 @@ Class Modulos_model extends CI_Model
 
     public function status_multiple_modulos($id, $status)
     {
-        $modulos=str_replace(' ', ',', $id);
-        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$modulos.") AND tabla='".$this->nombre_tabla."'");
+        $data = array(
+            'status' => $status,
+        );
+        $modulos = str_replace(' ', ',', $id);
+        $this->db->where_in('cod_reg', $modulos);
+        $this->db->where('tabla', $this->nombre_tabla);
+        $this->db->update('auditoria', $data);
     }
 
     public function posicionar_modulos($posicionar)
     {
         if($posicionar['tipo'] == 'insert')
         {
-            $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE posicion_modulo_vista >= ".$posicionar['posicion']);
-            if(sizeof($query->result()) > 0){
-                foreach ($query->result() as $row)
+            $this->db->where('posicion_modulo_vista >= ' . $posicionar['posicion']);
+            $resultados = $this->db->get($this->nombre_tabla);
+            if($resultados->num_rows() > 0){
+                foreach ($resultados->result() as $row)
                 {
                     $datos=array(
                         'posicion_modulo_vista' => $row->posicion_modulo_vista + 1,
@@ -130,9 +145,10 @@ Class Modulos_model extends CI_Model
         {
             if($posicionar['final'] > $posicionar['inicial'])
             {
-                $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE posicion_modulo_vista > ".$posicionar['inicial']." AND posicion_modulo_vista <= ".$posicionar['final']);
-                if(sizeof($query->result()) > 0){
-                    foreach ($query->result() as $row)
+                $this->db->where('posicion_modulo_vista > ' . $posicionar['inicial'] . ' AND posicionar_modulos <= ' . $posicionar['final']);
+                $resultados = $this->db->get($this->nombre_tabla);
+                if($resultados->num_rows() > 0){
+                    foreach ($resultados->result() as $row)
                     {
                         $datos=array(
                             'posicion_modulo_vista' => $row->posicion_modulo_vista - 1,
@@ -144,9 +160,10 @@ Class Modulos_model extends CI_Model
             }
             else if($posicionar['final'] < $posicionar['inicial'])
             {
-                $query = $this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE posicion_modulo_vista >= ".$posicionar['final']." AND posicion_modulo_vista < ".$posicionar['inicial']);
-                if(sizeof($query->result()) > 0){
-                    foreach ($query->result() as $row)
+                $this->db->where('posicion_modulo_vista >= ' . $posicionar['final'] . ' AND posicion_modulo_vista < ' . $posicionar['inicial']);
+                $resultados = $this->db->get($this->nombre_tabla);
+                if($resultados->num_rows() > 0){
+                    foreach ($resultados->result() as $row)
                     {
                         $datos=array(
                             'posicion_modulo_vista' => $row->posicion_modulo_vista + 1,

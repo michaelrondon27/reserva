@@ -6,16 +6,20 @@ class Modulos extends CI_Controller
 	{
     parent::__construct();
     $this->load->database();
+    $this->load->library('session');
     $this->load->model('Modulos_model');
     $this->load->model('Menu_model');
     $this->load->library('form_validation');
+    if (!$this->session->userdata("login")) {
+      redirect(base_url());
+    }
   }
 
   public function index()
   {
-    $permiso['permiso'] = $this->Menu_model->verificar_permiso_vista('modulos', 1);
+    $permiso['permiso'] = $this->Menu_model->verificar_permiso_vista('modulos', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
-    $data['vistas'] = $this->Menu_model->vistas(1);
+    $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('perfiles/Modulos/index', $permiso);
@@ -46,7 +50,7 @@ class Modulos extends CI_Controller
       $this->Modulos_model->posicionar_modulos($posicionar);
       $data=array(
         'nombre_modulo_vista' => strtoupper($this->input->post('nombre_modulo_vista')),
-        'descripcion_modulo_vista' => $this->input->post('descripcion_modulo_vista'),
+        'descripcion_modulo_vista' => strtoupper($this->input->post('descripcion_modulo_vista')),
         'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
       );
       $this->Modulos_model->registrar_modulo($data);
@@ -70,7 +74,7 @@ class Modulos extends CI_Controller
       );
       $data=array(
         'nombre_modulo_vista' => strtoupper($this->input->post('nombre_modulo_vista')),
-        'descripcion_modulo_vista' => $this->input->post('descripcion_modulo_vista'),
+        'descripcion_modulo_vista' => strtoupper($this->input->post('descripcion_modulo_vista')),
         'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
       );
       if(count($modulo_verificado)>0){

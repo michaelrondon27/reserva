@@ -7,32 +7,53 @@ Class Menu_model extends CI_Model
 
     public function modulos()
     {
-        $query = $this->db->query("SELECT mv.* FROM modulo_vista mv INNER JOIN auditoria a ON mv.id_modulo_vista=a.cod_reg WHERE a.status=1 AND a.tabla='modulo_vista' ORDER BY posicion_modulo_vista ASC");
-        return $query->result();
+        $this->db->where('a.status', 1);
+        $this->db->where('a.tabla', 'modulo_vista');
+        $this->db->select('mv.*');
+        $this->db->from('modulo_vista mv');
+        $this->db->join('auditoria a', 'mv.id_modulo_vista = a.cod_reg');
+        $this->db->order_by('posicion_modulo_vista', 'ASC');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
 
-    public function vistas($idUsuario)
+    public function vistas($id_usuario)
     {
-        $query = $this->db->query("SELECT lv.* FROM usuario u INNER JOIN rol r ON u.id_rol=r.id_rol INNER JOIN rol_operaciones ro ON r.id_rol=ro.id_rol INNER JOIN lista_vista lv ON ro.id_lista_vista=lv.id_lista_vista WHERE u.id_usuario=$idUsuario AND lv.visibilidad_lista_vista=0 AND (ro.consultar=0 OR ro.registrar=0 OR ro.actualizar=0 OR eliminar=0) ORDER BY lv.posicion_lista_vista ASC");
-        return $query->result();
+        $this->db->where('u.id_usuario', $id_usuario);
+        $this->db->where('lv.visibilidad_lista_vista', 0);
+        $this->db->where('(ro.consultar=0 OR ro.registrar=0 OR ro.actualizar=0 OR eliminar=0)');
+        $this->db->select('lv.*');
+        $this->db->from('usuario u');
+        $this->db->join('rol r', 'u.id_rol = r.id_rol');
+        $this->db->join('rol_operaciones ro', 'r.id_rol = ro.id_rol');
+        $this->db->join('lista_vista lv', 'ro.id_lista_vista = lv.id_lista_vista');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
 
     public function contar_modulos()
     {
-        $query = $this->db->query("SELECT * FROM modulo_vista");
-        return $query->result();
+        $resultados = $this->db->get('modulo_vista');
+        return $resultados->result();
     }
 
-    public function verificar_permiso_vista($modulo, $rol)
+    public function verificar_permiso_vista($url, $rol)
     {
-        $query = $this->db->query("SELECT ro.*, lv.id_lista_vista, mv.id_modulo_vista FROM rol_operaciones ro INNER JOIN lista_vista lv ON ro.id_lista_vista=lv.id_lista_vista INNER JOIN modulo_vista mv ON lv.id_modulo_vista=mv.id_modulo_vista WHERE ro.id_rol=".$rol." AND lv.nombre_oculto_lista_vista='".$modulo."'");
-        return $query->result();
+        $this->db->where('ro.id_rol', $rol);
+        $this->db->where('lv.url_lista_vista', $url);
+        $this->db->select('ro.*, lv.id_lista_vista, mv.id_modulo_vista');
+        $this->db->from('rol_operaciones ro');
+        $this->db->join('lista_vista lv', 'ro.id_lista_vista = lv.id_lista_vista');
+        $this->db->join('modulo_vista mv', 'lv.id_modulo_vista = mv.id_modulo_vista');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
 
-    public function contador_listaVista($id)
+    public function contador_listaVista($id_modulo_vista)
     {
-        $query = $this->db->query("SELECT * FROM lista_vista WHERE id_modulo_vista = ".$id);
-        return $query->result();
+        $this->db->where('id_modulo_vista', $id_modulo_vista);
+        $resultados = $this->db->get('lista_vista');
+        return $resultados->result();
     }
 
 }

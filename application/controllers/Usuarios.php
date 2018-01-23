@@ -6,17 +6,20 @@ class Usuarios extends CI_Controller
 	{
     parent::__construct();
     $this->load->database();
+    $this->load->library('session');
     $this->load->model('Usuarios_model');
     $this->load->model('Menu_model');
-    $this->load->library('encrypt');
     $this->load->library('form_validation');
+    if (!$this->session->userdata("login")) {
+      redirect(base_url());
+    }
   }
 
   public function index()
   {
-    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('sepomex', 1);
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('usuarios', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
-    $data['vistas'] = $this->Menu_model->vistas(1);
+    $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['nacionalidades'] = $this->Usuarios_model->nacionalidades();
     $datos['estadosCiviles'] = $this->Usuarios_model->estados_civiles();
     $datos['sexos'] = $this->Usuarios_model->sexos();
@@ -58,7 +61,7 @@ class Usuarios extends CI_Controller
       $usuarioArray = array(
         'id_rol' => $this->input->post('id_rol'),
         'correo_usuario' => $this->input->post('correo_usuario'),
-        'clave_usuario' => $this->encrypt->encode($this->input->post('clave_usuario')),
+        'clave_usuario' => sha1($this->input->post('clave_usuario')),
         'avatar_usuario' => $imagen,
       );
       $contactoArray = array(
@@ -107,7 +110,6 @@ class Usuarios extends CI_Controller
       $usuarioArray = array(
         'id_rol' => $this->input->post('id_rol'),
         'correo_usuario' => $this->input->post('correo_usuario'),
-        'avatar_usuario' => $imagen,
       );
       $contactoArray = array(
         'id_codigo_postal' => $this->input->post('colonia'),
@@ -136,9 +138,9 @@ class Usuarios extends CI_Controller
       $usuario_verificado=$this->Usuarios_model->verificar_usuario($this->input->post('correo_usuario')); //busca si el nombre del banco esta registrado en la base de datos
       if(count($usuario_verificado)>0){
         // si es mayor a cero, se verifica si el id recibido del formulario es igual al id que se verifico
-        if($usuario_verificado[0]['id_usuario']==$this->input->post('id_usuario')){
+        if($usuario_verificado[0]['id_usuario'] == $this->input->post('id_usuario')){
           //si son iguales, quiere decir que es el mismo registro
-          $this->Usuarios_model->actualizar_usuario($usuarioArray, $contactoArray, $personalArray, $idArray, $this->input->post('avatar_usuario'));
+          $this->Usuarios_model->actualizar_usuario($usuarioArray, $contactoArray, $personalArray, $idArray, $imagen);
           echo json_encode("<span>El usuario se ha editado exitosamente!</span>"); // envio de mensaje exitoso
         }else{
           //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro
@@ -146,7 +148,7 @@ class Usuarios extends CI_Controller
         }
       }else{
         // si conteo del array es igual a 0, se actualiza el registro
-        $this->Usuarios_model->actualizar_usuario($usuarioArray, $contactoArray, $personalArray, $idArray, $this->input->post('avatar_usuario'));
+        $this->Usuarios_model->actualizar_usuario($usuarioArray, $contactoArray, $personalArray, $idArray, $imagen);
         echo json_encode("<span>El usuario se ha editado exitosamente!</span>"); // envio de mensaje exitoso
       }
     }else{

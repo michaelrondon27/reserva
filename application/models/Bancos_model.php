@@ -9,8 +9,13 @@ Class Bancos_model extends CI_Model
 
     public function listar_bancos()
     {
-        $query=$this->db->query("SELECT b.id_banco, b.cod_banco, b.nombre_banco, a.fec_regins, u.correo_usuario, a.status FROM ".$this->nombre_tabla." b INNER JOIN auditoria a ON b.id_banco=a.cod_reg INNER JOIN usuario u ON a.usr_regins=u.id_usuario WHERE a.tabla='".$this->nombre_tabla."'");
-        return $query->result();
+        $this->db->where('a.tabla', $this->nombre_tabla);
+        $this->db->select('b.id_banco, b.cod_banco, b.nombre_banco, a.fec_regins, u.correo_usuario, a.status');
+        $this->db->from($this->nombre_tabla . ' b');
+        $this->db->join('auditoria a', 'b.id_banco = a.cod_reg');
+        $this->db->join('usuario u', 'a.usr_regins = u.id_usuario');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }   
         
     public function registrar_banco($data){
@@ -18,7 +23,7 @@ Class Bancos_model extends CI_Model
         $datos=array(
             'tabla' => $this->nombre_tabla,
             'cod_reg' => $this->db->insert_id(),
-            'usr_regins' => '1',
+            'usr_regins' => $this->session->userdata('id_usuario'),
             'fec_regins' => date('Y-m-d'),
         );
         $this->db->insert('auditoria', $datos);
@@ -29,7 +34,7 @@ Class Bancos_model extends CI_Model
         $this->db->where('id_banco', $id);
         $this->db->update($this->nombre_tabla, $data);
         $datos=array(
-            'usr_regmod' => '1',
+            'usr_regmod' => $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
@@ -38,8 +43,10 @@ Class Bancos_model extends CI_Model
 
     public function verificar_banco($data)
     {
-        $query=$this->db->query("SELECT * FROM ".$this->nombre_tabla." WHERE nombre_banco='".$data['nombre_banco']."' LIMIT 1");
-        return $query->result_array();
+        $this->db->where('nombre_banco', $$data['nombre_banco']);
+        $this->db->limit(1);
+        $resultados = $this->db->get($this->nombre_tabla);
+        return $resultados->result_array();
     }
 
     public function eliminar_banco($id)
@@ -60,7 +67,7 @@ Class Bancos_model extends CI_Model
         $datos=array(
             'status'=>$status,
             'fec_status'=> date('Y-m-d'),
-            'usr_regmod' => '1',
+            'usr_regmod' => $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
@@ -84,8 +91,13 @@ Class Bancos_model extends CI_Model
 
     public function status_multiple_banco($id, $status)
     {
-        $bancos=str_replace(' ', ',', $id);
-        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$bancos.") AND tabla='".$this->nombre_tabla."'");
+        $data = array(
+            'status' => $status,
+        );
+        $bancos = str_replace(' ', ',', $id);
+        $this->db->where_in('cod_reg', $bancos);
+        $this->db->where('tabla', $this->nombre_tabla);
+        $this->db->update('auditoria', $data);
     }
 
 }

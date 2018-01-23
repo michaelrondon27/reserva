@@ -13,32 +13,63 @@ Class Usuarios_model extends CI_Model
 
     public function listar_usuarios()
     {
-        $query = $this->db->query("SELECT u.id_usuario, u.id_rol, u.correo_usuario, u.avatar_usuario, u.fec_ult_acceso_usuario, a.status, a.fec_regins, r.nombre_rol, dt.*, c.*, cp.* FROM ".$this->tabla_usuario." u INNER JOIN auditoria a ON u.id_usuario=a.cod_reg INNER JOIN rol r ON u.id_rol=r.id_rol INNER JOIN datos_personales dt ON u.id_usuario=dt.id_usuario INNER JOIN contacto c ON dt.id_contacto=c.id_contacto INNER JOIN codigo_postal cp ON c.id_codigo_postal=cp.id_codigo_postal WHERE a.tabla='".$this->tabla_usuario."'");
-        return $query->result();
+        $this->db->where('a.tabla', $this->tabla_usuario);
+        $this->db->select('u.id_usuario, u.id_rol, u.correo_usuario, u.avatar_usuario, u.fec_ult_acceso_usuario, a.status, a.fec_regins, r.nombre_rol, dt.*, c.*, cp.*');
+        $this->db->from($this->tabla_usuario . ' u');
+        $this->db->join('auditoria a', 'u.id_usuario = a.cod_reg');
+        $this->db->join($this->tabla_roles . ' r', 'u.id_rol = r.id_rol');
+        $this->db->join($this->tabla_personal . ' dt', 'u.id_usuario = dt.id_usuario');
+        $this->db->join($this->tabla_contacto . ' c', 'dt.id_contacto = c.id_contacto');
+        $this->db->join('codigo_postal cp', 'c.id_codigo_postal = cp.id_codigo_postal');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
 
     public function nacionalidades()
     {
-        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='NACIONALIDAD' AND a.status=1 AND a.tabla='".$this->tabla_lval."'");
-        return $query->result();
+        $this->db->where('lv.tipolval', 'NACIONALIDAD');
+        $this->db->where('a.status', 1);
+        $this->db->where('a.tabla', $this->tabla_lval);
+        $this->db->select('lv.*');
+        $this->db->from($this->tabla_lval . ' lv');
+        $this->db->join('auditoria a', 'lv.codlval = a.cod_reg');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
 
     public function estados_civiles()
     {
-        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='EDOCIVIL' AND a.status=1 AND a.tabla='".$this->tabla_lval."'");
-        return $query->result();
+        $this->db->where('lv.tipolval', 'EDOCIVIL');
+        $this->db->where('a.status', 1);
+        $this->db->where('a.tabla', $this->tabla_lval);
+        $this->db->select('lv.*');
+        $this->db->from($this->tabla_lval . ' lv');
+        $this->db->join('auditoria a', 'lv.codlval = a.cod_reg');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
 
     public function sexos()
     {
-        $query = $this->db->query("SELECT lv.* FROM ".$this->tabla_lval." lv INNER JOIN auditoria a ON lv.codlval=a.cod_reg WHERE lv.tipolval='SEXO' AND a.status=1 AND a.tabla='".$this->tabla_lval."'");
-        return $query->result();
+        $this->db->where('lv.tipolval', 'SEXO');
+        $this->db->where('a.status', 1);
+        $this->db->where('a.tabla', $this->tabla_lval);
+        $this->db->select('lv.*');
+        $this->db->from($this->tabla_lval . ' lv');
+        $this->db->join('auditoria a', 'lv.codlval = a.cod_reg');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
 
     public function roles()
     {
-        $query = $this->db->query("SELECT * FROM ".$this->tabla_roles." r INNER JOIN auditoria a ON r.id_rol=a.cod_reg WHERE a.tabla='".$this->tabla_roles."'");
-        return $query->result();
+        $this->db->where('a.status', 1);
+        $this->db->where('a.tabla', $this->tabla_roles);
+        $this->db->select('*');
+        $this->db->from($this->tabla_roles . ' r');
+        $this->db->join('auditoria a', 'r.id_rol = a.cod_reg');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
 
     public function buscar_codigos($codigo)
@@ -65,7 +96,7 @@ Class Usuarios_model extends CI_Model
         $datos = array(
             'tabla' => $this->tabla_usuario,
             'cod_reg' => $this->db->insert_id(),
-            'usr_regins' => '1',
+            'usr_regins' => $this->session->userdata('id_usuario'),
             'fec_regins' => date('Y-m-d'),
         );
         $personalArray['id_usuario'] = $this->db->insert_id();
@@ -82,23 +113,28 @@ Class Usuarios_model extends CI_Model
         $this->db->where('id_contacto', $idArray['id_contacto']);
         $this->db->update($this->tabla_contacto, $contactoArray);
         $this->db->where('id_datos_personales', $idArray['id_datos_personales']);
-        echo $imagen;
         $this->db->update($this->tabla_personal, $personalArray);
-        if($imagen!=""){
-            subirImagen($imagen, $idArray['id_usuario']);
+        if($imagen != ""){
+            $data = array(
+                'avatar_usuario' => $imagen,
+            );
+            $this->db->where('id_usuario', $idArray['id_usuario']);
+            $this->db->update($this->tabla_usuario, $data);
         }
         $datos=array(
-            'usr_regmod' => '1',
+            'usr_regmod' => $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $idArray['id_usuario'])->where('tabla', $this->tabla_usuario);
         $this->db->update('auditoria', $datos);
     }
 
-    public function verificar_usuario($correo)
+    public function verificar_usuario($correo_usuario)
     {
-        $query=$this->db->query("SELECT * FROM ".$this->tabla_usuario." WHERE correo_usuario='".$correo."' LIMIT 1");
-        return $query->result_array();
+        $this->db->where('correo_usuario', $correo_usuario);
+        $this->db->limit(1);
+        $resultados = $this->db->get($this->tabla_usuario);
+        return $resultados->result_array();
     }
 
     public function eliminar_usuario($id)
@@ -119,7 +155,7 @@ Class Usuarios_model extends CI_Model
         $datos=array(
             'status'=>$status,
             'fec_status'=> date('Y-m-d'),
-            'usr_regmod' => '1',
+            'usr_regmod' => $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->tabla_usuario);
@@ -143,28 +179,38 @@ Class Usuarios_model extends CI_Model
 
     public function status_multiple_usuario($id, $status)
     {
-        $usuarios=str_replace(' ', ',', $id);
-        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$usuarios.") AND tabla='".$this->tabla_usuario."'");
+        $data = array(
+            'status' => $status,
+        );
+        $usuarios = str_replace(' ', ',', $id);
+        $this->db->where_in('cod_reg', $usuarios);
+        $this->db->where('tabla', $this->tabla_rol);
+        $this->db->update('auditoria', $data);
     }
 
-    public function subirImagen($imagen, $id)
+    public function login($correo_usuario, $clave_usuario)
     {
-        $config['upload_path'] = "assets/cpanel/usuarios/images/"; //ruta donde carga el archivo
-        /*if(!file_exists($config['upload_path'])){
-            mkdir($config['upload_path'], 0777, true);
-        }*/
-        $config['file_name'] = time(); //nombre temporal del archivo
-        $config['allowed_types'] = "gif|jpg|jpeg|png";
-        $config['overwrite'] = true; //sobreescribe si existe uno con ese nombre
-        $config['max_size'] = "2000000"; //tamaño maximo de archivo
-        $usuarioArray = array(
-            'avatar_usuario' => $config['file_name'],
-        );
-        $this->load->library('upload', 'avatar_usuario');
-        if($this->upload->do_upload($imagen)){
-            $this->db->where('id_usuario', $id);
-            $this->db->update($this->tabla_usuario, $usuarioArray);
+        $this->db->where('u.correo_usuario', $correo_usuario);
+        $this->db->where('u.clave_usuario', $clave_usuario);
+        $this->db->where('a.tabla', $this->tabla_usuario);
+        $this->db->select('u.*, dt.nombre_datos_personales, dt.apellido_p_datos_personales, dt.apellido_m_datos_personales, a.status');
+        $this->db->from($this->tabla_usuario . ' u');
+        $this->db->join($this->tabla_personal . ' dt', 'u.id_usuario = dt.id_usuario');
+        $this->db->join('auditoria a', 'u.id_usuario = a.cod_reg');
+        $resultados = $this->db->get();
+        if ($resultados->num_rows() > 0) {
+            return $resultados->row();
+        } else {
+            return false;
         }
     }
 
+    public function ultima_conexion($id_usuario)
+    {
+        $data = array(
+            'fec_ult_acceso_usuario' => date('Y-m-d'),
+        );
+        $this->db->where('id_usuario', $id_usuario);
+        $this->db->update($this->tabla_usuario, $data);
+    }
 }

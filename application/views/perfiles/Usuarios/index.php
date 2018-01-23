@@ -707,4 +707,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?=base_url();?>assets/cpanel/Usuarios/js/usuarios.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/momentjs/moment.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+    <script>
+		$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
+		$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
+		var consultar = <?php echo $permiso[0]->consultar ?>,
+			registrar = <?php echo $permiso[0]->registrar ?>,
+			actualizar = <?php echo $permiso[0]->actualizar ?>,
+			borrar = <?php echo $permiso[0]->eliminar ?>;
+		if(registrar==0)
+			$(".registrar").removeClass('ocultar');
+		if(actualizar==0)
+			$(".actualizar").removeClass('ocultar');
+		if(borrar==0)
+			$(".eliminar").removeClass('ocultar');
+	</script>
 </html>

@@ -6,16 +6,20 @@ class ListaVista extends CI_Controller
 	{
     parent::__construct();
     $this->load->database();
+    $this->load->library('session');
     $this->load->model('ListaVista_model');
     $this->load->model('Menu_model');
     $this->load->library('form_validation');
+    if (!$this->session->userdata("login")) {
+      redirect(base_url());
+    }
   }
 
   public function index()
   {
-    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('lista vista', 1);
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('listavista', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
-    $data['vistas'] = $this->Menu_model->vistas(1);
+    $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['modulos'] = $this->ListaVista_model->modulos();
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
@@ -57,7 +61,6 @@ class ListaVista extends CI_Controller
         'id_modulo_vista' => $this->input->post('id_modulo_vista'),
         'posicion_lista_vista' => $this->input->post('posicion_lista_vista'),
         'visibilidad_lista_vista' => $visible,
-        'nombre_oculto_lista_vista' => strtolower($this->input->post('nombre_lista_vista')),
       );
       $this->ListaVista_model->registrar_lista_vista($data);
       echo json_encode("<span>Se ha registrado exitosamente!</span>"); // envio de mensaje exitoso

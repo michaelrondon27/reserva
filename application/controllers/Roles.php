@@ -6,16 +6,20 @@ class Roles extends CI_Controller
 	{
     parent::__construct();
     $this->load->database();
+    $this->load->library('session');
     $this->load->model('Roles_model');
     $this->load->model('Menu_model');
     $this->load->library('form_validation');
+    if (!$this->session->userdata("login")) {
+      redirect(base_url());
+    }
   }
 
   public function index()
   {
-    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('roles', 1);
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('roles', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
-    $data['vistas'] = $this->Menu_model->vistas(1);
+    $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['listasVistas'] = $this->Roles_model->listas_vistas();
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);

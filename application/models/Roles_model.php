@@ -12,15 +12,25 @@ Class Roles_model extends CI_Model
     public function listado_roles()
     {
         $roles = array();
-        $query = $this->db->query("SELECT r.*, a.fec_regins, u.correo_usuario, a.status FROM ".$this->tabla_rol." r INNER JOIN auditoria a ON r.id_rol=a.cod_reg INNER JOIN usuario u ON a.usr_regins=u.id_usuario WHERE a.tabla='".$this->tabla_rol."' GROUP BY r.nombre_rol");
-        foreach ($query->result() as $rol) {
-            $sql = $this->db->query("SELECT GROUP_CONCAT(lv.nombre_lista_vista SEPARATOR ' - ') AS nombre_lista_vista FROM ".$this->tabla_rol_operaciones." ro INNER JOIN ".$this->tabla_lista_vista." lv ON ro.id_lista_vista = lv.id_lista_vista WHERE ro.id_rol = ".$rol->id_rol);
+        $this->db->where('a.tabla', $this->tabla_rol);
+        $this->db->group_by('r.nombre_rol');
+        $this->db->select('r.*, a.fec_regins, u.correo_usuario, a.status');
+        $this->db->from($this->tabla_rol . ' r');
+        $this->db->join('auditoria a', 'r.id_rol = a.cod_reg');
+        $this->db->join('usuario u', 'a.usr_regins = u.id_usuario');
+        $resultados = $this->db->get();
+        foreach ($resultados->result() as $rol) {
+            $this->db->where('ro.id_rol', $rol->id_rol);
+            $this->db->select('GROUP_CONCAT(lv.nombre_lista_vista SEPARATOR " - ") AS nombre_lista_vista');
+            $this->db->from($this->tabla_rol_operaciones . ' ro');
+            $this->db->join($this->tabla_lista_vista . ' lv', 'ro.id_lista_vista = lv.id_lista_vista');
+            $query = $this->db->get();
             $array = array(
                 'id_rol' => $rol->id_rol,
                 'nombre_rol' => $rol->nombre_rol,
                 'descripcion_rol' => $rol->descripcion_rol,
                 'editable_rol' => $rol->editable_rol,
-                'nombre_lista_vista' => $sql->result(),
+                'nombre_lista_vista' => $query->result(),
                 'fec_regins' => $rol->fec_regins,
                 'correo_usuario' => $rol->correo_usuario,
                 'status' => $rol->status,
@@ -32,8 +42,13 @@ Class Roles_model extends CI_Model
 
     public function listas_vistas()
     {
-        $query = $this->db->query("SELECT * FROM ".$this->tabla_lista_vista." lv INNER JOIN auditoria a ON lv.id_lista_vista=a.cod_reg WHERE a.tabla='".$this->tabla_lista_vista."'");
-        return $query->result();
+        $this->db->where('a.tabla', $this->tabla_lista_vista);
+        $this->db->where('a.status', 1);
+        $this->db->select('*');
+        $this->db->from($this->tabla_lista_vista. " lv");
+        $this->db->join('auditoria a', 'lv.id_lista_vista=a.cod_reg');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
         
     public function registrar_rol($data, $permisos){
@@ -42,7 +57,7 @@ Class Roles_model extends CI_Model
         $datos=array(
             'tabla' => $this->tabla_rol,
             'cod_reg' => $rol,
-            'usr_regins' => '1',
+            'usr_regins' => $this->session->userdata('id_usuario'),
             'fec_regins' => date('Y-m-d'),
         );
         $this->db->insert('auditoria', $datos);
@@ -67,7 +82,7 @@ Class Roles_model extends CI_Model
         $this->db->where('id_rol', $id);
         $this->db->update($this->tabla_rol, $rol);
         $datos=array(
-            'usr_regmod' => '1',
+            'usr_regmod' => $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->tabla_rol);
@@ -116,7 +131,7 @@ Class Roles_model extends CI_Model
         $datos = array(
             'status'=>$status,
             'fec_status'=> date('Y-m-d'),
-            'usr_regmod' => '1',
+            'usr_regmod' => $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->tabla_rol);
@@ -140,14 +155,23 @@ Class Roles_model extends CI_Model
 
     public function status_multiple_roles($id, $status)
     {
+        $data = array(
+            'status' => $status,
+        );
         $roles = str_replace(' ', ',', $id);
-        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$roles.") AND tabla='".$this->tabla_rol."'");
+        $this->db->where_in('cod_reg', $roles);
+        $this->db->where('tabla', $this->tabla_rol);
+        $this->db->update('auditoria', $data);
     }
 
-    public function operaciones_rol($id)
+    public function operaciones_rol($id_rol)
     {
-        $query = $this->db->query("SELECT ro.*, lv.nombre_lista_vista FROM ".$this->tabla_rol_operaciones." ro INNER JOIN ".$this->tabla_lista_vista." lv ON ro.id_lista_vista = lv.id_lista_vista WHERE ro.id_rol = ".$id);
-        return $query->result();
+        $this->db->where('ro.id_rol', $id_rol);
+        $this->db->select('ro.*, lv.nombre_lista_vista');
+        $this->db->from($this->tabla_rol_operaciones . ' ro');
+        $this->db->join($this->tabla_lista_vista . ' lv', 'ro.id_lista_vista = lv.id_lista_vista');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
 
     public function eliminar_rol_operacion($id)

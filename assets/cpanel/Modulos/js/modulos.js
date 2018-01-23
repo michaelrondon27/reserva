@@ -33,8 +33,8 @@ $(document).ready(function(){
 					render : function(data, type, row) {
 						var descripcion = data;
 						if (data != null)
-							if (data.length > 40)
-								descripcion = data.substr(0,39) + "..."
+							if (data.length > 30)
+								descripcion = data.substr(0,29) + "..."
 						return descripcion;
 					}
 				},

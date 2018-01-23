@@ -201,7 +201,7 @@ $(document).ready(function(){
 			document.getElementById('id_datos_personales_actualizar').value=data.id_datos_personales;
 			document.getElementById('id_usuario_actualizar').value=data.id_usuario;
 			cuadros('#cuadro1', '#cuadro4');
-			$("#nombre_banco_editar").focus();
+			$("#nombre_datos_personales_actualizar").focus();
 		});
 	}
 /* ------------------------------------------------------------------------------- */
@@ -211,7 +211,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function actualizar_usuario(){
-		enviarFormulario("#form_usuario_actualizar", 'Usuarios/actualizar_usuario', '#cuadro2');
+		enviarFormulario("#form_usuario_actualizar", 'Usuarios/actualizar_usuario', '#cuadro4');
 	}
 /* ------------------------------------------------------------------------------- */
 
