@@ -327,6 +327,15 @@
 
 /* ------------------------------------------------------------------------------- */
     /*
+        Funcion para los input para telefonos
+    */
+    function porcentajeInput(input){
+        $(input).inputmask('decimal', { rightAlign: true, groupSeparator: '.', autoGroup: true, radixPoint: ',' });
+    }
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+    /*
         Funcion para limpiar los selects
     */
     function eliminarOptions(select){
