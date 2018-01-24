@@ -8,8 +8,13 @@ Class Plazas_model extends CI_Model{
 
     public function listar_plazas()
     {
-        $query=$this->db->query("SELECT p.id_plaza, p.cod_plaza, p.nombre_plaza, a.fec_regins, u.correo_usuario, a.status FROM ".$this->nombre_tabla." p INNER JOIN auditoria a ON p.id_plaza=a.cod_reg INNER JOIN usuario u ON a.usr_regins=u.id_usuario WHERE a.tabla='".$this->nombre_tabla."'");
-        return $query->result();
+        $this->db->where('a.tabla', $this->nombre_tabla);
+        $this->db->select('p.id_plaza, p.cod_plaza, p.nombre_plaza, a.fec_regins, u.correo_usuario, a.status');
+        $this->db->from($this->nombre_tabla . ' p');
+        $this->db->join('auditoria a', 'p.id_plaza = a.cod_reg');
+        $this->db->join('usuario u', 'a.usr_regins = u.id_usuario');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
         
     public function registrar_plaza($data){
@@ -17,7 +22,7 @@ Class Plazas_model extends CI_Model{
         $datos=array(
             'tabla' => $this->nombre_tabla,
             'cod_reg' => $this->db->insert_id(),
-            'usr_regins' => '1',
+            'usr_regins' =>  $this->session->userdata('id_usuario'),
             'fec_regins' => date('Y-m-d'),
         );
         $this->db->insert('auditoria', $datos);
@@ -28,7 +33,7 @@ Class Plazas_model extends CI_Model{
         $this->db->where('id_plaza', $id);
         $this->db->update($this->nombre_tabla, $data);
         $datos=array(
-            'usr_regmod' => '1',
+            'usr_regmod' =>  $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
@@ -59,7 +64,7 @@ Class Plazas_model extends CI_Model{
         $datos=array(
             'status'=>$status,
             'fec_status'=> date('Y-m-d'),
-            'usr_regmod' => '1',
+            'usr_regmod' =>  $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
@@ -83,8 +88,8 @@ Class Plazas_model extends CI_Model{
 
     public function status_multiple_plaza($id, $status)
     {
-        $plazas=str_replace(' ', ',', $id);
-        $this->db->query("UPDATE auditoria SET status=".$status." WHERE cod_reg in (".$plazas.") AND tabla='".$this->nombre_tabla."'");
+        $plazas = str_replace(' ', ',', $id);
+        $this->db->query("UPDATE auditoria SET status = " . $status . ", fec_status = " . date('Y-m-d') . ", usr_regmod = " . $this->session->userdata('id_usuario') . ", fec_regmod = " . date('Y-m-d') . " WHERE cod_reg in (" . $plazas . ") AND tabla='" . $this->nombre_tabla . "'");
     }
 
 }

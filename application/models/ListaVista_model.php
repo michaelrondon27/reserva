@@ -106,13 +106,8 @@ Class ListaVista_model extends CI_Model
 
     public function status_multiple_lista_vista($id, $status)
     {
-        $data = array(
-            'status' => $status,
-        );
         $listas_vistas = str_replace(' ', ',', $id);
-        $this->db->where_in('cod_reg', $listas_vistas);
-        $this->db->where('tabla', $this->tabla_lista_vista);
-        $this->db->update('auditoria', $data);
+        $this->db->query("UPDATE auditoria SET status = " . $status . ", fec_status = " . date('Y-m-d') . ", usr_regmod = " . $this->session->userdata('id_usuario') . ", fec_regmod = " . date('Y-m-d') . " WHERE cod_reg in (" . $listas_vistas . ") AND tabla='" . $this->tabla_lista_vista . "'");
     }
 
     public function posicionar_lista_vista_segun_modulo($posicionar)

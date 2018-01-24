@@ -179,13 +179,8 @@ Class Usuarios_model extends CI_Model
 
     public function status_multiple_usuario($id, $status)
     {
-        $data = array(
-            'status' => $status,
-        );
         $usuarios = str_replace(' ', ',', $id);
-        $this->db->where_in('cod_reg', $usuarios);
-        $this->db->where('tabla', $this->tabla_rol);
-        $this->db->update('auditoria', $data);
+        $this->db->query("UPDATE auditoria SET status = " . $status . ", fec_status = " . date('Y-m-d') . ", usr_regmod = " . $this->session->userdata('id_usuario') . ", fec_regmod = " . date('Y-m-d') . " WHERE cod_reg in (" . $usuarios . ") AND tabla='" . $this->tabla_usuario . "'");
     }
 
     public function login($correo_usuario, $clave_usuario)
