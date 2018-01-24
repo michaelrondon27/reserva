@@ -5,6 +5,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html>
 	<link href="<?=base_url();?>assets/template/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/template/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+	<?php if($permiso[0]->consultar==1 && $permiso[0]->registrar==1 && $permiso[0]->actualizar==1 && $permiso[0]->eliminar==1): ?>
+		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
+	<?php endif ?>
 	<body class="theme-blue">
 		<input type="hidden" id="ruta" value="<?=base_url();?>" name="ruta">
 		<section class="content">
@@ -43,13 +46,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    </thead>
 		                                    <tbody></tbody>
 		                                </table>
-		                                <div class="col-md-2">
+		                                <div class="col-md-2 ocultar eliminar">
 		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('Usuarios/eliminar_multiple_usuario')">Eliminar seleccionados</button>
 		                                </div>
-		                                <div class="col-md-2">
+		                                <div class="col-md-2 ocultar actualizar">
 		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Usuarios/status_multiple_usuario', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
-		                                <div class="col-md-2">
+		                                <div class="col-md-2 ocultar actualizar">
 		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Usuarios/status_multiple_usuario', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
