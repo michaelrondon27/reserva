@@ -11,23 +11,37 @@ Class EsquemaComision_model extends CI_Model
     public function listado_esquema_comision()
     {
         $this->db->where('a.tabla', $this->tabla_esquema_comision);
-        $this->db->select('ec.*, a.fec_regins, u.correo_usuario, a.status');
+        $this->db->select('ec.*, a.fec_regins, u.correo_usuario, a.status, iv.descriplval AS idVendedor, tv.descriplval AS tipoVendedor, tp.descriplval AS tipoPlazo');
         $this->db->from($this->tabla_esquema_comision . ' ec');
         $this->db->join('auditoria a', 'ec.id_esquema_comision = a.cod_reg');
         $this->db->join('usuario u', 'a.usr_regins = u.id_usuario');
+        $this->db->join($this->tabla_lval . ' iv', 'ec.id_vendedor = iv.codlval');
+        $this->db->join($this->tabla_lval . ' tv', 'ec.tipo_vendedor = tv.codlval');
+        $this->db->join($this->tabla_lval . ' tp', 'ec.tipo_plazo = tp.codlval');
         $resultados = $this->db->get();
         return $resultados->result();
     }   
         
-    public function registrar_banco($data){
-        $this->db->insert($this->nombre_tabla, $data);
-        $datos=array(
-            'tabla' => $this->nombre_tabla,
-            'cod_reg' => $this->db->insert_id(),
-            'usr_regins' => $this->session->userdata('id_usuario'),
-            'fec_regins' => date('Y-m-d'),
-        );
-        $this->db->insert('auditoria', $datos);
+    public function registrar_esquema_comision($data){
+        $this->db->where('id_vendedor', $data['id_vendedor']);
+        $this->db->where('tipo_vendedor', $data['tipo_vendedor']);
+        $this->db->where('num_ventas_mes', $data['num_ventas_mes']);
+        $this->db->where('tipo_plazo', $data['tipo_plazo']);
+        $this->db->limit(1);
+        $resultados = $this->db->get($this->tabla_esquema_comision);
+        if ($resultados->num_rows() == 0) {
+            $this->db->insert($this->tabla_esquema_comision, $data);
+            $datos=array(
+                'tabla' => $this->tabla_esquema_comision,
+                'cod_reg' => $this->db->insert_id(),
+                'usr_regins' => $this->session->userdata('id_usuario'),
+                'fec_regins' => date('Y-m-d'),
+            );
+            $this->db->insert('auditoria', $datos);
+            echo json_encode("<span>El esquema de comisión se ha editado exitosamente!</span>");
+        } else {
+            echo "<span>¡Ya se encuentra registrado un esquema de comisión con las mismas características!</span>";
+        }
     }
 
     public function actualizar_banco($id, $data)

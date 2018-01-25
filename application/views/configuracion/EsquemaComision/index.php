@@ -108,7 +108,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="porctj_comision">Porcentaje de Comisión*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control porcentaje" name="porctj_comision" id="porctj_comision_registrar" placeholder="P. EJ. 00,00" required>
+				                                        <input type="text" class="form-control porcentaje" name="porctj_comision" id="porctj_comision_registrar" placeholder="P. EJ. 00,00" required maxlength="5">
 				                                    </div>
 				                                </div>
 				                            </div>

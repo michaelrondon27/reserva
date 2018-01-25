@@ -23,13 +23,20 @@ $(document).ready(function(){
 				"dataSrc":""
 			},
 			"columns":[
-				{"data": "id_banco",
+				{"data": "id_esquema_comision",
 					render : function(data, type, row) {
 						return "<input type='checkbox' class='checkitem chk-col-blue' id='item"+data+"' value='"+data+"'><label for='item"+data+"'></label>"
 					}
 				},
-				{"data":"cod_banco"},
-				{"data":"nombre_banco"},
+				{"data":"idVendedor"},
+				{"data":"tipoVendedor"},
+				{"data":"num_ventas_mes"},
+				{"data":"tipoPlazo"},
+				{"data":"porctj_comision",
+					render : function(data, type, row) {
+						return data.replace('.',',')  + " %";
+	          		}
+				},
 				{"data":"fec_regins",
 					render : function(data, type, row) {
 						return cambiarFormatoFecha(data);

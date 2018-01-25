@@ -37,21 +37,18 @@ class EsquemaComision extends CI_Controller
 
   public function registrar_esquema_comision()
   {
-    echo $this->input->post('porctj_comision')."<br>";
-    echo number_format(int_val($this->input->post('porctj_comision')), 2, ",", ".");
     /*$this->reglas_esquema_comision();
     $this->mensajes_reglas_esquema_comision();
-    if($this->form_validation->run() == true){
+    if($this->form_validation->run() == true){*/
       $data = array(
         'id_vendedor' => $this->input->post('id_vendedor'),
         'tipo_vendedor' => $this->input->post('tipo_vendedor'),
         'tipo_plazo' => $this->input->post('tipo_plazo'),
         'num_ventas_mes' => $this->input->post('num_ventas_mes'),
-        'porctj_comision' => $this->input->post('porctj_comision'),
+        'porctj_comision' => str_replace(',', '.', $this->input->post('porctj_comision')),
       );
-      $this->Bancos_model->registrar_banco($data);
-      echo json_encode("<span>El Banco se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
-    }else{
+      $this->EsquemaComision_model->registrar_esquema_comision($data);
+    /*}else{
       // enviar los errores
       echo validation_errors();
     }*/
@@ -94,7 +91,7 @@ class EsquemaComision extends CI_Controller
     $this->form_validation->set_rules('tipo_vendedor','Tipo de Vendedor','required');
     $this->form_validation->set_rules('tipo_plazo','Tipo de Plazo','required');
     $this->form_validation->set_rules('num_ventas_mes','Ventas al mes','required|numeric');
-    $this->form_validation->set_rules('porctj_comision','Porcentaje de Comisión','required|numeric');
+    $this->form_validation->set_rules('porctj_comision','Porcentaje de Comisión','required');
   }
 
   public function mensajes_reglas_esquema_comision(){

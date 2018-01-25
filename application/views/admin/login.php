@@ -31,7 +31,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-4 col-xs-offset-4">
-                                <button class="btn btn-block bg-pink waves-effect" type="submit">SIGN IN</button>
+                                <button class="btn btn-block bg-pink waves-effect" type="submit">Entrar</button>
                             </div>
                         </div>
                     </form>
