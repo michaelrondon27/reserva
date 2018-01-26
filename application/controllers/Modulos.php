@@ -49,12 +49,12 @@ class Modulos extends CI_Controller
       );
       $this->Modulos_model->posicionar_modulos($posicionar);
       $data=array(
-        'nombre_modulo_vista' => strtoupper($this->input->post('nombre_modulo_vista')),
-        'descripcion_modulo_vista' => strtoupper($this->input->post('descripcion_modulo_vista')),
+        'nombre_modulo_vista' => mb_strtoupper($this->input->post('nombre_modulo_vista'), 'UTF-8'),
+        'descripcion_modulo_vista' => mb_strtoupper($this->input->post('descripcion_modulo_vista'), 'UTF-8'),
         'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
       );
       $this->Modulos_model->registrar_modulo($data);
-      echo json_encode("<span>El modulo se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
+      echo json_encode("<span>El módulo se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
     }else{
       // enviar los errores
       echo validation_errors();
@@ -66,15 +66,15 @@ class Modulos extends CI_Controller
     $this->reglas_modulos('update');
     $this->mensajes_reglas_modulos();
     if($this->form_validation->run() == true){
-      $modulo_verificado=$this->Modulos_model->verificar_modulo(strtoupper($this->input->post('nombre_modulo_vista'))); //busca si el nombre del banco esta registrado en la base de datos
+      $modulo_verificado=$this->Modulos_model->verificar_modulo(mb_strtoupper($this->input->post('nombre_modulo_vista'), 'UTF-8')); //busca si el nombre del banco esta registrado en la base de datos
       $posicionar = array(
         'inicial' => $this->input->post('inicial'),
         'tipo' => 'update',
         'final' => $this->input->post('posicion_modulo_vista'),
       );
       $data=array(
-        'nombre_modulo_vista' => strtoupper($this->input->post('nombre_modulo_vista')),
-        'descripcion_modulo_vista' => strtoupper($this->input->post('descripcion_modulo_vista')),
+        'nombre_modulo_vista' => mb_strtoupper($this->input->post('nombre_modulo_vista'), 'UTF-8'),
+        'descripcion_modulo_vista' => mb_strtoupper($this->input->post('descripcion_modulo_vista'), 'UTF-8'),
         'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
       );
       if(count($modulo_verificado)>0){
@@ -83,16 +83,16 @@ class Modulos extends CI_Controller
           //si son iguales, quiere decir que es el mismo registro
           $this->Modulos_model->posicionar_modulos($posicionar);
           $this->Modulos_model->actualizar_modulo($this->input->post('id_modulo_vista'), $data);
-          echo json_encode("<span>El modulo se ha editado exitosamente!</span>"); // envio de mensaje exitoso
+          echo json_encode("<span>El módulo se ha editado exitosamente!</span>"); // envio de mensaje exitoso
         }else{
           //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro
-          echo "<span>El nombre del modulo ingresado ya se encuentra en uso!</span>";
+          echo "<span>El nombre del módulo ingresado ya se encuentra en uso!</span>";
         }
       }else{
         $this->Modulos_model->posicionar_modulos($posicionar);
         // si conteo del array es igual a 0, se actualiza el registro
         $this->Modulos_model->actualizar_modulo($this->input->post('id_modulo_vista'), $data);
-        echo json_encode("<span>El modulo se ha editado exitosamente!</span>"); // envio de mensaje exitoso
+        echo json_encode("<span>El módulo se ha editado exitosamente!</span>"); // envio de mensaje exitoso
       }
       
     }else{

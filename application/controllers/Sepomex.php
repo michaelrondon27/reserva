@@ -16,7 +16,7 @@ class Sepomex extends CI_Controller {
 
 	public function index()
     {
-        $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('sepomex', $this->session->userdata('id_rol'));
+        $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('Sepomex', $this->session->userdata('id_rol'));
         $data['modulos'] = $this->Menu_model->modulos();
         $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
         $this->load->view('cpanel/header');

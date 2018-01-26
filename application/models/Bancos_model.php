@@ -43,7 +43,7 @@ Class Bancos_model extends CI_Model
 
     public function verificar_banco($data)
     {
-        $this->db->where('nombre_banco', $$data['nombre_banco']);
+        $this->db->where('nombre_banco', $data['nombre_banco']);
         $this->db->limit(1);
         $resultados = $this->db->get($this->nombre_tabla);
         return $resultados->result_array();
@@ -77,16 +77,19 @@ Class Bancos_model extends CI_Model
     public function eliminar_multiple_banco($id)
     {
         $eliminados=0;
-        $noEliminados=0;
         foreach($id as $banco)
         {
             if($this->db->delete($this->nombre_tabla, array('id_banco' => $banco))){
                 $eliminados++;
-            }else{
-                $noEliminados++;
             }
         }
-        echo json_encode("<span>Registros eliminados: ".$eliminados."</span><br><span>Registros no eliminados (porque tienen dependencia en otras tablas): ".$noEliminados);
+        if ($eliminados == 0) {
+            echo json_encode("<span>¡No se ha eliminado ninguno de los registros seleccionados porque tienen dependencia en otras tablas!</span>");
+        } else if ($eliminados == 1) {
+            echo json_encode("<span>¡Se ha eliminado un solo registro de todos los seleccionados!</span>");
+        } else if ($eliminados > 1) {
+            echo json_encode("<span>¡Se han eliminado " . $eliminados . " registros de todos los seleccionados!</span>");
+        }
     }
 
     public function status_multiple_banco($id, $status)

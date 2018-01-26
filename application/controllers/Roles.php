@@ -17,7 +17,7 @@ class Roles extends CI_Controller
 
   public function index()
   {
-    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('roles', $this->session->userdata('id_rol'));
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('Roles', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['listasVistas'] = $this->Roles_model->listas_vistas();
@@ -39,8 +39,8 @@ class Roles extends CI_Controller
     $this->mensajes_reglas_roles();
     if($this->form_validation->run() == true){
       $data=array(
-        'nombre_rol' => strtoupper($this->input->post('nombre_rol')),
-        'descripcion_rol' => strtoupper($this->input->post('descripcion_rol')),
+        'nombre_rol' => mb_strtoupper($this->input->post('nombre_rol'), 'UTF-8'),
+        'descripcion_rol' => mb_strtoupper($this->input->post('descripcion_rol'), 'UTF-8'),
         'editable_rol' => 0,
       );
       $this->Roles_model->registrar_rol($data, $this->input->post('permisos'));
@@ -57,8 +57,8 @@ class Roles extends CI_Controller
     $this->mensajes_reglas_roles();
     if($this->form_validation->run() == true){
       $rol = array(
-        'nombre_rol' => strtoupper($this->input->post('nombre_rol')),
-        'descripcion_rol' => strtoupper($this->input->post('descripcion_rol')),
+        'nombre_rol' => mb_strtoupper($this->input->post('nombre_rol'), 'UTF-8'),
+        'descripcion_rol' => mb_strtoupper($this->input->post('descripcion_rol'), 'UTF-8'),
       );
       $this->Roles_model->actualizar_rol($this->input->post('id_rol'), $rol, $this->input->post('permisos'));
       echo json_encode("<span>El Rol se ha editado exitosamente!</span>"); // envio de mensaje exitoso

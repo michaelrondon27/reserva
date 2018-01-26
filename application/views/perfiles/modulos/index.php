@@ -12,14 +12,13 @@
 		<section class="content">
 	        <div class="container-fluid">
 	        	<div id="alertas"></div>
-
 	        	<!-- Comienzo del cuadro de la tabla -->
 					<div class="row clearfix" id="cuadro1">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
 		                            <h2>
-		                                Gestión de Modulos
+		                                Gestión de Módulos
 		                            </h2>
 		                            <ul class="header-dropdown m-r--5">
 		                                <button class="btn btn-primary ocultar registrar waves-effect" onclick="nuevoModulo()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
@@ -62,7 +61,7 @@
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Registro de Modulo</h2>
+		                            <h2>Registro de Módulo</h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
@@ -107,7 +106,7 @@
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Consultar Modulo</h2>
+		                            <h2>Consultar Módulo</h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
@@ -149,7 +148,7 @@
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Editar de Modulo</h2>
+		                            <h2>Editar de Módulo</h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">

@@ -16,7 +16,7 @@ class ListaValores extends CI_Controller {
 
 	public function index()
 	{
-    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('listavalores', $this->session->userdata('id_rol'));
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('ListaValores', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['tipolval']=$this->ListasValores_model->tipolval();
@@ -56,7 +56,7 @@ class ListaValores extends CI_Controller {
     if($this->form_validation->run() == true){
       $data=array(
         'tipolval' => $this->input->post('tipolval'),
-        'descriplval' => strtoupper($this->input->post('descriplval')),
+        'descriplval' => mb_strtoupper($this->input->post('descriplval'), 'UTF-8'),
       );
       $this->ListasValores_model->registrar_lval($data);
       echo json_encode("<span>Se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
@@ -73,7 +73,7 @@ class ListaValores extends CI_Controller {
     if($this->form_validation->run() == true){
       $data=array(
         'tipolval' => $this->input->post('tipolval'),
-        'descriplval' => strtoupper($this->input->post('descriplval')),
+        'descriplval' => mb_strtoupper($this->input->post('descriplval'), 'UTF-8'),
       );
       $lval_verificado=$this->ListasValores_model->verificar_lval($data); //busca si el nombre del banco esta registrado en la base de datos
       if(count($lval_verificado)>0){

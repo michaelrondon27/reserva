@@ -39,7 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                            		<label for="cod_banco">Columnas Separadas Por*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" name="separacion" id="separacion" maxlength="1" placeholder="P. EJ. |" required>
+			                                        <input type="text" class="form-control" name="separacion" id="separacion" maxlength="1" placeholder="P. EJ. |" required value="|">
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -47,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                            		<label for="cod_banco">Iniciar en la Línea*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" name="inicio" id="inicio" onkeypress='return solonumeros(event)' maxlength="4" placeholder="P. EJ. 3" required>
+			                                        <input type="text" class="form-control" name="inicio" id="inicio" onkeypress='return solonumeros(event)' placeholder="P. EJ. 3" required value="3">
 			                                    </div>
 			                                </div>
 			                            </div>

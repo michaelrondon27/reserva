@@ -17,7 +17,7 @@ class Bancos extends CI_Controller
 
   public function index()
   {
-    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('bancos', $this->session->userdata('id_rol'));
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('Bancos', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $this->load->view('cpanel/header');
@@ -39,7 +39,7 @@ class Bancos extends CI_Controller
     if($this->form_validation->run() == true){
       $data=array(
         'cod_banco' => $this->input->post('cod_banco'),
-        'nombre_banco' => strtoupper($this->input->post('nombre_banco')),
+        'nombre_banco' => mb_strtoupper($this->input->post('nombre_banco'), 'UTF-8'),
       );
       $this->Bancos_model->registrar_banco($data);
       echo json_encode("<span>El Banco se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
@@ -55,7 +55,7 @@ class Bancos extends CI_Controller
     $this->mensajes_reglas_banco();
     if($this->form_validation->run() == true){
       $data=array(
-        'nombre_banco' => strtoupper($this->input->post('nombre_banco')),
+        'nombre_banco' => mb_strtoupper($this->input->post('nombre_banco'), 'UTF-8'),
       );
       $banco_verificado=$this->Bancos_model->verificar_banco($data); //busca si el nombre del banco esta registrado en la base de datos
       if(count($banco_verificado)>0){

@@ -74,16 +74,19 @@ Class Plazas_model extends CI_Model{
     public function eliminar_multiple_plaza($id)
     {
         $eliminados=0;
-        $noEliminados=0;
         foreach($id as $plaza)
         {
             if($this->db->delete($this->nombre_tabla, array('id_plaza' => $plaza))){
                 $eliminados++;
-            }else{
-                $noEliminados++;
             }
         }
-        echo json_encode("<span>Registros eliminados: ".$eliminados."</span><br><span>Registros no eliminados (porque tienen dependencia en otras tablas): ".$noEliminados);
+        if ($eliminados == 0) {
+            echo json_encode("<span>¡No se ha eliminado ninguno de los registros seleccionados porque tienen dependencia en otras tablas!</span>");
+        } else if ($eliminados == 1) {
+            echo json_encode("<span>¡Se ha eliminado un solo registro de todos los seleccionados!</span>");
+        } else if ($eliminados > 1) {
+            echo json_encode("<span>¡Se han eliminado " . $eliminados . " registros de todos los seleccionados!</span>");
+        }
     }
 
     public function status_multiple_plaza($id, $status)

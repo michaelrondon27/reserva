@@ -17,7 +17,7 @@ class ListaVista extends CI_Controller
 
   public function index()
   {
-    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('listavista', $this->session->userdata('id_rol'));
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('ListaVista', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['modulos'] = $this->ListaVista_model->modulos();

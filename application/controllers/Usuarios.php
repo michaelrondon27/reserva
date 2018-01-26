@@ -17,7 +17,7 @@ class Usuarios extends CI_Controller
 
   public function index()
   {
-    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('usuarios', $this->session->userdata('id_rol'));
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('Usuarios', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['nacionalidades'] = $this->Usuarios_model->nacionalidades();
@@ -68,18 +68,18 @@ class Usuarios extends CI_Controller
         'id_codigo_postal' => $this->input->post('colonia'),
         'telefono_principal_contacto' => $this->input->post('telefono_principal_contacto'),
         'telefono_movil_contacto' => $this->input->post('telefono_principal_contacto'),
-        'direccion_contacto' => strtoupper($this->input->post('direccion_contacto')),
-        'calle_contacto' => strtoupper($this->input->post('calle_contacto')),
+        'direccion_contacto' => mb_strtoupper($this->input->post('direccion_contacto'), 'UTF-8'),
+        'calle_contacto' => mb_strtoupper($this->input->post('calle_contacto'), 'UTF-8'),
         'interior_contacto' => $this->input->post('interior_contacto'),
         'exterior_contacto' => $this->input->post('exterior_contacto'),
       );
       $personalArray = array(
-        'nombre_datos_personales' => strtoupper($this->input->post('nombre_datos_personales')),
-        'apellido_p_datos_personales' => strtoupper($this->input->post('apellido_p_datos_personales')),
-        'apellido_m_datos_personales' => strtoupper($this->input->post('apellido_m_datos_personales')),
+        'nombre_datos_personales' => mb_strtoupper($this->input->post('nombre_datos_personales'), 'UTF-8'),
+        'apellido_p_datos_personales' => mb_strtoupper($this->input->post('apellido_p_datos_personales'), 'UTF-8'),
+        'apellido_m_datos_personales' => mb_strtoupper($this->input->post('apellido_m_datos_personales'), 'UTF-8'),
         'fecha_nac_datos_personales' => date("Y-m-d", strtotime($this->input->post('fecha_nac_datos_personales'))),
         'nacionalidad_datos_personales' => $this->input->post('nacionalidad_datos_personales'),
-        'curp_datos_personales' => strtoupper($this->input->post('curp_datos_personales')),
+        'curp_datos_personales' => mb_strtoupper($this->input->post('curp_datos_personales'), 'UTF-8'),
         'edo_civil_datos_personales' => $this->input->post('edo_civil_datos_personales'),
         'genero_datos_personales' => $this->input->post('genero_datos_personales'),
       );
@@ -115,18 +115,18 @@ class Usuarios extends CI_Controller
         'id_codigo_postal' => $this->input->post('colonia'),
         'telefono_principal_contacto' => $this->input->post('telefono_principal_contacto'),
         'telefono_movil_contacto' => $this->input->post('telefono_principal_contacto'),
-        'direccion_contacto' => strtoupper($this->input->post('direccion_contacto')),
-        'calle_contacto' => strtoupper($this->input->post('calle_contacto')),
+        'direccion_contacto' => mb_strtoupper($this->input->post('direccion_contacto'), 'UTF-8'),
+        'calle_contacto' => mb_strtoupper($this->input->post('calle_contacto'), 'UTF-8'),
         'interior_contacto' => $this->input->post('interior_contacto'),
         'exterior_contacto' => $this->input->post('exterior_contacto'),
       );
       $personalArray = array(
-        'nombre_datos_personales' => strtoupper($this->input->post('nombre_datos_personales')),
-        'apellido_p_datos_personales' => strtoupper($this->input->post('apellido_p_datos_personales')),
-        'apellido_m_datos_personales' => strtoupper($this->input->post('apellido_m_datos_personales')),
+        'nombre_datos_personales' => mb_strtoupper($this->input->post('nombre_datos_personales'), 'UTF-8'),
+        'apellido_p_datos_personales' => mb_strtoupper($this->input->post('apellido_p_datos_personales'), 'UTF-8'),
+        'apellido_m_datos_personales' => mb_strtoupper($this->input->post('apellido_m_datos_personales'), 'UTF-8'),
         'fecha_nac_datos_personales' => date("Y-m-d", strtotime($this->input->post('fecha_nac_datos_personales'))),
         'nacionalidad_datos_personales' => $this->input->post('nacionalidad_datos_personales'),
-        'curp_datos_personales' => strtoupper($this->input->post('curp_datos_personales')),
+        'curp_datos_personales' => mb_strtoupper($this->input->post('curp_datos_personales'), 'UTF-8'),
         'edo_civil_datos_personales' => $this->input->post('edo_civil_datos_personales'),
         'genero_datos_personales' => $this->input->post('genero_datos_personales'),
       );

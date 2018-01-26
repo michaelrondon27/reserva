@@ -85,7 +85,7 @@
 				                            </div>
 				                            <div class="col-sm-12">
 				                            	<div class="col-sm-4">
-					                                <label for="lista_vista_registrar">Lista Vista</label>
+					                                <label for="lista_vista_registrar">Funciones</label>
 			                                        <select id="lista_vista_registrar" class="form-control form-group">
 			                                        	<option value="">Seleccione</option>
 			                                        	<?php foreach($listasVistas as $listaVista): ?>
@@ -192,7 +192,7 @@
 				                            <div id="esperarLoading" class="col-sm-12"></div>
 				                            <div class="col-sm-12 ocultar" id="listarRoles">
 				                            	<div class="col-sm-4">
-					                                <label for="lista_vista_actualizar">Lista Vista</label>
+					                                <label for="lista_vista_actualizar">Funciones</label>
 			                                        <select id="lista_vista_actualizar" class="form-control form-group">
 			                                        	<option value="">Seleccione</option>
 			                                        	<?php foreach($listasVistas as $listaVista): ?>
