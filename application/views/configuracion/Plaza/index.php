@@ -41,13 +41,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    <tbody></tbody>
 		                                </table>
 		                                <div class="col-md-2 eliminar ocultar">
-		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('plazasbancarias/eliminar_multiple_plaza')">Eliminar seleccionados</button>
+		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('PlazasBancarias/eliminar_multiple_plaza')">Eliminar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 actualizar ocultar">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('plazasbancarias/status_multiple_plaza', 1, 'activar')">Activar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('PlazasBancarias/status_multiple_plaza', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 actualizar ocultar">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('plazasbancarias/status_multiple_plaza', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('PlazasBancarias/status_multiple_plaza', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>

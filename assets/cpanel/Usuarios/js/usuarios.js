@@ -20,7 +20,7 @@ $(document).ready(function(){
 			"serverSide":false,
 			"ajax":{
 				"method":"POST",
-				"url":url+"usuarios/listado_usuarios",
+				"url":url+"Usuarios/listado_usuarios",
 				"dataSrc":""
 			},
 			"columns":[

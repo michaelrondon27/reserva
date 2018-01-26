@@ -378,13 +378,8 @@
         Funcion para agregar options a los selects
     */
     function elegirFecha(date){
-        $(date).bootstrapMaterialDatePicker({
-            format: 'DD-MM-YYYY',
-            clearButton: true,
-            weekStart: 0,
-            time: false,
-            clearText: 'Limpiar',
-            cancelText: 'Cancelar'
+        $(date).datetimepicker({
+            format: 'D-MM-YYYY'
         });
     }
 /* ------------------------------------------------------------------------------- */

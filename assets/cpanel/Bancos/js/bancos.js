@@ -18,7 +18,7 @@ $(document).ready(function(){
 			"serverSide":false,
 			"ajax":{
 				"method":"POST",
-				"url":url+"bancos/listado_bancos",
+				"url": url + "Bancos/listado_bancos",
 				"dataSrc":""
 			},
 			"columns":[

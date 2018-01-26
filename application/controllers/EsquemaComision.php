@@ -25,7 +25,7 @@ class EsquemaComision extends CI_Controller
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
-    $this->load->view('configuracion/EsquemaComision/index', $datos);
+    $this->load->view('catalogo/EsquemaComision/index', $datos);
     $this->load->view('cpanel/footer');
   }
 
@@ -37,9 +37,9 @@ class EsquemaComision extends CI_Controller
 
   public function registrar_esquema_comision()
   {
-    /*$this->reglas_esquema_comision();
+    $this->reglas_esquema_comision();
     $this->mensajes_reglas_esquema_comision();
-    if($this->form_validation->run() == true){*/
+    if($this->form_validation->run() == true){
       $data = array(
         'id_vendedor' => $this->input->post('id_vendedor'),
         'tipo_vendedor' => $this->input->post('tipo_vendedor'),
@@ -48,37 +48,25 @@ class EsquemaComision extends CI_Controller
         'porctj_comision' => str_replace(',', '.', $this->input->post('porctj_comision')),
       );
       $this->EsquemaComision_model->registrar_esquema_comision($data);
-    /*}else{
+    }else{
       // enviar los errores
       echo validation_errors();
-    }*/
+    }
   }
 
-  public function actualizar_banco()
+  public function actualizar_esquema_comision()
   {
     $this->reglas_esquema_comision();
     $this->mensajes_reglas_esquema_comision();
     if($this->form_validation->run() == true){
-      $data=array(
-        'nombre_banco' => strtoupper($this->input->post('nombre_banco')),
+      $data = array(
+        'id_vendedor' => $this->input->post('id_vendedor'),
+        'tipo_vendedor' => $this->input->post('tipo_vendedor'),
+        'tipo_plazo' => $this->input->post('tipo_plazo'),
+        'num_ventas_mes' => $this->input->post('num_ventas_mes'),
+        'porctj_comision' => str_replace(',', '.', $this->input->post('porctj_comision')),
       );
-      $banco_verificado=$this->Bancos_model->verificar_banco($data); //busca si el nombre del banco esta registrado en la base de datos
-      if(count($banco_verificado)>0){
-        // si es mayor a cero, se verifica si el id recibido del formulario es igual al id que se verifico
-        if($banco_verificado[0]['id_banco']==$this->input->post('id_banco')){
-          //si son iguales, quiere decir que es el mismo registro
-          $this->Bancos_model->actualizar_banco($this->input->post('id_banco'), $data);
-          echo json_encode("<span>El Banco se ha editado exitosamente!</span>"); // envio de mensaje exitoso
-        }else{
-          //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro
-          echo "<span>El nombre del banco ingresado ya se encuentra en uso!</span>";
-        }
-      }else{
-        // si conteo del array es igual a 0, se actualiza el registro
-        $this->Bancos_model->actualizar_banco($this->input->post('id_banco'), $data);
-        echo json_encode("<span>El Banco se ha editado exitosamente!</span>"); // envio de mensaje exitoso
-      }
-      
+      $this->EsquemaComision_model->actualizar_esquema_comision($this->input->post('id_esquema_comision'), $data);
     }else{
       // enviar los errores
       echo validation_errors();
@@ -99,25 +87,25 @@ class EsquemaComision extends CI_Controller
     $this->form_validation->set_message('numeric', 'El campo %s debe poseer solo números');
   }
 
-  public function eliminar_banco()
+  public function eliminar_esquema_comision()
   {
-    $this->Bancos_model->eliminar_banco($this->input->post('id'));
+    $this->EsquemaComision_model->eliminar_esquema_comision($this->input->post('id'));
   }
 
-  public function status_banco()
+  public function status_esquema_comision()
   {
-    $this->Bancos_model->status_banco($this->input->post('id'), $this->input->post('status'));
+    $this->EsquemaComision_model->status_esquema_comision($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 
-  public function eliminar_multiple_banco()
+  public function eliminar_multiple_esquema_comision()
   {
-    $this->Bancos_model->eliminar_multiple_banco($this->input->post('id'));
+    $this->EsquemaComision_model->eliminar_multiple_esquema_comision($this->input->post('id'));
   }
 
-  public function status_multiple_banco()
+  public function status_multiple_esquema_comision()
   {
-    $this->Bancos_model->status_multiple_banco($this->input->post('id'), $this->input->post('status'));
+    $this->EsquemaComision_model->status_multiple_esquema_comision($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 

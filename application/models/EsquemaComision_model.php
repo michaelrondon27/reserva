@@ -38,46 +38,60 @@ Class EsquemaComision_model extends CI_Model
                 'fec_regins' => date('Y-m-d'),
             );
             $this->db->insert('auditoria', $datos);
-            echo json_encode("<span>El esquema de comisión se ha editado exitosamente!</span>");
+            echo json_encode("<span>El esquema de comisión se ha registrado exitosamente!</span>");
         } else {
             echo "<span>¡Ya se encuentra registrado un esquema de comisión con las mismas características!</span>";
         }
     }
 
-    public function actualizar_banco($id, $data)
+    public function actualizar_esquema_comision($id, $data)
     {
-        $this->db->where('id_banco', $id);
-        $this->db->update($this->nombre_tabla, $data);
-        $datos=array(
-            'usr_regmod' => $this->session->userdata('id_usuario'),
-            'fec_regmod' => date('Y-m-d'),
-        );
-        $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
-        $this->db->update('auditoria', $datos);
-    }
-
-    public function verificar_banco($data)
-    {
-        $this->db->where('nombre_banco', $$data['nombre_banco']);
+        $this->db->where('id_vendedor', $data['id_vendedor']);
+        $this->db->where('tipo_vendedor', $data['tipo_vendedor']);
+        $this->db->where('num_ventas_mes', $data['num_ventas_mes']);
+        $this->db->where('tipo_plazo', $data['tipo_plazo']);
         $this->db->limit(1);
-        $resultados = $this->db->get($this->nombre_tabla);
-        return $resultados->result_array();
+        $resultados = $this->db->get($this->tabla_esquema_comision);
+        if ($resultados->num_rows() == 0) {
+            $this->db->where('id_esquema_comision', $id);
+            $this->db->update($this->tabla_esquema_comision, $data);
+            $datos=array(
+                'usr_regmod' => $this->session->userdata('id_usuario'),
+                'fec_regmod' => date('Y-m-d'),
+            );
+            $this->db->insert('auditoria', $datos);
+            echo json_encode("<span>El esquema de comisión se ha editado exitosamente!</span>");
+        } else {
+            $array = $resultados->row();
+            if ($array->id_esquema_comision == $id) {
+                $this->db->where('id_esquema_comision', $id);
+                $this->db->update($this->tabla_esquema_comision, $data);
+                $datos=array(
+                    'usr_regmod' => $this->session->userdata('id_usuario'),
+                    'fec_regmod' => date('Y-m-d'),
+                );
+                $this->db->insert('auditoria', $datos);
+                echo json_encode("<span>El esquema de comisión se ha editado exitosamente!</span>");
+            } else {
+                echo "<span>¡Ya se encuentra registrado un esquema de comisión con las mismas características!</span>";
+            }
+        }
     }
 
-    public function eliminar_banco($id)
+    public function eliminar_esquema_comision($id)
     {
         try { 
-            if(!$this->db->delete($this->nombre_tabla, array('id_banco' => $id))){
+            if(!$this->db->delete($this->tabla_esquema_comision, array('id_esquema_comision' => $id))){
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
-                echo json_encode("<span>El Banco se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
+                echo json_encode("<span>El esquema de comisión se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
             }
         } catch(Exception $e){ 
             echo $e->getMessage(); // envio de mensaje de error
         }
     }
 
-    public function status_banco($id, $status)
+    public function status_esquema_comision($id, $status)
     {
         $datos=array(
             'status'=>$status,
@@ -85,16 +99,16 @@ Class EsquemaComision_model extends CI_Model
             'usr_regmod' => $this->session->userdata('id_usuario'),
             'fec_regmod' => date('Y-m-d'),
         );
-        $this->db->where('cod_reg', $id)->where('tabla', $this->nombre_tabla);
+        $this->db->where('cod_reg', $id)->where('tabla', $this->tabla_esquema_comision);
         $this->db->update('auditoria', $datos);
     }
 
-    public function eliminar_multiple_banco($id)
+    public function eliminar_multiple_esquema_comision($id)
     {
         $eliminados=0;
-        foreach($id as $banco)
+        foreach($id as $esquema_comision)
         {
-            if($this->db->delete($this->nombre_tabla, array('id_banco' => $banco))){
+            if($this->db->delete($this->tabla_esquema_comision, array('id_esquema_comision' => $esquema_comision))){
                 $eliminados++;
             }
         }
@@ -107,15 +121,10 @@ Class EsquemaComision_model extends CI_Model
         }
     }
 
-    public function status_multiple_banco($id, $status)
+    public function status_multiple_esquema_comision($id, $status)
     {
-        $data = array(
-            'status' => $status,
-        );
-        $bancos = str_replace(' ', ',', $id);
-        $this->db->where_in('cod_reg', $bancos);
-        $this->db->where('tabla', $this->nombre_tabla);
-        $this->db->update('auditoria', $data);
+        $esquemas_comisiones = str_replace(' ', ',', $id);
+        $this->db->query("UPDATE auditoria SET status = " . $status . ", fec_status = " . date('Y-m-d') . ", usr_regmod = " . $this->session->userdata('id_usuario') . ", fec_regmod = " . date('Y-m-d') . " WHERE cod_reg in (" . $esquemas_comisiones . ") AND tabla='" . $this->tabla_esquema_comision . "'");
     }
 
     public function id_venderores()

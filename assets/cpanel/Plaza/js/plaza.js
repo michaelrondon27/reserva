@@ -18,7 +18,7 @@ $(document).ready(function(){
 			"serverSide":false,
 			"ajax":{
 				"method":"POST",
-				"url":url+"plazasbancarias/listado_plazas",
+				"url":url+"PlazasBancarias/listado_plazas",
 				"dataSrc":""
 			},
 			"columns":[
@@ -92,7 +92,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function registrar_plaza(){
-		enviarFormulario("#form_plaza_registrar", 'plazasbancarias/registrar_plaza', '#cuadro2');
+		enviarFormulario("#form_plaza_registrar", 'PlazasBancarias/registrar_plaza', '#cuadro2');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -131,7 +131,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function actualizar_plaza(){
-		enviarFormulario("#form_plaza_actualizar", 'plazasbancarias/actualizar_plaza', '#cuadro4');
+		enviarFormulario("#form_plaza_actualizar", 'PlazasBancarias/actualizar_plaza', '#cuadro4');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -142,7 +142,7 @@ $(document).ready(function(){
 	function eliminar(tbody, table){
 		$(tbody).on("click", "span.eliminar", function(){
             var data=table.row($(this).parents("tr")).data();
-            eliminarConfirmacion('plazasbancarias/eliminar_plaza', data.id_plaza, "¿Esta seguro de eliminar el registro?")
+            eliminarConfirmacion('PlazasBancarias/eliminar_plaza', data.id_plaza, "¿Esta seguro de eliminar el registro?")
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -154,7 +154,7 @@ $(document).ready(function(){
 	function desactivar(tbody, table){
 		$(tbody).on("click", "span.desactivar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('plazasbancarias/status_plaza', data.id_plaza, 2, "¿Esta seguro de desactivar el registro?", 'desactivar')
+            statusConfirmacion('PlazasBancarias/status_plaza', data.id_plaza, 2, "¿Esta seguro de desactivar el registro?", 'desactivar')
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -166,7 +166,7 @@ $(document).ready(function(){
 	function activar(tbody, table){
 		$(tbody).on("click", "span.activar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('plazasbancarias/status_plaza', data.id_plaza, 1, "¿Esta seguro de activar el registro?", 'activar')
+            statusConfirmacion('PlazasBancarias/status_plaza', data.id_plaza, 1, "¿Esta seguro de activar el registro?", 'activar')
         });
 	}
 /* ------------------------------------------------------------------------------- */

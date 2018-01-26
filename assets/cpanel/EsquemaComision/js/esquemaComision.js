@@ -19,7 +19,7 @@ $(document).ready(function(){
 			"serverSide":false,
 			"ajax":{
 				"method":"POST",
-				"url": url + "esquemacomision/listado_esquema_comision",
+				"url": url + "EsquemaComision/listado_esquema_comision",
 				"dataSrc":""
 			},
 			"columns":[
@@ -100,7 +100,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function registrar_esquema_comision(){
-		enviarFormulario("#form_esquema_comision_registrar", 'esquemacomision/registrar_esquema_comision', '#cuadro2');
+		enviarFormulario("#form_esquema_comision_registrar", 'EsquemaComision/registrar_esquema_comision', '#cuadro2');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -111,8 +111,11 @@ $(document).ready(function(){
 	function ver(tbody, table){
 		$(tbody).on("click", "span.consultar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			document.getElementById('cod_banco_consultar').value=data.cod_banco;
-			document.getElementById('nombre_banco_consultar').value=data.nombre_banco;
+			$("#id_vendedor_consultar option[value='" + data.id_vendedor + "']").attr("selected","selected");
+			$("#tipo_vendedor_consultar option[value='" + data.tipo_vendedor + "']").attr("selected","selected");
+			$("#tipo_plazo_consultar option[value='" + data.tipo_plazo + "']").attr("selected","selected");
+			document.getElementById('num_ventas_mes_consultar').value = data.num_ventas_mes;
+			document.getElementById('porctj_comision_consultar').value = data.porctj_comision.replace('.',',');
 			cuadros('#cuadro1', '#cuadro3');
 		});
 	}
@@ -125,11 +128,14 @@ $(document).ready(function(){
 	function editar(tbody, table){
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			document.getElementById('id_banco_editar').value=data.id_banco;
-			document.getElementById('cod_banco_editar').value=data.cod_banco;
-			document.getElementById('nombre_banco_editar').value=data.nombre_banco;
+			$("#id_vendedor_actualizar option[value='" + data.id_vendedor + "']").attr("selected","selected");
+			$("#tipo_vendedor_actualizar option[value='" + data.tipo_vendedor + "']").attr("selected","selected");
+			$("#tipo_plazo_actualizar option[value='" + data.tipo_plazo + "']").attr("selected","selected");
+			document.getElementById('id_esquema_comision_actualizar').value = data.id_esquema_comision;
+			document.getElementById('num_ventas_mes_actualizar').value = data.num_ventas_mes;
+			document.getElementById('porctj_comision_actualizar').value = data.porctj_comision.replace('.',',');
 			cuadros('#cuadro1', '#cuadro4');
-			$("#nombre_banco_editar").focus();
+			$("#id_vendedor_actualizar").focus();
 		});
 	}
 /* ------------------------------------------------------------------------------- */
@@ -139,7 +145,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function actualizar_esquema_comision(){
-		enviarFormulario("#form_banco_actualizar", 'Bancos/actualizar_banco', '#cuadro4');
+		enviarFormulario("#form_esquema_comision_actualizar", 'EsquemaComision/actualizar_esquema_comision', '#cuadro4');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -150,7 +156,7 @@ $(document).ready(function(){
 	function eliminar(tbody, table){
 		$(tbody).on("click", "span.eliminar", function(){
             var data=table.row($(this).parents("tr")).data();
-            eliminarConfirmacion('Bancos/eliminar_banco', data.id_banco, "¿Esta seguro de eliminar el registro?");
+            eliminarConfirmacion('EsquemaComision/eliminar_esquema_comision', data.id_esquema_comision, "¿Esta seguro de eliminar el registro?");
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -162,7 +168,7 @@ $(document).ready(function(){
 	function desactivar(tbody, table){
 		$(tbody).on("click", "span.desactivar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Bancos/status_banco', data.id_banco, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
+            statusConfirmacion('EsquemaComision/status_esquema_comision', data.id_esquema_comision, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -174,7 +180,7 @@ $(document).ready(function(){
 	function activar(tbody, table){
 		$(tbody).on("click", "span.activar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Bancos/status_banco', data.id_banco, 1, "¿Esta seguro de activar el registro?", 'activar');
+            statusConfirmacion('EsquemaComision/status_esquema_comision', data.id_esquema_comision, 1, "¿Esta seguro de activar el registro?", 'activar');
         });
 	}
 /* ------------------------------------------------------------------------------- */

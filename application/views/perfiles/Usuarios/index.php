@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!DOCTYPE html>
 <html>
 	<link href="<?=base_url();?>assets/template/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
-	<link href="<?=base_url();?>assets/template/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+	<link href="<?=base_url();?>assets/template/plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css" rel="stylesheet" />
 	<?php if($permiso[0]->consultar==1 && $permiso[0]->registrar==1 && $permiso[0]->actualizar==1 && $permiso[0]->eliminar==1): ?>
 		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
 	<?php endif ?>
@@ -102,8 +102,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                            <div class="col-sm-4">
 				                                <label for="fecha_nac_datos_personales_registrar">Fecha de Nacimiento*</label>
 				                                <div class="form-group">
-				                                    <div class="form-line">
-				                                        <input type="text" class="form-control fecha" name="fecha_nac_datos_personales" id="fecha_nac_datos_personales_registrar" placeholder="dd-mm-yyyy" required onkeypress='return deshabilitarteclas(event)'>
+				                                    <div class="form-line input-group fecha">
+				                                        <input type="text" class="form-control" name="fecha_nac_datos_personales" id="fecha_nac_datos_personales_registrar" placeholder="dd-mm-yyyy" required>
+				                                        <span class="input-group-addon">
+									                        <span class="glyphicon glyphicon-calendar"></span>
+									                    </span>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -195,14 +198,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-4" style="padding-bottom: 10px;">
-				                                <label for="estado_registrar">Estado*</label>
-		                                        <select id="estado_registrar" required class="form-control form-group" name="estado">
-		                                        	<option value="">Seleccione</option>
-		                                        </select>
-				                            </div>
-				                            <div class="col-sm-4">
-				                                <label for="ciudad_registrar">Ciudad*</label>
-		                                        <select id="ciudad_registrar" required class="form-control form-group" name="ciudad">
+				                            	<label for="colonia_registrar">Colonia*</label>
+		                                        <select id="colonia_registrar" required class="form-control form-group" name="colonia">
 		                                        	<option value="">Seleccione</option>
 		                                        </select>
 				                            </div>
@@ -213,8 +210,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                        </select>
 				                            </div>
 				                            <div class="col-sm-4">
-				                                <label for="colonia_registrar">Colonia*</label>
-		                                        <select id="colonia_registrar" required class="form-control form-group" name="colonia">
+				                                <label for="ciudad_registrar">Ciudad*</label>
+		                                        <select id="ciudad_registrar" required class="form-control form-group" name="ciudad">
+		                                        	<option value="">Seleccione</option>
+		                                        </select>
+				                            </div>
+				                            <div class="col-sm-4">
+				                                <label for="estado_registrar">Estado*</label>
+		                                        <select id="estado_registrar" required class="form-control form-group" name="estado">
 		                                        	<option value="">Seleccione</option>
 		                                        </select>
 				                            </div>
@@ -417,18 +420,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                </div>
 			                            </div>
 			                            <div class="col-sm-4">
-			                                <label>Estado*</label>
+			                                <label>Colonia*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="estado_consultar" disabled>
-			                                    </div>
-			                                </div>
-			                            </div>
-			                            <div class="col-sm-4">
-			                                <label>Ciudad*</label>
-			                                <div class="form-group">
-			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="ciudad_consultar" disabled>
+			                                        <input type="text" class="form-control" id="colonia_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -441,10 +436,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                </div>
 			                            </div>
 			                            <div class="col-sm-4">
-			                                <label>Colonia*</label>
+			                                <label>Ciudad*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="colonia_consultar" disabled>
+			                                        <input type="text" class="form-control" id="ciudad_consultar" disabled>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-4">
+			                                <label>Estado*</label>
+			                                <div class="form-group">
+			                                    <div class="form-line">
+			                                        <input type="text" class="form-control" id="estado_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -525,8 +528,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                            <div class="col-sm-4">
 				                                <label for="fecha_nac_datos_personales_actualizar">Fecha de Nacimiento*</label>
 				                                <div class="form-group">
-				                                    <div class="form-line">
-				                                        <input type="text" class="form-control fecha" name="fecha_nac_datos_personales" id="fecha_nac_datos_personales_actualizar" placeholder="dd-mm-yyyy" required onkeypress='return deshabilitarteclas(event)'>
+				                                    <div class="form-line input-group fecha">
+				                                        <input type="text" class="form-control" name="fecha_nac_datos_personales" id="fecha_nac_datos_personales_actualizar" placeholder="dd-mm-yyyy" required>
+				                                        <span class="input-group-addon">
+									                        <span class="glyphicon glyphicon-calendar"></span>
+									                    </span>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -618,14 +624,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-4" style="padding-bottom: 10px;">
-				                                <label for="estado_actualizar">Estado*</label>
-		                                        <select id="estado_actualizar" required class="form-control form-group" name="estado">
-		                                        	<option value="">Seleccione</option>
-		                                        </select>
-				                            </div>
-				                            <div class="col-sm-4">
-				                                <label for="ciudad_actualizar">Ciudad*</label>
-		                                        <select id="ciudad_actualizar" required class="form-control form-group" name="ciudad">
+				                                <label for="colonia_actualizar">Colonia*</label>
+		                                        <select id="colonia_actualizar" required class="form-control form-group" name="colonia">
 		                                        	<option value="">Seleccione</option>
 		                                        </select>
 				                            </div>
@@ -636,8 +636,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                        </select>
 				                            </div>
 				                            <div class="col-sm-4">
-				                                <label for="colonia_actualizar">Colonia*</label>
-		                                        <select id="colonia_actualizar" required class="form-control form-group" name="colonia">
+				                                <label for="ciudad_actualizar">Ciudad*</label>
+		                                        <select id="ciudad_actualizar" required class="form-control form-group" name="ciudad">
+		                                        	<option value="">Seleccione</option>
+		                                        </select>
+				                            </div>
+				                            <div class="col-sm-4">
+				                            	<label for="estado_actualizar">Estado*</label>
+		                                        <select id="estado_actualizar" required class="form-control form-group" name="estado">
 		                                        	<option value="">Seleccione</option>
 		                                        </select>
 				                            </div>
@@ -709,7 +715,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?=base_url();?>assets/template/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
     <script src="<?=base_url();?>assets/cpanel/Usuarios/js/usuarios.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/momentjs/moment.js"></script>
-    <script src="<?=base_url();?>assets/template/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+    <script src="<?=base_url();?>assets/template/plugins/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
     <script>
 		$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
 		$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
