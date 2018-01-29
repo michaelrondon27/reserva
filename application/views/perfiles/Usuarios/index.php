@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html>
 	<link href="<?=base_url();?>assets/template/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/template/plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-	<?php if($permiso[0]->consultar==1 && $permiso[0]->registrar==1 && $permiso[0]->actualizar==1 && $permiso[0]->eliminar==1): ?>
+	<?php if(($permiso[0]->consultar==1 && $permiso[0]->registrar==1 && $permiso[0]->actualizar==1 && $permiso[0]->eliminar==1) OR $permiso[0]->status==2): ?>
 		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
 	<?php endif ?>
 	<body class="theme-blue">
@@ -36,7 +36,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                        	<th>Apeelido Paterno</th>
 		                                        	<th>Apellido Materno</th>
 		                                        	<th>CURP</th>
-		                                        	<th>Oficina</th>
 		                                            <th>Correo Electrónico</th>
 		                                            <th>Rol</th>
 		                                            <th>Fecha de Registro</th>
@@ -132,7 +131,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="telefono_registrar">Teléfono*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control telefono" name="telefono_principal_contacto" id="telefono_registrar" placeholder="P. EJ.: +00 (000) 000-00-00" onkeypress='return deshabilitarteclas(event)'>
+				                                        <input type="text" class="form-control telefono" name="telefono_principal_contacto" id="telefono_registrar" placeholder="P. EJ.: +00 (000) 000-00-00">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -177,7 +176,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="exterior_contacto_registrar">Número Exterior</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="exterior_contacto" id="exterior_contacto_registrar" placeholder="P. EJ. 33" onkeypress='return solonumeros(event)'>
+				                                        <input type="text" class="form-control" name="exterior_contacto" id="exterior_contacto_registrar" placeholder="P. EJ. 33">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -185,7 +184,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="interior_contacto_registrar">Número Interior</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="interior_contacto" id="interior_contacto_registrar" placeholder="P. EJ. 2" onkeypress='return solonumeros(event)'>
+				                                        <input type="text" class="form-control" name="interior_contacto" id="interior_contacto_registrar" placeholder="P. EJ. 2">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -558,7 +557,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="telefono_actualizar">Teléfono*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control telefono" name="telefono_principal_contacto" id="telefono_actualizar" placeholder="P. EJ.: +00 (000) 000-00-00" onkeypress='return deshabilitarteclas(event)'>
+				                                        <input type="text" class="form-control telefono" name="telefono_principal_contacto" id="telefono_actualizar" placeholder="P. EJ.: +00 (000) 000-00-00">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -603,7 +602,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="exterior_contacto_actualizar">Número Exterior</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="exterior_contacto" id="exterior_contacto_actualizar" placeholder="P. EJ. 33" onkeypress='return solonumeros(event)'>
+				                                        <input type="text" class="form-control" name="exterior_contacto" id="exterior_contacto_actualizar" placeholder="P. EJ. 33">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -611,7 +610,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="interior_contacto_actualizar">Número Interior</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="interior_contacto" id="interior_contacto_actualizar" placeholder="P. EJ. 2" onkeypress='return solonumeros(event)'>
+				                                        <input type="text" class="form-control" name="interior_contacto" id="interior_contacto_actualizar" placeholder="P. EJ. 2">
 				                                    </div>
 				                                </div>
 				                            </div>

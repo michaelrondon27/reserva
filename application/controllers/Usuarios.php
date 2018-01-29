@@ -70,8 +70,8 @@ class Usuarios extends CI_Controller
         'telefono_movil_contacto' => $this->input->post('telefono_principal_contacto'),
         'direccion_contacto' => mb_strtoupper($this->input->post('direccion_contacto'), 'UTF-8'),
         'calle_contacto' => mb_strtoupper($this->input->post('calle_contacto'), 'UTF-8'),
-        'interior_contacto' => $this->input->post('interior_contacto'),
-        'exterior_contacto' => $this->input->post('exterior_contacto'),
+        'interior_contacto' => mb_strtoupper($this->input->post('interior_contacto')),
+        'exterior_contacto' => mb_strtoupper($this->input->post('exterior_contacto')),
       );
       $personalArray = array(
         'nombre_datos_personales' => mb_strtoupper($this->input->post('nombre_datos_personales'), 'UTF-8'),
@@ -117,8 +117,8 @@ class Usuarios extends CI_Controller
         'telefono_movil_contacto' => $this->input->post('telefono_principal_contacto'),
         'direccion_contacto' => mb_strtoupper($this->input->post('direccion_contacto'), 'UTF-8'),
         'calle_contacto' => mb_strtoupper($this->input->post('calle_contacto'), 'UTF-8'),
-        'interior_contacto' => $this->input->post('interior_contacto'),
-        'exterior_contacto' => $this->input->post('exterior_contacto'),
+        'interior_contacto' => mb_strtoupper($this->input->post('interior_contacto')),
+        'exterior_contacto' => mb_strtoupper($this->input->post('exterior_contacto')),
       );
       $personalArray = array(
         'nombre_datos_personales' => mb_strtoupper($this->input->post('nombre_datos_personales'), 'UTF-8'),

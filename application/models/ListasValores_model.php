@@ -87,7 +87,7 @@ Class ListasValores_model extends CI_Model{
                 $eliminados++;
             }
         }
-        iif ($eliminados == 0) {
+        if ($eliminados == 0) {
             echo json_encode("<span>¡No se ha eliminado ninguno de los registros seleccionados porque tienen dependencia en otras tablas!</span>");
         } else if ($eliminados == 1) {
             echo json_encode("<span>¡Se ha eliminado un solo registro de todos los seleccionados!</span>");

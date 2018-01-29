@@ -37,6 +37,12 @@
                     </form>
                 </div>
             </div>
+            <?php if($this->session->flashdata('error')) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <span><?= $this->session->flashdata('error') ?></span>
+                </div>
+            <?php endif ?>
         </div>
     </body>
 </html>

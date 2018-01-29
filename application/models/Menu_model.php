@@ -21,12 +21,15 @@ Class Menu_model extends CI_Model
     {
         $this->db->where('u.id_usuario', $id_usuario);
         $this->db->where('lv.visibilidad_lista_vista', 0);
+        $this->db->where('a.tabla', 'rol');
+        $this->db->where('a.status', 1);
         $this->db->where('(ro.consultar=0 OR ro.registrar=0 OR ro.actualizar=0 OR eliminar=0)');
         $this->db->select('lv.*');
         $this->db->from('usuario u');
         $this->db->join('rol r', 'u.id_rol = r.id_rol');
         $this->db->join('rol_operaciones ro', 'r.id_rol = ro.id_rol');
         $this->db->join('lista_vista lv', 'ro.id_lista_vista = lv.id_lista_vista');
+        $this->db->join('auditoria a', 'a.cod_reg = r.id_rol');
         $resultados = $this->db->get();
         return $resultados->result();
     }
@@ -41,10 +44,12 @@ Class Menu_model extends CI_Model
     {
         $this->db->where('ro.id_rol', $rol);
         $this->db->where('lv.url_lista_vista', $url);
-        $this->db->select('ro.*, lv.id_lista_vista, mv.id_modulo_vista');
+        $this->db->where('a.tabla', 'rol');
+        $this->db->select('ro.*, lv.id_lista_vista, mv.id_modulo_vista, a.status');
         $this->db->from('rol_operaciones ro');
         $this->db->join('lista_vista lv', 'ro.id_lista_vista = lv.id_lista_vista');
         $this->db->join('modulo_vista mv', 'lv.id_modulo_vista = mv.id_modulo_vista');
+        $this->db->join('auditoria a', 'a.cod_reg = '. $rol);
         $resultados = $this->db->get();
         return $resultados->result();
     }

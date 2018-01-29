@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
 <html>
-	<?php if($permiso[0]->consultar==1 && $permiso[0]->actualizar==1): ?>
+	<?php if(($permiso[0]->consultar==1 && $permiso[0]->actualizar==1) OR $permiso[0]->status==2): ?>
 		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
 	<?php endif ?>
 	<body class="theme-blue">

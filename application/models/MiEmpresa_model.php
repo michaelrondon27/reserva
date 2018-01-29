@@ -59,7 +59,6 @@ Class MiEmpresa_model extends CI_Model{
 
     public function actualizar_mi_empresa($idEmpresa, $nombreEmpresa, $rfcEmpresa, $idContacto, $dataContacto){
         if($idEmpresa==0){
-
             /*---------------------------------------------------------------*/
             //                      CONTACTO                                 //
                 $this->db->insert($this->tabla_contacto, $dataContacto);

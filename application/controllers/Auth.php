@@ -29,19 +29,25 @@ class Auth extends CI_Controller{
 		$clave_usuario = $this->input->post('clave_usuario');
 		$res = $this->Usuarios_model->login($correo_usuario, sha1($clave_usuario));
 		if (!$res) {
-			redirect(base_url());
+			$this->session->set_flashdata('error','!Los datos introducidos son incorrectos.!');
+ 			redirect(base_url());
 		} else {
-			$data = array(
-				'id_usuario' => $res->id_usuario,
-				'correo_usuario' => $res->correo_usuario,
-				'avatar_usuario' => $res->avatar_usuario,
-				'id_rol' => $res->id_rol,
-				'nombre' => $res->nombre_datos_personales . " " . $res->apellido_p_datos_personales . " " . $res->apellido_m_datos_personales ,
-				'login' => TRUE,
-			);
-			$this->session->set_userdata($data);
-			$this->Usuarios_model->ultima_conexion($this->session->userdata('id_usuario'));
-			redirect(base_url()."inicio");
+			if ($res->status == 1){
+				$data = array(
+					'id_usuario' => $res->id_usuario,
+					'correo_usuario' => $res->correo_usuario,
+					'avatar_usuario' => $res->avatar_usuario,
+					'id_rol' => $res->id_rol,
+					'nombre' => $res->nombre_datos_personales . " " . $res->apellido_p_datos_personales . " " . $res->apellido_m_datos_personales ,
+					'login' => TRUE,
+				);
+				$this->session->set_userdata($data);
+				$this->Usuarios_model->ultima_conexion($this->session->userdata('id_usuario'));
+				redirect(base_url()."inicio");
+			} else if ($res->status == 2) {
+				$this->session->set_flashdata('error','!Lo sentimos, pero ud. se encuentra bloqueado del sistema.!');
+ 				redirect(base_url());
+			}
 		}
 	}
 

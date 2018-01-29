@@ -33,7 +33,6 @@ $(document).ready(function(){
 				{"data":"apellido_p_datos_personales"},
 				{"data":"apellido_m_datos_personales"},
 				{"data":"curp_datos_personales"},
-				{"data":"d_ciudad"},
 				{"data":"correo_usuario"},
 				{"data":"nombre_rol"},
 				{"data":"fec_regins",

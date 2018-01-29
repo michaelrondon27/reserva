@@ -22,7 +22,7 @@ class Modulos extends CI_Controller
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
-    $this->load->view('perfiles/Modulos/index', $permiso);
+    $this->load->view('perfiles/modulos/index', $permiso);
     $this->load->view('cpanel/footer');
   }
 

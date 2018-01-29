@@ -15,11 +15,8 @@ $(document).ready(function(){
             url:url+'MiEmpresa/buscar_mi_empresa',
             type:'POST',
             dataType:'JSON',
-            beforeSend: function(){
-                mensajes('info', '<span>Cargando datos, espere por favor... <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>');
-            },
             error: function (repuesta) {
-                //listar();              
+                listar();              
             },
             success: function(respuesta){
                 $("#alertas").html('');
@@ -42,26 +39,25 @@ $(document).ready(function(){
                     respuesta.colonias.result_object.forEach(function(campo, index){
                         agregarOptions('#colonia', campo.id_codigo_postal, campo.d_asenta);
                     });
-                	document.getElementById('nombre_mi_empresa').value=respuesta.empresa[0].nombre_mi_empresa;
-                	document.getElementById('rfc_mi_empresa').value=respuesta.empresa[0].rfc_mi_empresa;
-                	document.getElementById('id_mi_empresa').value=respuesta.empresa[0].id_mi_empresa;
-                    document.getElementById('telefono_principal_contacto').value=respuesta.empresa[0].telefono_principal_contacto;
-                    document.getElementById('telefono_movil_contacto').value=respuesta.empresa[0].telefono_movil_contacto;
-                    document.getElementById('correo_opcional_contacto').value=respuesta.empresa[0].correo_opcional_contacto;
-                    document.getElementById('direccion_contacto').value=respuesta.empresa[0].direccion_contacto;
-                    document.getElementById('calle_contacto').value=respuesta.empresa[0].calle_contacto;
-                    document.getElementById('exterior_contacto').value=respuesta.empresa[0].exterior_contacto;
-                    document.getElementById('interior_contacto').value=respuesta.empresa[0].interior_contacto;
-                    document.getElementById('id_contacto').value=respuesta.empresa[0].id_contacto;
-                    document.getElementById('codigo_postal').value=respuesta.empresa[0].d_codigo;
-                    $("#estado option[value='"+respuesta.empresa[0].d_estado+"']").attr("selected","selected");
-                    if(respuesta.empresa[0].d_ciudad!=""){
-                        $("#ciudad option[value='"+respuesta.empresa[0].d_ciudad+"']").attr("selected","selected");
+                	document.getElementById('nombre_mi_empresa').value=respuesta.empresa.result_array[0].nombre_mi_empresa;
+                	document.getElementById('rfc_mi_empresa').value=respuesta.empresa.result_array[0].rfc_mi_empresa;
+                	document.getElementById('id_mi_empresa').value=respuesta.empresa.result_array[0].id_mi_empresa;
+                    document.getElementById('telefono_principal_contacto').value=respuesta.empresa.result_array[0].telefono_principal_contacto;
+                    document.getElementById('correo_opcional_contacto').value=respuesta.empresa.result_array[0].correo_opcional_contacto;
+                    document.getElementById('direccion_contacto').value=respuesta.empresa.result_array[0].direccion_contacto;
+                    document.getElementById('calle_contacto').value=respuesta.empresa.result_array[0].calle_contacto;
+                    document.getElementById('exterior_contacto').value=respuesta.empresa.result_array[0].exterior_contacto;
+                    document.getElementById('interior_contacto').value=respuesta.empresa.result_array[0].interior_contacto;
+                    document.getElementById('id_contacto').value=respuesta.empresa.result_array[0].id_contacto;
+                    document.getElementById('codigo_postal').value=respuesta.empresa.result_array[0].d_codigo;
+                    $("#estado option[value='"+respuesta.empresa.result_array[0].d_estado+"']").attr("selected","selected");
+                    if(respuesta.empresa.result_array[0].d_ciudad!=""){
+                        $("#ciudad option[value='"+respuesta.empresa.result_array[0].d_ciudad+"']").attr("selected","selected");
                     }else{
                         $("#ciudad option[value='N/A']").attr("selected","selected");
                     }
-                    $("#municipio option[value='"+respuesta.empresa[0].d_mnpio+"']").attr("selected","selected");
-                    $("#colonia option[value='"+respuesta.empresa[0].id_codigo_postal+"']").attr("selected","selected");
+                    $("#municipio option[value='"+respuesta.empresa.result_array[0].d_mnpio+"']").attr("selected","selected");
+                    $("#colonia option[value='"+respuesta.empresa.result_array[0].id_codigo_postal+"']").attr("selected","selected");
                 }
             }
         });

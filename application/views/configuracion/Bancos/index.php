@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!DOCTYPE html>
 <html>
 	<link href="<?=base_url();?>assets/template/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
-	<?php if($permiso[0]->consultar==1 && $permiso[0]->registrar==1 && $permiso[0]->actualizar==1 && $permiso[0]->eliminar==1): ?>
+	<?php if(($permiso[0]->consultar==1 && $permiso[0]->registrar==1 && $permiso[0]->actualizar==1 && $permiso[0]->eliminar==1) OR $permiso[0]->status==2): ?>
 		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
 	<?php endif ?>
 	<body class="theme-blue">
@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<section class="content">
 	        <div class="container-fluid">
 	        	<div id="alertas"></div>
-
+				
 	        	<!-- Comienzo del cuadro de la tabla -->
 					<div class="row clearfix" id="cuadro1">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
 <html>
-	<?php if($permiso[0]->consultar==1 && $permiso[0]->actualizar==1): ?>
+	<?php if(($permiso[0]->consultar==1 && $permiso[0]->actualizar==1) OR $permiso[0]->status==2): ?>
 		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
 	<?php endif ?>
 	<body class="theme-blue">
@@ -20,23 +20,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	                        <div class="body">
 	                        	<div class="table-responsive">
 		                            <form name="form_empresa_actualizar" id="form_empresa_actualizar" method="post">
-			                            <div class="col-sm-4">
+			                            <div class="col-sm-3">
 			                                <label for="nombre_mi_empresa">Nombre de Empresa*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" name="nombre_mi_empresa" id="nombre_mi_empresa" required placeholder="P. EJ. AG SISTEMAS">
+			                                        <input type="text" class="form-control mayusculas" name="nombre_mi_empresa" id="nombre_mi_empresa" required placeholder="P. EJ. AG SISTEMAS">
 			                                    </div>
 			                                </div>
 			                            </div>
-			                            <div class="col-sm-4">
+			                            <div class="col-sm-3">
 			                                <label for="rfc_mi_empresa">RFC*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" name="rfc_mi_empresa" id="rfc_mi_empresa" required placeholder="P. EJ. AGS070707GK3" maxlength="14">
+			                                        <input type="text" class="form-control mayusculas" name="rfc_mi_empresa" id="rfc_mi_empresa" required placeholder="P. EJ. AGS070707GK3" maxlength="14">
 			                                    </div>
 			                                </div>
 			                            </div>
-			                            <div class="col-sm-4">
+			                            <div class="col-sm-3">
 			                                <label for="telefono_principal_contacto">Teléfono Principal*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
@@ -44,15 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                    </div>
 			                                </div>
 			                            </div>
-			                            <div class="col-sm-4">
-			                                <label for="telefono_movil_contacto">Teléfono Móvil*</label>
-			                                <div class="form-group">
-			                                    <div class="form-line">
-			                                        <input type="text" class="form-control telefono" name="telefono_movil_contacto" id="telefono_movil_contacto" placeholder="P. EJ.: +00 (000) 000-00-00" onkeypress='return solonumeros(event)'>
-			                                    </div>
-			                                </div>
-			                            </div>
-			                            <div class="col-sm-4">
+			                            <div class="col-sm-3">
 			                                <label for="correo_opcional_contacto">Correo Electrónico*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
@@ -64,7 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label for="direccion_contacto">Domicilio</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" name="direccion_contacto" id="direccion_contacto" placeholder="P. EJ. INSURGENTE">
+			                                        <input type="text" class="form-control mayusculas" name="direccion_contacto" id="direccion_contacto" placeholder="P. EJ. INSURGENTE">
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -72,7 +64,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label for="calle_contacto">Calle</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" name="calle_contacto" id="calle_contacto" placeholder="P. EJ. PRIMAVERA">
+			                                        <input type="text" class="form-control mayusculas" name="calle_contacto" id="calle_contacto" placeholder="P. EJ. PRIMAVERA">
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -80,7 +72,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label for="exterior_contacto">Número Exterior</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" name="exterior_contacto" id="exterior_contacto" placeholder="P. EJ. 33" onkeypress='return solonumeros(event)'>
+			                                        <input type="text" class="form-control mayusculas" name="exterior_contacto" id="exterior_contacto" placeholder="P. EJ. 33">
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -88,12 +80,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                <label for="interior_contacto">Número Interior</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" name="interior_contacto" id="interior_contacto" placeholder="P. EJ. 2" onkeypress='return solonumeros(event)'>
+			                                        <input type="text" class="form-control mayusculas" name="interior_contacto" id="interior_contacto" placeholder="P. EJ. 2">
 			                                    </div>
 			                                </div>
 			                            </div>
 			                            <input type="hidden" name="id_contacto" id="id_contacto" value="0">
-			                            <div class="col-sm-6">
+			                            <div class="col-sm-4">
 			                                <label for="codigo_postal">Código Postal*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
@@ -101,15 +93,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                    </div>
 			                                </div>
 			                            </div>
-			                            <div class="col-sm-6" style="padding-bottom: 10px;">
-			                                <label for="estado">Estado*</label>
-	                                        <select id="estado" required class="form-control form-group" name="estado">
-	                                        	<option value="">Seleccione</option>
-	                                        </select>
-			                            </div>
-			                            <div class="col-sm-4">
-			                                <label for="ciudad">Ciudad*</label>
-	                                        <select id="ciudad" required class="form-control form-group" name="ciudad">
+			                            <div class="col-sm-4" style="padding-bottom: 10px;">
+			                                <label for="colonia">Colonia*</label>
+	                                        <select id="colonia" required class="form-control form-group" name="colonia">
 	                                        	<option value="">Seleccione</option>
 	                                        </select>
 			                            </div>
@@ -120,8 +106,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	                                        </select>
 			                            </div>
 			                            <div class="col-sm-4">
-			                                <label for="colonia">Colonia*</label>
-	                                        <select id="colonia" required class="form-control form-group" name="colonia">
+			                                <label for="ciudad">Ciudad*</label>
+	                                        <select id="ciudad" required class="form-control form-group" name="ciudad">
+	                                        	<option value="">Seleccione</option>
+	                                        </select>
+			                            </div>
+			                            <div class="col-sm-4">
+			                                <label for="estado">Estado*</label>
+	                                        <select id="estado" required class="form-control form-group" name="estado">
 	                                        	<option value="">Seleccione</option>
 	                                        </select>
 			                            </div>

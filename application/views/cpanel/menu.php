@@ -49,7 +49,7 @@
                         </a>
                         <ul class="ml-menu">
                             <?php foreach($vistas as $vista): ?>
-                                <?php if($modulo->id_modulo_vista==$vista->id_modulo_vista): ?>
+                                <?php if($modulo->id_modulo_vista == $vista->id_modulo_vista): ?>
                                     <li id="lv<?php echo $vista->id_lista_vista; ?>">
                                         <a href="<?=base_url();?><?php echo $vista->url_lista_vista; ?>"><?php echo $vista->nombre_lista_vista; ?></a>
                                     </li>

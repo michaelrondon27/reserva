@@ -17,7 +17,7 @@ class Inicio extends CI_Controller {
 	public function index()
 	{
 	    $data['modulos'] = $this->Menu_model->modulos();
-	    $data['vistas'] = $this->Menu_model->vistas(1);
+	    $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
 		$this->load->view('cpanel/header');
 		$this->load->view('cpanel/menu', $data);
 		$this->load->view('admin/index');

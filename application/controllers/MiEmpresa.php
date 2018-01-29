@@ -46,12 +46,12 @@ class MiEmpresa extends CI_Controller
       $dataContacto=array(
         'id_codigo_postal' => $this->input->post('colonia'),
         'telefono_principal_contacto' => $this->input->post('telefono_principal_contacto'),
-        'telefono_movil_contacto' => $this->input->post('telefono_movil_contacto'),
+        'telefono_movil_contacto' => $this->input->post('telefono_principal_contacto'),
         'correo_opcional_contacto' => $this->input->post('correo_opcional_contacto'),
         'direccion_contacto' => mb_strtoupper($this->input->post('direccion_contacto'), 'UTF-8'),
         'calle_contacto' => mb_strtoupper($this->input->post('calle_contacto'), 'UTF-8'),
-        'exterior_contacto' => $this->input->post('exterior_contacto'),
-        'interior_contacto' => $this->input->post('interior_contacto'),
+        'exterior_contacto' => mb_strtoupper($this->input->post('exterior_contacto')),
+        'interior_contacto' => mb_strtoupper($this->input->post('interior_contacto')),
       );
       $this->MiEmpresa_model->actualizar_mi_empresa($this->input->post('id_mi_empresa'), mb_strtoupper($this->input->post('nombre_mi_empresa'), 'UTF-8'), $this->input->post('rfc_mi_empresa'), $this->input->post('id_contacto'), $dataContacto);
       echo json_encode("<span>Datos editado exitosamente!</span>"); // envio de mensaje exitoso
@@ -66,7 +66,6 @@ class MiEmpresa extends CI_Controller
     $this->form_validation->set_rules('nombre_mi_empresa','Nombre de Empresa','required');
     $this->form_validation->set_rules('rfc_mi_empresa','RFC','required|max_length[14]');
     $this->form_validation->set_rules('telefono_principal_contacto','Teléfono Principal','required');
-    $this->form_validation->set_rules('telefono_movil_contacto','Teléfono Móvil','required');
     $this->form_validation->set_rules('correo_opcional_contacto','Correo Electrónico','required|valid_email');
     $this->form_validation->set_rules('colonia','Colonia','required');
   }
