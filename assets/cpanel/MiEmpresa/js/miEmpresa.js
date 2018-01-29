@@ -79,10 +79,10 @@ $(document).ready(function(){
         Funcion que busca los codigos
     */
     function buscarCodigos(codigo){
-        eliminarOptions(document.getElementById('estado'));
-        eliminarOptions(document.getElementById('ciudad'));
-        eliminarOptions(document.getElementById('municipio'));
-        eliminarOptions(document.getElementById('colonia'));
+        eliminarOptions('estado');
+        eliminarOptions('ciudad');
+        eliminarOptions('municipio');
+        eliminarOptions('colonia');
         if(codigo.length>4){
             var url=document.getElementById('ruta').value;
             $.ajax({

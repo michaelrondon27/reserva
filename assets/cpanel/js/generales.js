@@ -339,10 +339,7 @@
         Funcion para limpiar los selects
     */
     function eliminarOptions(select){
-        for (var i=0; i<select.length; i++){
-            if(select.options[i].value!="")
-                select.remove(i);
-        }
+        $('#' + select).children('option:not(:first)').remove();
     }
 /* ------------------------------------------------------------------------------- */
 

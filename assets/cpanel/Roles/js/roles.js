@@ -311,10 +311,20 @@ $(document).ready(function(){
 		        $(div).html(html);
 	        },
 	        success: function(respuesta){
-	            var table = "<table class='table table-bordered table-striped table-hover'><thead><tr>";
+	        	var validado = false;
+	        	var modulo = 0;
+	            var table = "<table class='table table-bordered table-hover' id='consultaIndividual'><thead><tr>";
 	            table += "<th>Nombre</th><th>Consultar</th><th>Registrar</th><th>Actualizar</th><th>Eliminar</th></tr></thead><tbody>";
 	            respuesta.forEach(function(operacion, index){
-	            	table += '<tr><th>' + operacion.nombre_lista_vista + '</th>';
+	            	if (modulo != operacion.id_modulo_vista) {
+	            		modulo = operacion.id_modulo_vista;
+	            		validado = false;
+	            	}
+					if (!validado){
+		            	table += "<tr style='background-color: #eee;'><td colspan='5'>" + operacion.nombre_modulo_vista + "</td></tr>";
+		            	validado = true;
+					}
+					table += '<tr><th>' + operacion.nombre_lista_vista + '</th>';
 	            	table += '<th>' + validarPermisoListaVista(operacion.consultar) + '</th>';
 	            	table += '<th>' + validarPermisoListaVista(operacion.registrar) + '</th>';
 	            	table += '<th>' + validarPermisoListaVista(operacion.actualizar) + '</th>';
@@ -363,7 +373,7 @@ $(document).ready(function(){
 				html += "<td><button type='button' class='btn btn-danger waves-effect' onclick='eliminarListaVista(\"" + "#r" + value + "\")'>Eliminar</button></td></tr>";
 				$(tabla + " tbody").append(html);
 			} else {
-				warning('¡La opción selecciona ya se encuentra agregada!');
+				warning('¡La opción seleccionada ya se encuentra agregada!');
 			}
 			$(select + " option[value='']").attr("selected","selected");
 		} else {
@@ -482,5 +492,31 @@ $(document).ready(function(){
                 swal("Cancelado", "No se ha eliminado el registro", "error");
             }
         });
+	}
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion que hace una busqueda de las funciones del modulo seleccionado
+	*/
+	function buscarFunciones(id_modulo, funciones){
+		if (id_modulo != "") {
+			eliminarOptions(funciones);
+			$.ajax({
+                url: document.getElementById('ruta').value + "Roles/buscarListaVista",
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    'id_modulo' : id_modulo,
+                },
+                success: function(respuesta){
+                    respuesta.forEach(function(campo, index){
+                        agregarOptions("#"+ funciones, campo.id_lista_vista, campo.nombre_lista_vista);
+                    });
+                }
+            });
+		} else {
+			warning('¡Debe seleccionar una opción!');
+		}
 	}
 /* ------------------------------------------------------------------------------- */

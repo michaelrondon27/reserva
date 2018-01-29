@@ -17,7 +17,7 @@ class Descuento extends CI_Controller
 
   public function index()
   {
-    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('Bancos', $this->session->userdata('id_rol'));
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('Descuento', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['tipos_plazos'] = $this->Descuento_model->tipos_plazos();

@@ -8,6 +8,7 @@ Class Roles_model extends CI_Model
     private $tabla_rol = "rol";
     private $tabla_lista_vista = "lista_vista";
     private $tabla_rol_operaciones = "rol_operaciones";
+    private $tabla_modulos = "modulo_vista";
 
     public function listado_roles()
     {
@@ -40,13 +41,25 @@ Class Roles_model extends CI_Model
         return $roles;
     }
 
-    public function listas_vistas()
+    public function modulos()
     {
         $this->db->where('a.tabla', $this->tabla_lista_vista);
         $this->db->where('a.status', 1);
         $this->db->select('*');
+        $this->db->from($this->tabla_modulos. " mv");
+        $this->db->join('auditoria a', 'mv.id_modulo_vista = a.cod_reg');
+        $resultados = $this->db->get();
+        return $resultados->result();
+    }
+
+    public function buscarListaVista($id_modulo)
+    {
+        $this->db->where('lv.id_modulo_vista', $id_modulo);
+        $this->db->where('a.tabla', $this->tabla_lista_vista);
+        $this->db->where('a.status', 1);
+        $this->db->select('lv.id_lista_vista, lv.nombre_lista_vista');
         $this->db->from($this->tabla_lista_vista. " lv");
-        $this->db->join('auditoria a', 'lv.id_lista_vista=a.cod_reg');
+        $this->db->join('auditoria a', 'lv.id_lista_vista = a.cod_reg');
         $resultados = $this->db->get();
         return $resultados->result();
     }
@@ -165,9 +178,11 @@ Class Roles_model extends CI_Model
     public function operaciones_rol($id_rol)
     {
         $this->db->where('ro.id_rol', $id_rol);
-        $this->db->select('ro.*, lv.nombre_lista_vista');
+        $this->db->select('ro.*, lv.nombre_lista_vista, mv.nombre_modulo_vista, mv.id_modulo_vista');
         $this->db->from($this->tabla_rol_operaciones . ' ro');
         $this->db->join($this->tabla_lista_vista . ' lv', 'ro.id_lista_vista = lv.id_lista_vista');
+        $this->db->join($this->tabla_modulos . ' mv', 'lv.id_modulo_vista = mv.id_modulo_vista');
+        $this->db->order_by('mv.id_modulo_vista', 'ASC');
         $resultados = $this->db->get();
         return $resultados->result();
     }

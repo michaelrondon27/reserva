@@ -201,8 +201,8 @@ $(document).ready(function(){
 		despliega en un select para la seleccion de la posicion de la lista vista.
 	*/
 	function contador_listaVista(value, select, selected){
-		$('#posicion_lista_vista_registrar').find('option').remove().end().append('<option value="">Seleccione</option>');
-		$('#posicion_lista_vista_actualizar').find('option').remove().end().append('<option value="">Seleccione</option>');
+		eliminarOptions("posicion_lista_vista_registrar");
+		eliminarOptions("posicion_lista_vista_actualizar");
 		if (value != "") {
 			$.ajax({
 		        url:document.getElementById('ruta').value + 'ListaVista/contador_listaVista',

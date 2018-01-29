@@ -20,7 +20,7 @@ class Roles extends CI_Controller
     $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('Roles', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
-    $datos['listasVistas'] = $this->Roles_model->listas_vistas();
+    $datos['modulos'] = $this->Roles_model->modulos();
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('perfiles/Roles/index', $datos);
@@ -31,6 +31,12 @@ class Roles extends CI_Controller
   {
     $listado = $this->Roles_model->listado_roles();
     echo json_encode($listado);
+  }
+
+  public function buscarListaVista()
+  {
+    $listaVista = $this->Roles_model->buscarListaVista($this->input->post('id_modulo'));
+    echo json_encode($listaVista);
   }
 
   public function registrar_rol()

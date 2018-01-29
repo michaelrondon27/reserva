@@ -85,12 +85,18 @@
 				                            </div>
 				                            <div class="col-sm-12">
 				                            	<div class="col-sm-4">
+					                                <label for="modulo_vista_registrar">Módulos</label>
+			                                        <select id="modulo_vista_registrar" class="form-control form-group" onchange="buscarFunciones(this.value, 'lista_vista_registrar');">
+			                                        	<option value="">Seleccione</option>
+			                                        	<?php foreach($modulos as $modulo): ?>
+			                                        		<option value="<?php echo $modulo->id_modulo_vista ?>"><?php echo $modulo->nombre_modulo_vista?></option>
+			                                        	<?php endforeach ?>
+			                                        </select>
+					                            </div>
+					                            <div class="col-sm-4">
 					                                <label for="lista_vista_registrar">Funciones</label>
 			                                        <select id="lista_vista_registrar" class="form-control form-group">
 			                                        	<option value="">Seleccione</option>
-			                                        	<?php foreach($listasVistas as $listaVista): ?>
-			                                        		<option value="<?php echo $listaVista->id_lista_vista ?>"><?php echo $listaVista->nombre_lista_vista?></option>
-			                                        	<?php endforeach ?>
 			                                        </select>
 					                            </div>
 					                            <div class="col-sm-2" style="padding-top: 25px;">
@@ -192,12 +198,18 @@
 				                            <div id="esperarLoading" class="col-sm-12"></div>
 				                            <div class="col-sm-12 ocultar" id="listarRoles">
 				                            	<div class="col-sm-4">
+					                                <label for="modulo_vista_actualizar">Módulos</label>
+			                                        <select id="modulo_vista_actualizar" class="form-control form-group" onchange="buscarFunciones(this.value, 'lista_vista_actualizar');">
+			                                        	<option value="">Seleccione</option>
+			                                        	<?php foreach($modulos as $modulo): ?>
+			                                        		<option value="<?php echo $modulo->id_modulo_vista ?>"><?php echo $modulo->nombre_modulo_vista?></option>
+			                                        	<?php endforeach ?>
+			                                        </select>
+					                            </div>
+					                            <div class="col-sm-4">
 					                                <label for="lista_vista_actualizar">Funciones</label>
 			                                        <select id="lista_vista_actualizar" class="form-control form-group">
 			                                        	<option value="">Seleccione</option>
-			                                        	<?php foreach($listasVistas as $listaVista): ?>
-			                                        		<option value="<?php echo $listaVista->id_lista_vista ?>"><?php echo $listaVista->nombre_lista_vista?></option>
-			                                        	<?php endforeach ?>
 			                                        </select>
 					                            </div>
 					                            <div class="col-sm-2" style="padding-top: 25px;">
@@ -237,7 +249,7 @@
 		                <div class="modal-dialog modal-lg" role="document">
 		                    <div class="modal-content">
 		                        <div class="modal-header">
-		                            <h4 class="modal-title" id="largeModalLabel">Operaciones</h4>
+		                            <h4 class="modal-title" id="largeModalLabel">Funciones</h4>
 		                        </div>
 		                        <div class="modal-body" id="resultados"></div>
 		                        <div class="modal-footer">
