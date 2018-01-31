@@ -485,7 +485,7 @@ $(document).ready(function(){
                     },
                     success: function(respuesta){
                         mensajes('success', respuesta);
-	        			$("#r" + id_rol).remove();
+                        $("#tableActualizar").find("tbody tr#r" + id_rol).remove();
                     }
                 });
             } else {

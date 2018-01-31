@@ -17,12 +17,13 @@ class Modulos extends CI_Controller
 
   public function index()
   {
-    $permiso['permiso'] = $this->Menu_model->verificar_permiso_vista('modulos', $this->session->userdata('id_rol'));
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('modulos', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
+    $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('Modulos');
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
-    $this->load->view('perfiles/modulos/index', $permiso);
+    $this->load->view('perfiles/modulos/index', $datos);
     $this->load->view('cpanel/footer');
   }
 

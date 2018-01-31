@@ -21,6 +21,7 @@ class Descuento extends CI_Controller
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['tipos_plazos'] = $this->Descuento_model->tipos_plazos();
+    $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('Descuento');
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('catalogo/Descuento/index', $datos);
@@ -40,7 +41,7 @@ class Descuento extends CI_Controller
     if($this->form_validation->run() == true){
       $data=array(
         'tipo_plazo' => $this->input->post('tipo_plazo'),
-        'descuento' => $this->input->post('descuento'),
+        'descuento' => str_replace(',', '.', $this->input->post('descuento')),
       );
       $this->Descuento_model->registrar_descuento($data);
     }else{
@@ -56,7 +57,7 @@ class Descuento extends CI_Controller
     if($this->form_validation->run() == true){
       $data=array(
         'tipo_plazo' => $this->input->post('tipo_plazo'),
-        'descuento' => $this->input->post('descuento'),
+        'descuento' => str_replace(',', '.', $this->input->post('descuento')),
       );
       $this->Descuento_model->actualizar_descuento($this->input->post('id_descuento'), $data);
     }else{

@@ -20,6 +20,7 @@ class MiCorreo extends CI_Controller
     $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('MiCorreo', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
+    $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('MiCorreo');
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('configuracion/MiCorreo/index', $datos);

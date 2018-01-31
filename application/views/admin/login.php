@@ -6,7 +6,7 @@
     <body class="login-page">
         <div class="login-box">
             <div class="logo">
-                <a href="javascript:void(0);">Reserva</a>
+                <a href="javascript:void(0);">Sistema de Gestión de Ventas</a>
                 <small></small>
             </div>
             <div class="card">

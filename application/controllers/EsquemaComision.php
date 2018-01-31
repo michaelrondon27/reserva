@@ -21,6 +21,7 @@ class EsquemaComision extends CI_Controller
     $datos['id_vendedores'] = $this->EsquemaComision_model->id_venderores();
     $datos['tipos_vendedores'] = $this->EsquemaComision_model->tipos_venderores();
     $datos['tipos_plazos'] = $this->EsquemaComision_model->tipos_plazos();
+    $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('EsquemaComision');
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $this->load->view('cpanel/header');

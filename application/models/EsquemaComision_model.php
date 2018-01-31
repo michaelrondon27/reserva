@@ -106,19 +106,16 @@ Class EsquemaComision_model extends CI_Model
     public function eliminar_multiple_esquema_comision($id)
     {
         $eliminados=0;
+        $noEliminados=0;
         foreach($id as $esquema_comision)
         {
             if($this->db->delete($this->tabla_esquema_comision, array('id_esquema_comision' => $esquema_comision))){
                 $eliminados++;
+            }else{
+                $noEliminados++;
             }
         }
-        if ($eliminados == 0) {
-            echo json_encode("<span>¡No se ha eliminado ninguno de los registros seleccionados porque tienen dependencia en otras tablas!</span>");
-        } else if ($eliminados == 1) {
-            echo json_encode("<span>¡Se ha eliminado un solo registro de todos los seleccionados!</span>");
-        } else if ($eliminados > 1) {
-            echo json_encode("<span>¡Se han eliminado " . $eliminados . " registros de todos los seleccionados!</span>");
-        }
+        echo json_encode("<span>Registros eliminados: ".$eliminados."</span><br><span>Registros no eliminados (porque tienen dependencia en otras tablas): ".$noEliminados);
     }
 
     public function status_multiple_esquema_comision($id, $status)
@@ -129,7 +126,7 @@ Class EsquemaComision_model extends CI_Model
 
     public function id_venderores()
     {
-        $this->db->where('tipolval', 'IDVEND');
+        $this->db->where('tipolval', 'IDVENDEDOR');
         $this->db->order_by('descriplval', 'ASC');
         $resultados = $this->db->get($this->tabla_lval);
         return $resultados->result();
@@ -137,14 +134,14 @@ Class EsquemaComision_model extends CI_Model
 
     public function tipos_venderores()
     {
-        $this->db->where('tipolval', 'TIPOVEND');
+        $this->db->where('tipolval', 'TIPOVENDEDOR');
         $resultados = $this->db->get($this->tabla_lval);
         return $resultados->result();
     }
 
     public function tipos_plazos()
     {
-        $this->db->where('tipolval', 'TIPOPLAZO');
+        $this->db->where('tipolval', 'TIPOPLAZOS');
         $resultados = $this->db->get($this->tabla_lval);
         return $resultados->result();
     }

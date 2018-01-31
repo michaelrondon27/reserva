@@ -26,7 +26,7 @@ Class ListaVista_model extends CI_Model
         $this->db->where('a.status', 1);
         $this->db->select('mv.id_modulo_vista, mv.nombre_modulo_vista');
         $this->db->from($this->tabla_modulo. " mv");
-        $this->db->join('auditoria a', 'mv.id_modulo_vista=a.cod_reg');
+        $this->db->join('auditoria a', 'a.cod_reg = mv.id_modulo_vista');
         $resultados = $this->db->get();
         return $resultados->result();
     }
@@ -91,20 +91,17 @@ Class ListaVista_model extends CI_Model
     public function eliminar_multiple_lista_vista($id)
     {
         $eliminados=0;
+        $noEliminados=0;
         foreach($id as $listaVista)
         {
             if($this->db->delete($this->tabla_lista_vista, array('id_lista_vista' => $listaVista))){
                 $eliminados++;
+        }else{
+                $noEliminados++;
             }
         }
         $this->ordernar_todas_listas_vistas();
-        if ($eliminados == 0) {
-            echo json_encode("<span>¡No se ha eliminado ninguno de los registros seleccionados porque tienen dependencia en otras tablas!</span>");
-        } else if ($eliminados == 1) {
-            echo json_encode("<span>¡Se ha eliminado un solo registro de todos los seleccionados!</span>");
-        } else if ($eliminados > 1) {
-            echo json_encode("<span>¡Se han eliminado " . $eliminados . " registros de todos los seleccionados!</span>");
-        }
+        echo json_encode("<span>Registros eliminados: ".$eliminados."</span><br><span>Registros no eliminados (porque tienen dependencia en otras tablas): ".$noEliminados);
     }
 
     public function status_multiple_lista_vista($id, $status)
