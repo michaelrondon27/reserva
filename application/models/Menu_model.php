@@ -30,6 +30,7 @@ Class Menu_model extends CI_Model
         $this->db->join('rol_operaciones ro', 'r.id_rol = ro.id_rol');
         $this->db->join('lista_vista lv', 'ro.id_lista_vista = lv.id_lista_vista');
         $this->db->join('auditoria a', 'a.cod_reg = r.id_rol');
+        $this->db->order_by('posicion_lista_vista', 'ASC');
         $resultados = $this->db->get();
         return $resultados->result();
     }

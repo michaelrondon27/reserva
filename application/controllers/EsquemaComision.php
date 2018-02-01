@@ -17,7 +17,7 @@ class EsquemaComision extends CI_Controller
 
   public function index()
   {
-    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('esquemacomision', $this->session->userdata('id_rol'));
+    $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('EsquemaComision', $this->session->userdata('id_rol'));
     $datos['id_vendedores'] = $this->EsquemaComision_model->id_venderores();
     $datos['tipos_vendedores'] = $this->EsquemaComision_model->tipos_venderores();
     $datos['tipos_plazos'] = $this->EsquemaComision_model->tipos_plazos();

@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	                    <div class="card">
 	                        <div class="header">
-	                            <h2>Datos de Correo Electrónico</h2>
+	                            <h2>Datos de <?php echo $breadcrumbs->nombre_lista_vista; ?></h2>
 	                        </div>
 	                        <div class="body">
 	                        	<div class="table-responsive">
