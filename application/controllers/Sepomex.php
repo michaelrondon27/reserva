@@ -32,7 +32,7 @@ class Sepomex extends CI_Controller {
         //                           TOMAR EN CUENTA                             //
         //                                                                       //
         //  1)Aumentar la capacidad el tamaño maximo de megas permitidos en la   //
-        //                                                                       //
+        //    subida de archivos en el servidor (apache)                         //
         //                                                                       //
         //  2)Aumentar el tiempo de ejecucion de las consultas de php en la      //
         //    configuracion de apache. buscar: max_execution_time -> en segundos //
