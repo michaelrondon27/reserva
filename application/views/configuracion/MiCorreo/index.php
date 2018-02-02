@@ -11,11 +11,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<section class="content">
 	        <div class="container-fluid">
 	        	<div id="alertas"></div>
+	        	<div class="block-header">
+	                <ol class="breadcrumb breadcrumb-col-cyan">
+                        <li><a href="javascript:void(0);"><?php echo $breadcrumbs->nombre_modulo_vista; ?></a></li>
+                        <li><?php echo $breadcrumbs->nombre_lista_vista; ?></li>
+                    </ol>
+	            </div>
 				<div class="row clearfix">
 	                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	                    <div class="card">
 	                        <div class="header">
-	                            <h2>Datos de Correo Electrónico</h2>
+	                            <h2>Datos de <?php echo $breadcrumbs->nombre_lista_vista; ?></h2>
 	                        </div>
 	                        <div class="body">
 	                        	<div class="table-responsive">

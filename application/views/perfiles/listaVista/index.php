@@ -12,14 +12,19 @@
 		<section class="content">
 	        <div class="container-fluid">
 	        	<div id="alertas"></div>
-
+	        	<div class="block-header">
+	                <ol class="breadcrumb breadcrumb-col-cyan">
+                        <li><a href="javascript:void(0);"><?php echo $breadcrumbs->nombre_modulo_vista; ?></a></li>
+                        <li><?php echo $breadcrumbs->nombre_lista_vista; ?></li>
+                    </ol>
+	            </div>
 	        	<!-- Comienzo del cuadro de la tabla -->
 					<div class="row clearfix" id="cuadro1">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
 		                            <h2>
-		                                Gestión de Lista Vista
+		                                Gestión de <?php echo $breadcrumbs->nombre_lista_vista; ?>
 		                            </h2>
 		                            <ul class="header-dropdown m-r--5">
 		                                <button class="btn btn-primary ocultar registrar waves-effect" onclick="nuevoListaVista()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
@@ -31,7 +36,7 @@
 		                                    <thead>
 		                                        <tr>
 		                                        	<th style="text-align: center; padding: 0px 10px 0px 5px;"><input type="checkbox" id="checkall" class="chk-col-blue"/><label for="checkall"></label></th>
-		                                            <th>Nombre Lista Vista</th>
+		                                            <th>Nombre Función</th>
 		                                            <th>Descripción</th>
 		                                            <th>Nombre Modulo</th>
 		                                            <th>Posición</th>
@@ -63,7 +68,7 @@
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Registro de Lista Vista</h2>
+		                            <h2>Registro de <?php echo $breadcrumbs->nombre_lista_vista; ?></h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
@@ -134,7 +139,7 @@
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Consultar Lista Vista</h2>
+		                            <h2>Consultar <?php echo $breadcrumbs->nombre_lista_vista; ?></h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
@@ -201,7 +206,7 @@
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Editar de Lista Vista</h2>
+		                            <h2>Editar de <?php echo $breadcrumbs->nombre_lista_vista; ?></h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">

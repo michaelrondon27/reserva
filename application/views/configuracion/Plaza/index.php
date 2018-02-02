@@ -12,14 +12,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<section class="content">
 	        <div class="container-fluid">
 	        	<div id="alertas"></div>
-
+	        	<div class="block-header">
+	                <ol class="breadcrumb breadcrumb-col-cyan">
+                        <li><a href="javascript:void(0);"><?php echo $breadcrumbs->nombre_modulo_vista; ?></a></li>
+                        <li><?php echo $breadcrumbs->nombre_lista_vista; ?></li>
+                    </ol>
+	            </div>
 	        	<!-- Comienzo del cuadro de la tabla -->
 					<div class="row clearfix" id="cuadro1">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
 		                            <h2>
-		                                Gestión de Plazas Bancarias
+		                                Gestión de <?php echo $breadcrumbs->nombre_lista_vista; ?>
 		                            </h2>
 		                            <ul class="header-dropdown m-r--5">
 		                                <button class="btn btn-primary waves-effect registrar ocultar" onclick="nuevoPlaza()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
@@ -61,7 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Registro de Plaza Bancaria</h2>
+		                            <h2>Registro de <?php echo $breadcrumbs->nombre_lista_vista; ?></h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
@@ -100,7 +105,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Consultar Plaza Bancaria</h2>
+		                            <h2>Consultar <?php echo $breadcrumbs->nombre_lista_vista; ?></h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
@@ -136,7 +141,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
 		                        <div class="header">
-		                            <h2>Editar de Plaza Bancaria</h2>
+		                            <h2>Editar de <?php echo $breadcrumbs->nombre_lista_vista; ?></h2>
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">

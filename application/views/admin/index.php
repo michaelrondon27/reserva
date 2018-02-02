@@ -7,8 +7,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<section class="content">
 	        <div class="container-fluid">
 				<div class="block-header">
-	                <h2>Inicio</h2>
+	                <ol class="breadcrumb breadcrumb-col-cyan">
+                        <li class="active">INICIO</li>
+                    </ol>
 	            </div>
+	            <div class="col-xs-12">
+                    <img src="<?=base_url();?>/assets/cpanel/images/login/fondo.png" style="width: 100%;">
+                </div>
 			</div>
 		</section>
 	</body>

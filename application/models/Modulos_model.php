@@ -89,10 +89,13 @@ Class Modulos_model extends CI_Model
     public function eliminar_multiple_modulos($id)
     {
         $eliminados=0;
+        $noEliminados=0;
         foreach($id as $modulo)
         {
             if($this->db->delete($this->nombre_tabla, array('id_modulo_vista' => $modulo))){
                 $eliminados++;
+            }else{
+                $noEliminados++;
             }
         }
         $this->db->order_by('posicion_modulo_vista', 'DESC');
@@ -107,13 +110,7 @@ Class Modulos_model extends CI_Model
             $this->db->update($this->nombre_tabla, $datos);
             $contador--;
         }
-        if ($eliminados == 0) {
-            echo json_encode("<span>¡No se ha eliminado ninguno de los registros seleccionados porque tienen dependencia en otras tablas!</span>");
-        } else if ($eliminados == 1) {
-            echo json_encode("<span>¡Se ha eliminado un solo registro de todos los seleccionados!</span>");
-        } else if ($eliminados > 1) {
-            echo json_encode("<span>¡Se han eliminado " . $eliminados . " registros de todos los seleccionados!</span>");
-        }
+        echo json_encode("<span>Registros eliminados: ".$eliminados."</span><br><span>Registros no eliminados (porque tienen dependencia en otras tablas): ".$noEliminados);
     }
 
     public function status_multiple_modulos($id, $status)

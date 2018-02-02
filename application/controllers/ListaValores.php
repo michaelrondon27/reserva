@@ -19,6 +19,7 @@ class ListaValores extends CI_Controller {
     $datos['permiso'] = $this->Menu_model->verificar_permiso_vista('ListaValores', $this->session->userdata('id_rol'));
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
+    $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('ListaValores');
     $datos['tipolval']=$this->ListasValores_model->tipolval();
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);

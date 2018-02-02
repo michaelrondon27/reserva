@@ -21,6 +21,7 @@ class ListaVista extends CI_Controller
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['modulos'] = $this->ListaVista_model->modulos();
+    $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('ListaVista');
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('perfiles/listaVista/index', $datos);
@@ -75,12 +76,12 @@ class ListaVista extends CI_Controller
     $this->reglas_lista_vista('update');
     $this->mensajes_reglas_lista_vista();
     if($this->form_validation->run() == true){
-      $lista_vista_verificado=$this->ListaVista_model->verificar_lista_vista($this->input->post('nombre_lista_vista')); //busca si el nombre del banco esta registrado en la base de datos
+      $lista_vista_verificado=$this->ListaVista_model->verificar_lista_vista($this->input->post('nombre_lista_vista')); //busca si el nombre esta registrado en la base de datos
       $posicionar = array(
-        'moduloInicial' => $this->input->post('id_modulo_vista_hidden'),
-        'moduloFinal' => $this->input->post('id_modulo_vista'),
-        'posicionInicial' => $this->input->post('posicion_lista_vista_hidden'),
-        'posicionFinal' => $this->input->post('posicion_lista_vista'),
+        "moduloInicial" => intval($this->input->post('id_modulo_vista_hidden')),
+        "moduloFinal" => intval($this->input->post('id_modulo_vista')),
+        "posicionInicial" => intval($this->input->post('posicion_lista_vista_hidden')),
+        "posicionFinal" => intval($this->input->post('posicion_lista_vista')),
       );
       if($this->input->post('visibilidad_lista_vista') == ""){
         $visible = 1;

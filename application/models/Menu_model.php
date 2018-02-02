@@ -30,6 +30,7 @@ Class Menu_model extends CI_Model
         $this->db->join('rol_operaciones ro', 'r.id_rol = ro.id_rol');
         $this->db->join('lista_vista lv', 'ro.id_lista_vista = lv.id_lista_vista');
         $this->db->join('auditoria a', 'a.cod_reg = r.id_rol');
+        $this->db->order_by('posicion_lista_vista', 'ASC');
         $resultados = $this->db->get();
         return $resultados->result();
     }
@@ -59,6 +60,17 @@ Class Menu_model extends CI_Model
         $this->db->where('id_modulo_vista', $id_modulo_vista);
         $resultados = $this->db->get('lista_vista');
         return $resultados->result();
+    }
+
+    public function breadcrumbs($listaVista)
+    {
+        $this->db->where('lv.url_lista_vista', $listaVista);
+        $this->db->limit(1);
+        $this->db->select('lv.nombre_lista_vista, mv.nombre_modulo_vista');
+        $this->db->from('lista_vista lv');
+        $this->db->join('modulo_vista mv', 'lv.id_modulo_vista = mv.id_modulo_vista');
+        $resultados = $this->db->get();
+        return $resultados->row();
     }
 
 }

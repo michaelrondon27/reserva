@@ -100,19 +100,16 @@ Class Descuento_model extends CI_Model
     public function eliminar_multiple_descuento($id)
     {
         $eliminados=0;
+        $noEliminados=0;
         foreach($id as $banco)
         {
             if($this->db->delete($this->tabla_descuento, array('id_descuento' => $banco))){
                 $eliminados++;
+            }else{
+                $noEliminados++;
             }
         }
-        if ($eliminados == 0) {
-            echo json_encode("<span>¡No se ha eliminado ninguno de los registros seleccionados porque tienen dependencia en otras tablas!</span>");
-        } else if ($eliminados == 1) {
-            echo json_encode("<span>¡Se ha eliminado un solo registro de todos los seleccionados!</span>");
-        } else if ($eliminados > 1) {
-            echo json_encode("<span>¡Se han eliminado " . $eliminados . " registros de todos los seleccionados!</span>");
-        }
+        echo json_encode("<span>Registros eliminados: ".$eliminados."</span><br><span>Registros no eliminados (porque tienen dependencia en otras tablas): ".$noEliminados);
     }
 
     public function status_multiple_descuento($id, $status)
@@ -123,7 +120,7 @@ Class Descuento_model extends CI_Model
 
     public function tipos_plazos()
     {
-        $this->db->where('tipolval', 'TIPOPLAZO');
+        $this->db->where('tipolval', 'TIPOPLAZOS');
         $resultados = $this->db->get($this->tabla_lval);
         return $resultados->result();
     }

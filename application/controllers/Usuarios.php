@@ -24,6 +24,7 @@ class Usuarios extends CI_Controller
     $datos['estadosCiviles'] = $this->Usuarios_model->estados_civiles();
     $datos['sexos'] = $this->Usuarios_model->sexos();
     $datos['roles'] = $this->Usuarios_model->roles();
+    $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('Usuarios');
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('perfiles/Usuarios/index', $datos);

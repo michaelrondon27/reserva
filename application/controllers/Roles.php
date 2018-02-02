@@ -21,6 +21,7 @@ class Roles extends CI_Controller
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['modulos'] = $this->Roles_model->modulos();
+    $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('Roles');
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('perfiles/Roles/index', $datos);
