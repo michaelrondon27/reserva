@@ -52,6 +52,7 @@ Class Plazas_model extends CI_Model{
             if(!$this->db->delete($this->nombre_tabla, array('id_plaza' => $id))){
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
+                $this->db->delete('auditoria', array('cod_reg' => $id, 'tabla' => $this->nombre_tabla));
                 echo json_encode("<span>La plaza se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
             }
         } catch(Exception $e){ 
@@ -78,6 +79,7 @@ Class Plazas_model extends CI_Model{
         foreach($id as $plaza)
         {
             if($this->db->delete($this->nombre_tabla, array('id_plaza' => $plaza))){
+                $this->db->delete('auditoria', array('cod_reg' => $plaza, 'tabla' => $this->nombre_tabla));
                 $eliminados++;
             }else{
                 $noEliminados++;

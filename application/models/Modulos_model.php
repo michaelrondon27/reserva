@@ -67,6 +67,7 @@ Class Modulos_model extends CI_Model
                     $this->db->update($this->nombre_tabla, $datos);
                     $contador--;
                 }
+                $this->db->delete('auditoria', array('cod_reg' => $id, 'tabla' => $this->nombre_tabla));
                 echo json_encode("<span>El módulo se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
             }
         } catch(Exception $e){ 
@@ -93,6 +94,7 @@ Class Modulos_model extends CI_Model
         foreach($id as $modulo)
         {
             if($this->db->delete($this->nombre_tabla, array('id_modulo_vista' => $modulo))){
+                $this->db->delete('auditoria', array('cod_reg' => $modulo, 'tabla' => $this->nombre_tabla));
                 $eliminados++;
             }else{
                 $noEliminados++;

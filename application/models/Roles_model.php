@@ -132,6 +132,7 @@ Class Roles_model extends CI_Model
             if(!$this->db->delete($this->tabla_rol, array('id_rol' => $id))){
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
+                $this->db->delete('auditoria', array('cod_reg' => $id, 'tabla' => $this->tabla_rol));
                 echo json_encode("<span>El rol se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
             }
         } catch(Exception $e){ 
@@ -158,6 +159,7 @@ Class Roles_model extends CI_Model
         foreach($id as $rol)
         {
             if($this->db->delete($this->tabla_rol, array('id_rol' => $rol))){
+                $this->db->delete('auditoria', array('cod_reg' => $rol, 'tabla' => $this->tabla_rol));
                 $eliminados++;
             }else{
                 $noEliminados++;

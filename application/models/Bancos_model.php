@@ -55,6 +55,7 @@ Class Bancos_model extends CI_Model
             if(!$this->db->delete($this->nombre_tabla, array('id_banco' => $id))){
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
+                $this->db->delete('auditoria', array('cod_reg' => $id, 'tabla' => $this->nombre_tabla));
                 echo json_encode("<span>El Banco se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
             }
         } catch(Exception $e){ 
@@ -81,6 +82,7 @@ Class Bancos_model extends CI_Model
         foreach($id as $banco)
         {
             if($this->db->delete($this->nombre_tabla, array('id_banco' => $banco))){
+                $this->db->delete('auditoria', array('cod_reg' => $banco, 'tabla' => $this->nombre_tabla));
                 $eliminados++;
             }else{
                 $noEliminados++;

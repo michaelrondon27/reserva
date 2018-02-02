@@ -69,6 +69,7 @@ Class ListaVista_model extends CI_Model
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
                 $this->ordernar_lista_vista($data['id_modulo_vista']);
+                $this->db->delete('auditoria', array('cod_reg' => $id, 'tabla' => $this->tabla_lista_vista));
                 echo json_encode("<span>El modulo se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
             }
         } catch(Exception $e){ 
@@ -95,8 +96,9 @@ Class ListaVista_model extends CI_Model
         foreach($id as $listaVista)
         {
             if($this->db->delete($this->tabla_lista_vista, array('id_lista_vista' => $listaVista))){
+                $this->db->delete('auditoria', array('cod_reg' => $listaVista, 'tabla' => $this->tabla_lista_vista));
                 $eliminados++;
-        }else{
+            }else{
                 $noEliminados++;
             }
         }

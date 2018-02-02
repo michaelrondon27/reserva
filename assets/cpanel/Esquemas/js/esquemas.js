@@ -22,7 +22,7 @@ $(document).ready(function(){
 				"dataSrc":""
 			},
 			"columns":[
-				{"data": "id_esquema_comision",
+				{"data": "id_esquema",
 					render : function(data, type, row) {
 						return "<input type='checkbox' class='checkitem chk-col-blue' id='item"+data+"' value='"+data+"'><label for='item"+data+"'></label>"
 					}
@@ -31,11 +31,11 @@ $(document).ready(function(){
 				{"data":"cod_esquema"},
 				{"data":"descripcion",
 					render : function(data, type, row) {
-						var descripcion = data;
+						var text = data;
 						if (data != null)
-							if (data.length > 30)
-								descripcion = data.substr(0,29) + "..."
-						return descripcion;
+							if (data.length > 20)
+								text = data.substr(0,19) + "..."
+						return text;
 					}
 				},
 				{"data":"fec_regins",
@@ -82,8 +82,8 @@ $(document).ready(function(){
 	*/
 	function nuevoEsquema(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
-		limpiarFormularioRegistrar("#form_esquema_comision_registrar");
-		$("#id_vendedor_registrar").focus();
+		limpiarFormularioRegistrar("#form_esquema_registrar");
+		$("#tipo_registrar").focus();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -112,11 +112,9 @@ $(document).ready(function(){
 	function ver(tbody, table){
 		$(tbody).on("click", "span.consultar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			$("#id_vendedor_consultar option[value='" + data.id_vendedor + "']").attr("selected","selected");
-			$("#tipo_vendedor_consultar option[value='" + data.tipo_vendedor + "']").attr("selected","selected");
-			$("#tipo_plazo_consultar option[value='" + data.tipo_plazo + "']").attr("selected","selected");
-			document.getElementById('num_ventas_mes_consultar').value = data.num_ventas_mes;
-			document.getElementById('porctj_comision_consultar').value = data.porctj_comision.replace('.',',');
+			$("#tipo_consultar option[value='" + data.tipo + "']").attr("selected","selected");
+			document.getElementById('cod_esquema_consultar').value = data.cod_esquema;
+			document.getElementById('descripcion_consultar').value = data.descripcion;
 			cuadros('#cuadro1', '#cuadro3');
 		});
 	}
@@ -129,14 +127,12 @@ $(document).ready(function(){
 	function editar(tbody, table){
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			$("#id_vendedor_actualizar option[value='" + data.id_vendedor + "']").attr("selected","selected");
-			$("#tipo_vendedor_actualizar option[value='" + data.tipo_vendedor + "']").attr("selected","selected");
-			$("#tipo_plazo_actualizar option[value='" + data.tipo_plazo + "']").attr("selected","selected");
-			document.getElementById('id_esquema_comision_actualizar').value = data.id_esquema_comision;
-			document.getElementById('num_ventas_mes_actualizar').value = data.num_ventas_mes;
-			document.getElementById('porctj_comision_actualizar').value = data.porctj_comision.replace('.',',');
+			$("#tipo_actualizar option[value='" + data.tipo + "']").attr("selected","selected");
+			document.getElementById('id_esquema_actualizar').value = data.id_esquema;
+			document.getElementById('cod_esquema_actualizar').value = data.cod_esquema;
+			document.getElementById('descripcion_actualizar').value = data.descripcion;
 			cuadros('#cuadro1', '#cuadro4');
-			$("#id_vendedor_actualizar").focus();
+			$("#tipo_actualizar").focus();
 		});
 	}
 /* ------------------------------------------------------------------------------- */
@@ -146,7 +142,7 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function actualizar_esquema(){
-		enviarFormulario("#form_esquema_comision_actualizar", 'EsquemaComision/actualizar_esquema_comision', '#cuadro4');
+		enviarFormulario("#form_esquema_actualizar", 'Esquemas/actualizar_esquema', '#cuadro4');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -157,7 +153,7 @@ $(document).ready(function(){
 	function eliminar(tbody, table){
 		$(tbody).on("click", "span.eliminar", function(){
             var data=table.row($(this).parents("tr")).data();
-            eliminarConfirmacion('EsquemaComision/eliminar_esquema_comision', data.id_esquema_comision, "¿Esta seguro de eliminar el registro?");
+            eliminarConfirmacion('Esquemas/eliminar_esquema', data.id_esquema, "¿Esta seguro de eliminar el registro?");
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -169,7 +165,7 @@ $(document).ready(function(){
 	function desactivar(tbody, table){
 		$(tbody).on("click", "span.desactivar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('EsquemaComision/status_esquema_comision', data.id_esquema_comision, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
+            statusConfirmacion('Esquemas/status_esquema', data.id_esquema, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -181,7 +177,7 @@ $(document).ready(function(){
 	function activar(tbody, table){
 		$(tbody).on("click", "span.activar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('EsquemaComision/status_esquema_comision', data.id_esquema_comision, 1, "¿Esta seguro de activar el registro?", 'activar');
+            statusConfirmacion('Esquemas/status_esquema', data.id_esquema, 1, "¿Esta seguro de activar el registro?", 'activar');
         });
 	}
 /* ------------------------------------------------------------------------------- */

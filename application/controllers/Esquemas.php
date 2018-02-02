@@ -34,77 +34,78 @@ class Esquemas extends CI_Controller
     echo json_encode($listado);
   }
 
-  public function registrar_esquema_comision()
+  public function registrar_esquema()
   {
-    $this->reglas_esquema_comision();
-    $this->mensajes_reglas_esquema_comision();
+    $this->reglas_esquema('insert');
+    $this->mensajes_reglas_esquema();
     if($this->form_validation->run() == true){
       $data = array(
-        'id_vendedor' => $this->input->post('id_vendedor'),
-        'tipo_vendedor' => $this->input->post('tipo_vendedor'),
-        'tipo_plazo' => $this->input->post('tipo_plazo'),
-        'num_ventas_mes' => $this->input->post('num_ventas_mes'),
-        'porctj_comision' => str_replace(',', '.', $this->input->post('porctj_comision')),
+        'tipo' => $this->input->post('tipo'),
+        'cod_esquema' => mb_strtoupper($this->input->post('cod_esquema')),
+        'descripcion' => mb_strtoupper($this->input->post('descripcion')),
       );
-      $this->EsquemaComision_model->registrar_esquema_comision($data);
+      $this->Esquemas_model->registrar_esquema($data);
     }else{
       // enviar los errores
       echo validation_errors();
     }
   }
 
-  public function actualizar_esquema_comision()
+  public function actualizar_esquema()
   {
-    $this->reglas_esquema_comision();
-    $this->mensajes_reglas_esquema_comision();
+    $this->reglas_esquema('update');
+    $this->mensajes_reglas_esquema();
     if($this->form_validation->run() == true){
       $data = array(
-        'id_vendedor' => $this->input->post('id_vendedor'),
-        'tipo_vendedor' => $this->input->post('tipo_vendedor'),
-        'tipo_plazo' => $this->input->post('tipo_plazo'),
-        'num_ventas_mes' => $this->input->post('num_ventas_mes'),
-        'porctj_comision' => str_replace(',', '.', $this->input->post('porctj_comision')),
+        'tipo' => $this->input->post('tipo'),
+        'cod_esquema' => mb_strtoupper($this->input->post('cod_esquema')),
+        'descripcion' => mb_strtoupper($this->input->post('descripcion')),
       );
-      $this->EsquemaComision_model->actualizar_esquema_comision($this->input->post('id_esquema_comision'), $data);
+      $this->Esquemas_model->actualizar_esquema($this->input->post('id_esquema'), $data);
     }else{
       // enviar los errores
       echo validation_errors();
     }
   }
 
-  public function reglas_esquema_comision()
+  public function reglas_esquema($method)
   {
-    $this->form_validation->set_rules('id_vendedor','Id de Vendedor','required');
-    $this->form_validation->set_rules('tipo_vendedor','Tipo de Vendedor','required');
-    $this->form_validation->set_rules('tipo_plazo','Tipo de Plazo','required');
-    $this->form_validation->set_rules('num_ventas_mes','Ventas al mes','required|numeric');
-    $this->form_validation->set_rules('porctj_comision','Porcentaje de Comisión','required');
+    if ($method == 'insert'){
+      $this->form_validation->set_rules('tipo','Tipo','required');
+      $this->form_validation->set_rules('cod_esquema','Código de Esquema','required|is_unique[esquemas.cod_esquema]');
+      $this->form_validation->set_rules('descripcion','Descripción','required');
+    } else if ($method == 'update'){
+      $this->form_validation->set_rules('tipo','Tipo','required');
+      $this->form_validation->set_rules('cod_esquema','Código de Esquema','required');
+      $this->form_validation->set_rules('descripcion','Descripción','required');
+    }
   }
 
-  public function mensajes_reglas_esquema_comision(){
+  public function mensajes_reglas_esquema(){
     $this->form_validation->set_message('required', 'El campo %s es obligatorio');
     $this->form_validation->set_message('numeric', 'El campo %s debe poseer solo números');
+    $this->form_validation->set_message('is_unique', 'El valor ingresado en el campo %s ya se encuentra en uso');
   }
 
-  public function eliminar_esquema_comision()
+  public function eliminar_esquema()
   {
-    $this->EsquemaComision_model->eliminar_esquema_comision($this->input->post('id'));
+    $this->Esquemas_model->eliminar_esquema($this->input->post('id'));
   }
 
-  public function status_esquema_comision()
+  public function status_esquema()
   {
-    $this->EsquemaComision_model->status_esquema_comision($this->input->post('id'), $this->input->post('status'));
+    $this->Esquemas_model->status_esquema($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 
-  public function eliminar_multiple_esquema_comision()
+  public function eliminar_multiple_esquema()
   {
-    $this->EsquemaComision_model->eliminar_multiple_esquema_comision($this->input->post('id'));
+    $this->Esquemas_model->eliminar_multiple_esquema($this->input->post('id'));
   }
 
-  public function status_multiple_esquema_comision()
+  public function status_multiple_esquema()
   {
-    $this->EsquemaComision_model->status_multiple_esquema_comision($this->input->post('id'), $this->input->post('status'));
+    $this->Esquemas_model->status_multiple_esquema($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 

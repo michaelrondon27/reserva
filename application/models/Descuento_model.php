@@ -78,6 +78,7 @@ Class Descuento_model extends CI_Model
             if(!$this->db->delete($this->tabla_descuento, array('id_descuento' => $id))){
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
+                $this->db->delete('auditoria', array('cod_reg' => $id, 'tabla' => $this->tabla_descuento));
                 echo json_encode("<span>El descuento se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
             }
         } catch(Exception $e){ 
@@ -101,9 +102,10 @@ Class Descuento_model extends CI_Model
     {
         $eliminados=0;
         $noEliminados=0;
-        foreach($id as $banco)
+        foreach($id as $descuento)
         {
-            if($this->db->delete($this->tabla_descuento, array('id_descuento' => $banco))){
+            if($this->db->delete($this->tabla_descuento, array('id_descuento' => $descuento))){
+                $this->db->delete('auditoria', array('cod_reg' => $descuento, 'tabla' => $this->tabla_descuento));
                 $eliminados++;
             }else{
                 $noEliminados++;

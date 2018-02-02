@@ -137,3 +137,28 @@ INSERT INTO `lval` (`codlval`, `tipolval`, `descriplval`) VALUES
 INSERT INTO `auditoria` (`tabla`, `cod_reg`, `status`, `fec_status`, `usr_regins`, `fec_regins`, `usr_regmod`, `fec_regmod`) VALUES
 ('lval', 297, 1, NULL, 11, '2018-02-01', NULL, NULL),
 ('lval', 298, 1, NULL, 11, '2018-02-01', NULL, NULL);
+
+CREATE TABLE `esquemas` (
+	`id_esquema` int(11) NOT NULL,
+	`tipo` int(11) NOT NULL,
+	`cod_esquema` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+	`descripcion` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `esquemas` (`id_esquema`, `tipo`, `cod_esquema`, `descripcion`) VALUES
+(1, 297, 'COMIS0001', 'ESQUEMAS DE COMISIONES ETAPA I'),
+(2, 298, 'DESC00001', 'ESQUEMA DESCUENTO ESTAPA I');
+
+ALTER TABLE `esquemas`
+	ADD PRIMARY KEY (`id_esquema`),
+	ADD KEY `tipo` (`tipo`);
+
+ALTER TABLE `esquemas`
+  	MODIFY `id_esquema` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+ALTER TABLE `esquemas`
+ 	ADD CONSTRAINT `esquemas_ibfk_1` FOREIGN KEY (`tipo`) REFERENCES `lval` (`codlval`);
+
+INSERT INTO `auditoria` (`tabla`, `cod_reg`, `status`, `fec_status`, `usr_regins`, `fec_regins`, `usr_regmod`, `fec_regmod`) VALUES
+('esquemas', 1, 1, NULL, 11, '2018-02-02', NULL, NULL),
+('esquemas', 2, 1, NULL, 11, '2018-02-02', NULL, NULL);

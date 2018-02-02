@@ -143,6 +143,7 @@ Class Usuarios_model extends CI_Model
             if(!$this->db->delete($this->tabla_usuario, array('id_usuario' => $id))){
                 throw new Exception("<span>No se puede eliminar el registro porque tiene dependencia en otras tablas!</span>");
             }else{
+                $this->db->delete('auditoria', array('cod_reg' => $id, 'tabla' => $this->tabla_usuario));
                 echo json_encode("<span>El usuario se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
             }
         } catch(Exception $e){ 
@@ -169,6 +170,7 @@ Class Usuarios_model extends CI_Model
         foreach($id as $usuario)
         {
             if($this->db->delete($this->tabla_usuario, array('id_usuario' => $usuario))){
+                $this->db->delete('auditoria', array('cod_reg' => $usuario, 'tabla' => $this->tabla_usuario));
                 $eliminados++;
             }else{
                 $noEliminados++;

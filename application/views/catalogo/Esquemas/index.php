@@ -47,13 +47,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    <tbody></tbody>
 		                                </table>
 		                                <div class="col-md-2 eliminar ocultar">
-		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('EsquemaComision/eliminar_multiple_esquema_comision')">Eliminar seleccionados</button>
+		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('Esquemas/eliminar_multiple_esquema')">Eliminar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 actualizar ocultar">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('EsquemaComision/status_multiple_esquema_comision', 1, 'activar')">Activar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Esquemas/status_multiple_esquema', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 actualizar ocultar">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('EsquemaComision/status_multiple_esquema_comision', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Esquemas/status_multiple_esquema', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>
@@ -120,45 +120,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        <div class="body">
 		                        	<div class="table-responsive">
 		                            	<div class="col-sm-4">
-		                            		<label for="id_vendedor_consultar">Clasificación*</label>
-	                                    	<select id="id_vendedor_consultar" class="form-control" disabled>
+		                            		<label for="tipo_consultar">Tipo*</label>
+	                                    	<select id="tipo_consultar" class="form-control" disabled>
 	                                    		<option value="" selected>Seleccione</option>
-	                                    		<?php foreach ($id_vendedores as $id_vendedor): ?>
-	                                    			<option value="<?= $id_vendedor->codlval; ?>"><?= $id_vendedor->descriplval; ?></option>
+	                                    		<?php foreach ($tipos_esquemas as $tipo_esquema): ?>
+	                                    			<option value="<?= $tipo_esquema->codlval; ?>"><?= $tipo_esquema->descriplval; ?></option>
 	                                    		<?php endforeach ?>
 	                                    	</select>
 			                            </div>
-			                            <div class="col-sm-4">
-		                            		<label for="tipo_vendedor_consultar">Tipo de Vendedor*</label>
-	                                    	<select id="tipo_vendedor_consultar" class="form-control" disabled>
-	                                    		<option value="" selected>Seleccione</option>
-	                                    		<?php foreach ($tipos_vendedores as $tipo_vendedor): ?>
-	                                    			<option value="<?= $tipo_vendedor->codlval; ?>"><?= $tipo_vendedor->descriplval; ?></option>
-	                                    		<?php endforeach ?>
-	                                    	</select>
-			                            </div>
-			                            <div class="col-sm-4">
-		                            		<label for="tipo_plazo_consultar">Tipo de Plazo*</label>
-	                                    	<select id="tipo_plazo_consultar" class="form-control" disabled>
-	                                    		<option value="" selected>Seleccione</option>
-	                                    		<?php foreach ($tipos_plazos as $tipo_plazo): ?>
-	                                    			<option value="<?= $tipo_plazo->codlval; ?>"><?= $tipo_plazo->descriplval; ?></option>
-	                                    		<?php endforeach ?>
-	                                    	</select>
-			                            </div>
-		                            	<div class="col-sm-6">
-		                            		<label for="num_ventas_mes_consultar">Ventas al mes*</label>
+		                            	<div class="col-sm-4">
+		                            		<label for="cod_esquema_consultar">Código*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="num_ventas_mes_consultar" onkeypress='return solonumeros(event)' disabled>
+			                                        <input type="text" class="form-control mayusculas" id="cod_esquema_consultar" placeholder="P. EJ. XXXX00001" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
-			                            <div class="col-sm-6">
-			                                <label for="porctj_comision_consultar">Porcentaje de Comisión*</label>
+			                            <div class="col-sm-4">
+		                            		<label for="descripcion_consultar">Descripción*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control porcentaje"  id="porctj_comision_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="descripcion_consultar" placeholder="P. EJ. XXXX FASE X" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
@@ -182,51 +164,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_esquema_comision_actualizar" id="form_esquema_comision_actualizar" method="post">
+			                            <form name="form_esquema_actualizar" id="form_esquema_actualizar" method="post">
 			                            	<div class="col-sm-4">
-			                            		<label for="id_vendedor_actualizar">Clasificación*</label>
-		                                    	<select name="id_vendedor" id="id_vendedor_actualizar" required class="form-control">
+			                            		<label for="tipo_actualizar">Tipo*</label>
+		                                    	<select name="tipo" id="tipo_actualizar" required class="form-control">
 		                                    		<option value="" selected>Seleccione</option>
-		                                    		<?php foreach ($id_vendedores as $id_vendedor): ?>
-		                                    			<option value="<?= $id_vendedor->codlval; ?>"><?= $id_vendedor->descriplval; ?></option>
+		                                    		<?php foreach ($tipos_esquemas as $tipo_esquema): ?>
+		                                    			<option value="<?= $tipo_esquema->codlval; ?>"><?= $tipo_esquema->descriplval; ?></option>
 		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
-				                            <div class="col-sm-4">
-			                            		<label for="tipo_vendedor_actualizar">Tipo de Vendedor*</label>
-		                                    	<select name="tipo_vendedor" id="tipo_vendedor_actualizar" required class="form-control">
-		                                    		<option value="" selected>Seleccione</option>
-		                                    		<?php foreach ($tipos_vendedores as $tipo_vendedor): ?>
-		                                    			<option value="<?= $tipo_vendedor->codlval; ?>"><?= $tipo_vendedor->descriplval; ?></option>
-		                                    		<?php endforeach ?>
-		                                    	</select>
-				                            </div>
-				                            <div class="col-sm-4">
-			                            		<label for="tipo_plazo_actualizar">Tipo de Plazo*</label>
-		                                    	<select name="tipo_plazo" id="tipo_plazo_actualizar" required class="form-control">
-		                                    		<option value="" selected>Seleccione</option>
-		                                    		<?php foreach ($tipos_plazos as $tipo_plazo): ?>
-		                                    			<option value="<?= $tipo_plazo->codlval; ?>"><?= $tipo_plazo->descriplval; ?></option>
-		                                    		<?php endforeach ?>
-		                                    	</select>
-				                            </div>
-			                            	<div class="col-sm-6">
-			                            		<label for="num_ventas_mes_actualizar">Ventas al mes*</label>
+			                            	<div class="col-sm-4">
+			                            		<label for="cod_esquema_actualizar">Código*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="num_ventas_mes" id="num_ventas_mes_actualizar" onkeypress='return solonumeros(event)' placeholder="P. EJ. 2" required>
+				                                        <input type="text" class="form-control mayusculas" name="cod_esquema" id="cod_esquema_actualizar" placeholder="P. EJ. XXXX00001" required>
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <div class="col-sm-6">
-				                                <label for="porctj_comision_actualizar">Porcentaje de Comisión*</label>
+				                            <div class="col-sm-4">
+			                            		<label for="descripcion_actualizar">Descripción*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control porcentaje" name="porctj_comision" id="porctj_comision_actualizar" placeholder="P. EJ. 00,00" required>
+				                                        <input type="text" class="form-control mayusculas" name="descripcion" id="descripcion_actualizar" placeholder="P. EJ. XXXX FASE X" required>
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <input type="hidden" name="id_esquema_comision" id="id_esquema_comision_actualizar">
+				                            <input type="hidden" name="id_esquema" id="id_esquema_actualizar">
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
 		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary waves-effect">Regresar</button>
