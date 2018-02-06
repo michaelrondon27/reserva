@@ -22,6 +22,7 @@ class EsquemaComision extends CI_Controller
     $datos['tipos_vendedores'] = $this->EsquemaComision_model->tipos_venderores();
     $datos['tipos_plazos'] = $this->EsquemaComision_model->tipos_plazos();
     $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('EsquemaComision');
+    $datos['esquemas'] = $this->EsquemaComision_model->esquemas();
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $this->load->view('cpanel/header');
@@ -45,8 +46,9 @@ class EsquemaComision extends CI_Controller
         'id_vendedor' => $this->input->post('id_vendedor'),
         'tipo_vendedor' => $this->input->post('tipo_vendedor'),
         'tipo_plazo' => $this->input->post('tipo_plazo'),
-        'num_ventas_mes' => $this->input->post('num_ventas_mes'),
-        'porctj_comision' => str_replace(',', '.', $this->input->post('porctj_comision')),
+        'cod_esquema' => $this->input->post('cod_esquema'),
+        'num_ventas_mes' => trim($this->input->post('num_ventas_mes')),
+        'porctj_comision' => trim(str_replace(',', '.', $this->input->post('porctj_comision'))),
       );
       $this->EsquemaComision_model->registrar_esquema_comision($data);
     }else{
@@ -64,8 +66,9 @@ class EsquemaComision extends CI_Controller
         'id_vendedor' => $this->input->post('id_vendedor'),
         'tipo_vendedor' => $this->input->post('tipo_vendedor'),
         'tipo_plazo' => $this->input->post('tipo_plazo'),
-        'num_ventas_mes' => $this->input->post('num_ventas_mes'),
-        'porctj_comision' => str_replace(',', '.', $this->input->post('porctj_comision')),
+        'cod_esquema' => $this->input->post('cod_esquema'),
+        'num_ventas_mes' => trim($this->input->post('num_ventas_mes')),
+        'porctj_comision' => trim(str_replace(',', '.', $this->input->post('porctj_comision'))),
       );
       $this->EsquemaComision_model->actualizar_esquema_comision($this->input->post('id_esquema_comision'), $data);
     }else{

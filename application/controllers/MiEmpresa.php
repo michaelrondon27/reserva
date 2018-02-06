@@ -46,13 +46,13 @@ class MiEmpresa extends CI_Controller
     if($this->form_validation->run() == true){
       $dataContacto=array(
         'id_codigo_postal' => $this->input->post('colonia'),
-        'telefono_principal_contacto' => $this->input->post('telefono_principal_contacto'),
-        'telefono_movil_contacto' => $this->input->post('telefono_principal_contacto'),
-        'correo_opcional_contacto' => $this->input->post('correo_opcional_contacto'),
-        'direccion_contacto' => mb_strtoupper($this->input->post('direccion_contacto'), 'UTF-8'),
-        'calle_contacto' => mb_strtoupper($this->input->post('calle_contacto'), 'UTF-8'),
-        'exterior_contacto' => mb_strtoupper($this->input->post('exterior_contacto')),
-        'interior_contacto' => mb_strtoupper($this->input->post('interior_contacto')),
+        'telefono_principal_contacto' => trim($this->input->post('telefono_principal_contacto')),
+        'telefono_movil_contacto' => trim($this->input->post('telefono_principal_contacto')),
+        'correo_opcional_contacto' => trim($this->input->post('correo_opcional_contacto')),
+        'direccion_contacto' => trim(mb_strtoupper($this->input->post('direccion_contacto'), 'UTF-8')),
+        'calle_contacto' => trim(mb_strtoupper($this->input->post('calle_contacto'), 'UTF-8')),
+        'exterior_contacto' => trim(mb_strtoupper($this->input->post('exterior_contacto'))),
+        'interior_contacto' => trim(mb_strtoupper($this->input->post('interior_contacto'))),
       );
       $this->MiEmpresa_model->actualizar_mi_empresa($this->input->post('id_mi_empresa'), mb_strtoupper($this->input->post('nombre_mi_empresa'), 'UTF-8'), $this->input->post('rfc_mi_empresa'), $this->input->post('id_contacto'), $dataContacto);
       echo json_encode("<span>Datos editado exitosamente!</span>"); // envio de mensaje exitoso

@@ -46,8 +46,8 @@ class Roles extends CI_Controller
     $this->mensajes_reglas_roles();
     if($this->form_validation->run() == true){
       $data=array(
-        'nombre_rol' => mb_strtoupper($this->input->post('nombre_rol'), 'UTF-8'),
-        'descripcion_rol' => mb_strtoupper($this->input->post('descripcion_rol'), 'UTF-8'),
+        'nombre_rol' => trim(mb_strtoupper($this->input->post('nombre_rol'), 'UTF-8')),
+        'descripcion_rol' => trim(mb_strtoupper($this->input->post('descripcion_rol'), 'UTF-8')),
         'editable_rol' => 0,
       );
       $this->Roles_model->registrar_rol($data, $this->input->post('permisos'));

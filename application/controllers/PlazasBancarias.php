@@ -40,7 +40,7 @@ class PlazasBancarias extends CI_Controller
     if($this->form_validation->run() == true){
       $data=array(
         'cod_plaza' => $this->input->post('cod_plaza'),
-        'nombre_plaza' => mb_strtoupper($this->input->post('nombre_plaza'), 'UTF-8'),
+        'nombre_plaza' => trim(mb_strtoupper($this->input->post('nombre_plaza'), 'UTF-8')),
       );
       $this->Plazas_model->registrar_plaza($data);
       echo json_encode("<span>La plaza bancaria se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
@@ -74,7 +74,7 @@ class PlazasBancarias extends CI_Controller
     $this->mensajes_reglas_plazas();
     if($this->form_validation->run() == true){
       $data=array(
-        'nombre_plaza' => mb_strtoupper($this->input->post('nombre_plaza'), 'UTF-8'),
+        'nombre_plaza' => trim(mb_strtoupper($this->input->post('nombre_plaza'), 'UTF-8')),
       );
       $plaza_verificada=$this->Plazas_model->verificar_plaza($data); //busca si el nombre del banco esta registrado en la base de datos
       if(count($plaza_verificada)>0){

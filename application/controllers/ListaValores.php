@@ -57,7 +57,7 @@ class ListaValores extends CI_Controller {
     if($this->form_validation->run() == true){
       $data=array(
         'tipolval' => $this->input->post('tipolval'),
-        'descriplval' => mb_strtoupper($this->input->post('descriplval'), 'UTF-8'),
+        'descriplval' => trim(mb_strtoupper($this->input->post('descriplval'), 'UTF-8')),
       );
       $this->ListasValores_model->registrar_lval($data);
       echo json_encode("<span>Se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
@@ -74,7 +74,7 @@ class ListaValores extends CI_Controller {
     if($this->form_validation->run() == true){
       $data=array(
         'tipolval' => $this->input->post('tipolval'),
-        'descriplval' => mb_strtoupper($this->input->post('descriplval'), 'UTF-8'),
+        'descriplval' => trim((mb_strtoupper($this->input->post('descriplval'), 'UTF-8')),
       );
       $lval_verificado=$this->ListasValores_model->verificar_lval($data); //busca si el nombre del banco esta registrado en la base de datos
       if(count($lval_verificado)>0){

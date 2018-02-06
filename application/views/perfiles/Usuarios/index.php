@@ -75,7 +75,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-		                        		<div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
+		                        		<div class="col-md-12" style="margin-top: 20px;">
 		                        			<h4>Datos Personales</h4>
 		                        		</div>
 			                            <form name="form_usuario_registrar" id="form_usuario_registrar" method="post" enctype="multipart/form-data">
@@ -158,7 +158,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
-				                            <div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
+				                            <div class="col-md-12" style="margin-top: 20px;">
 			                        			<h4>Datos de la Dirección</h4>
 			                        		</div>
 			                        		<div class="col-sm-4">
@@ -181,7 +181,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="exterior_contacto_registrar">Número Exterior</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="exterior_contacto" id="exterior_contacto_registrar" placeholder="P. EJ. 33">
+				                                        <input type="text" class="form-control mayusculas" name="exterior_contacto" id="exterior_contacto_registrar" placeholder="P. EJ. 33">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -189,7 +189,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="interior_contacto_registrar">Número Interior</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="interior_contacto" id="interior_contacto_registrar" placeholder="P. EJ. 2">
+				                                        <input type="text" class="form-control mayusculas" name="interior_contacto" id="interior_contacto_registrar" placeholder="P. EJ. 2">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -225,7 +225,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                        	<option value="">Seleccione</option>
 		                                        </select>
 				                            </div>
-				                            <div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
+				                            <div class="col-md-12" style="margin-top: 20px;">
 			                        			<h4>Cuenta de Usuario</h4>
 			                        		</div>
 				                            <div class="col-sm-4">
@@ -302,7 +302,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-		                        		<div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
+		                        		<div class="col-md-12" style="margin-top: 20px;">
 		                        			<h4>Datos Personales</h4>
 		                        		</div>
 		                            	<div class="col-sm-4">
@@ -380,7 +380,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	                                    		<?php endforeach ?>
 	                                    	</select>
 			                            </div>
-			                            <div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
+			                            <div class="col-md-12" style="margin-top: 20px;">
 		                        			<h4>Datos de la Dirección</h4>
 		                        		</div>
 		                        		<div class="col-sm-4">
@@ -455,7 +455,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                    </div>
 			                                </div>
 			                            </div>
-			                            <div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
+			                            <div class="col-md-12" style="margin-top: 20px;">
 		                        			<h4>Cuenta de Usuario</h4>
 		                        		</div>
 			                            <div class="col-sm-4">
@@ -501,7 +501,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-		                        		<div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
+		                        		<div class="col-md-12" style="margin-top: 20px;">
 		                        			<h4>Datos Personales</h4>
 		                        		</div>
 			                            <form name="form_usuario_actualizar" id="form_usuario_actualizar" method="post" enctype="multipart/form-data">
@@ -584,7 +584,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
-				                            <div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
+				                            <div class="col-md-12" style="margin-top: 20px;">
 			                        			<h4>Datos de la Dirección</h4>
 			                        		</div>
 			                        		<div class="col-sm-4">
@@ -607,7 +607,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="exterior_contacto_actualizar">Número Exterior</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="exterior_contacto" id="exterior_contacto_actualizar" placeholder="P. EJ. 33">
+				                                        <input type="text" class="form-control mayusculas" name="exterior_contacto" id="exterior_contacto_actualizar" placeholder="P. EJ. 33">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -615,7 +615,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="interior_contacto_actualizar">Número Interior</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="interior_contacto" id="interior_contacto_actualizar" placeholder="P. EJ. 2">
+				                                        <input type="text" class="form-control mayusculas" name="interior_contacto" id="interior_contacto_actualizar" placeholder="P. EJ. 2">
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -651,7 +651,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                        	<option value="">Seleccione</option>
 		                                        </select>
 				                            </div>
-				                            <div class="col-md-12" style="border-bottom: 1px solid #ccc; margin-top: 20px;">
+				                            <div class="col-md-12" style="margin-top: 20px;">
 			                        			<h4>Cuenta de Usuario</h4>
 			                        		</div>
 				                            <div class="col-sm-4">

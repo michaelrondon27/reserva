@@ -41,8 +41,8 @@ class Esquemas extends CI_Controller
     if($this->form_validation->run() == true){
       $data = array(
         'tipo' => $this->input->post('tipo'),
-        'cod_esquema' => mb_strtoupper($this->input->post('cod_esquema')),
-        'descripcion' => mb_strtoupper($this->input->post('descripcion')),
+        'cod_esquema' => trim(mb_strtoupper($this->input->post('cod_esquema'))),
+        'descripcion' => trim(mb_strtoupper($this->input->post('descripcion'))),
       );
       $this->Esquemas_model->registrar_esquema($data);
     }else{
@@ -58,8 +58,8 @@ class Esquemas extends CI_Controller
     if($this->form_validation->run() == true){
       $data = array(
         'tipo' => $this->input->post('tipo'),
-        'cod_esquema' => mb_strtoupper($this->input->post('cod_esquema')),
-        'descripcion' => mb_strtoupper($this->input->post('descripcion')),
+        'cod_esquema' => trim(mb_strtoupper($this->input->post('cod_esquema'))),
+        'descripcion' => trim(mb_strtoupper($this->input->post('descripcion'))),
       );
       $this->Esquemas_model->actualizar_esquema($this->input->post('id_esquema'), $data);
     }else{

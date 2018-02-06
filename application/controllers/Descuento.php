@@ -41,7 +41,7 @@ class Descuento extends CI_Controller
     if($this->form_validation->run() == true){
       $data=array(
         'tipo_plazo' => $this->input->post('tipo_plazo'),
-        'descuento' => str_replace(',', '.', $this->input->post('descuento')),
+        'descuento' => trim(str_replace(',', '.', $this->input->post('descuento'))),
       );
       $this->Descuento_model->registrar_descuento($data);
     }else{
@@ -57,7 +57,7 @@ class Descuento extends CI_Controller
     if($this->form_validation->run() == true){
       $data=array(
         'tipo_plazo' => $this->input->post('tipo_plazo'),
-        'descuento' => str_replace(',', '.', $this->input->post('descuento')),
+        'descuento' => trim(str_replace(',', '.', $this->input->post('descuento'))),
       );
       $this->Descuento_model->actualizar_descuento($this->input->post('id_descuento'), $data);
     }else{

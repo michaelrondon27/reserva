@@ -7,6 +7,7 @@ Class EsquemaComision_model extends CI_Model
 
     private $tabla_esquema_comision = "esquema_comision";
     private $tabla_lval = "lval";
+    private $tabla_esquema = "esquemas";
 
     public function listado_esquema_comision()
     {
@@ -27,6 +28,7 @@ Class EsquemaComision_model extends CI_Model
         $this->db->where('tipo_vendedor', $data['tipo_vendedor']);
         $this->db->where('num_ventas_mes', $data['num_ventas_mes']);
         $this->db->where('tipo_plazo', $data['tipo_plazo']);
+        $this->db->where('cod_esquema', $data['cod_esquema']);
         $this->db->limit(1);
         $resultados = $this->db->get($this->tabla_esquema_comision);
         if ($resultados->num_rows() == 0) {
@@ -50,6 +52,7 @@ Class EsquemaComision_model extends CI_Model
         $this->db->where('tipo_vendedor', $data['tipo_vendedor']);
         $this->db->where('num_ventas_mes', $data['num_ventas_mes']);
         $this->db->where('tipo_plazo', $data['tipo_plazo']);
+        $this->db->where('cod_esquema', $data['cod_esquema']);
         $this->db->limit(1);
         $resultados = $this->db->get($this->tabla_esquema_comision);
         if ($resultados->num_rows() == 0) {
@@ -145,6 +148,13 @@ Class EsquemaComision_model extends CI_Model
     {
         $this->db->where('tipolval', 'TIPOPLAZOS');
         $resultados = $this->db->get($this->tabla_lval);
+        return $resultados->result();
+    }
+
+    public function esquemas()
+    {
+        $this->db->where('id_esquema', 1);
+        $resultados = $this->db->get($this->tabla_esquema);
         return $resultados->result();
     }
 

@@ -61,26 +61,26 @@ class Usuarios extends CI_Controller
     if ($this->form_validation->run() == true) {
       $usuarioArray = array(
         'id_rol' => $this->input->post('id_rol'),
-        'correo_usuario' => $this->input->post('correo_usuario'),
+        'correo_usuario' => trim($this->input->post('correo_usuario')),
         'clave_usuario' => sha1($this->input->post('clave_usuario')),
         'avatar_usuario' => $imagen,
       );
       $contactoArray = array(
         'id_codigo_postal' => $this->input->post('colonia'),
-        'telefono_principal_contacto' => $this->input->post('telefono_principal_contacto'),
-        'telefono_movil_contacto' => $this->input->post('telefono_principal_contacto'),
-        'direccion_contacto' => mb_strtoupper($this->input->post('direccion_contacto'), 'UTF-8'),
-        'calle_contacto' => mb_strtoupper($this->input->post('calle_contacto'), 'UTF-8'),
-        'interior_contacto' => mb_strtoupper($this->input->post('interior_contacto')),
-        'exterior_contacto' => mb_strtoupper($this->input->post('exterior_contacto')),
+        'telefono_principal_contacto' => trim($this->input->post('telefono_principal_contacto')),
+        'telefono_movil_contacto' => trim($this->input->post('telefono_principal_contacto')),
+        'direccion_contacto' => trim(mb_strtoupper($this->input->post('direccion_contacto'), 'UTF-8')),
+        'calle_contacto' => trim(mb_strtoupper($this->input->post('calle_contacto'), 'UTF-8')),
+        'interior_contacto' => trim(mb_strtoupper($this->input->post('interior_contacto'))),
+        'exterior_contacto' => trim(mb_strtoupper($this->input->post('exterior_contacto'))),
       );
       $personalArray = array(
-        'nombre_datos_personales' => mb_strtoupper($this->input->post('nombre_datos_personales'), 'UTF-8'),
-        'apellido_p_datos_personales' => mb_strtoupper($this->input->post('apellido_p_datos_personales'), 'UTF-8'),
-        'apellido_m_datos_personales' => mb_strtoupper($this->input->post('apellido_m_datos_personales'), 'UTF-8'),
-        'fecha_nac_datos_personales' => date("Y-m-d", strtotime($this->input->post('fecha_nac_datos_personales'))),
+        'nombre_datos_personales' => trim(mb_strtoupper($this->input->post('nombre_datos_personales'), 'UTF-8')),
+        'apellido_p_datos_personales' => trim(mb_strtoupper($this->input->post('apellido_p_datos_personales'), 'UTF-8')),
+        'apellido_m_datos_personales' => trim(mb_strtoupper($this->input->post('apellido_m_datos_personales'), 'UTF-8')),
+        'fecha_nac_datos_personales' => trim(date("Y-m-d", strtotime($this->input->post('fecha_nac_datos_personales')))),
         'nacionalidad_datos_personales' => $this->input->post('nacionalidad_datos_personales'),
-        'curp_datos_personales' => mb_strtoupper($this->input->post('curp_datos_personales'), 'UTF-8'),
+        'curp_datos_personales' => trim(mb_strtoupper($this->input->post('curp_datos_personales'), 'UTF-8')),
         'edo_civil_datos_personales' => $this->input->post('edo_civil_datos_personales'),
         'genero_datos_personales' => $this->input->post('genero_datos_personales'),
       );
@@ -110,24 +110,24 @@ class Usuarios extends CI_Controller
     if($this->form_validation->run() == true){
       $usuarioArray = array(
         'id_rol' => $this->input->post('id_rol'),
-        'correo_usuario' => $this->input->post('correo_usuario'),
+        'correo_usuario' => trim($this->input->post('correo_usuario')),
       );
       $contactoArray = array(
         'id_codigo_postal' => $this->input->post('colonia'),
-        'telefono_principal_contacto' => $this->input->post('telefono_principal_contacto'),
-        'telefono_movil_contacto' => $this->input->post('telefono_principal_contacto'),
-        'direccion_contacto' => mb_strtoupper($this->input->post('direccion_contacto'), 'UTF-8'),
-        'calle_contacto' => mb_strtoupper($this->input->post('calle_contacto'), 'UTF-8'),
-        'interior_contacto' => mb_strtoupper($this->input->post('interior_contacto')),
-        'exterior_contacto' => mb_strtoupper($this->input->post('exterior_contacto')),
+        'telefono_principal_contacto' => trim($this->input->post('telefono_principal_contacto')),
+        'telefono_movil_contacto' => trim($this->input->post('telefono_principal_contacto')),
+        'direccion_contacto' => trim(mb_strtoupper($this->input->post('direccion_contacto'), 'UTF-8')),
+        'calle_contacto' => trim(mb_strtoupper($this->input->post('calle_contacto'), 'UTF-8')),
+        'interior_contacto' => trim(mb_strtoupper($this->input->post('interior_contacto'))),
+        'exterior_contacto' => trim(mb_strtoupper($this->input->post('exterior_contacto'))),
       );
       $personalArray = array(
-        'nombre_datos_personales' => mb_strtoupper($this->input->post('nombre_datos_personales'), 'UTF-8'),
-        'apellido_p_datos_personales' => mb_strtoupper($this->input->post('apellido_p_datos_personales'), 'UTF-8'),
-        'apellido_m_datos_personales' => mb_strtoupper($this->input->post('apellido_m_datos_personales'), 'UTF-8'),
-        'fecha_nac_datos_personales' => date("Y-m-d", strtotime($this->input->post('fecha_nac_datos_personales'))),
+        'nombre_datos_personales' => trim(mb_strtoupper($this->input->post('nombre_datos_personales'), 'UTF-8')),
+        'apellido_p_datos_personales' => trim(mb_strtoupper($this->input->post('apellido_p_datos_personales'), 'UTF-8')),
+        'apellido_m_datos_personales' => trim(mb_strtoupper($this->input->post('apellido_m_datos_personales'), 'UTF-8')),
+        'fecha_nac_datos_personales' => trim(date("Y-m-d", strtotime($this->input->post('fecha_nac_datos_personales')))),
         'nacionalidad_datos_personales' => $this->input->post('nacionalidad_datos_personales'),
-        'curp_datos_personales' => mb_strtoupper($this->input->post('curp_datos_personales'), 'UTF-8'),
+        'curp_datos_personales' => trim(mb_strtoupper($this->input->post('curp_datos_personales'), 'UTF-8')),
         'edo_civil_datos_personales' => $this->input->post('edo_civil_datos_personales'),
         'genero_datos_personales' => $this->input->post('genero_datos_personales'),
       );

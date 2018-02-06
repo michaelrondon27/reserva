@@ -56,9 +56,9 @@ class ListaVista extends CI_Controller
         $visible = $this->input->post('visibilidad_lista_vista');
       }
       $data = array(
-        'nombre_lista_vista' => $this->input->post('nombre_lista_vista'),
-        'descripcion_lista_vista' => $this->input->post('descripcion_lista_vista'),
-        'url_lista_vista' => $this->input->post('url_lista_vista'),
+        'nombre_lista_vista' => trim($this->input->post('nombre_lista_vista')),
+        'descripcion_lista_vista' => trim($this->input->post('descripcion_lista_vista')),
+        'url_lista_vista' => trim($this->input->post('url_lista_vista')),
         'id_modulo_vista' => $this->input->post('id_modulo_vista'),
         'posicion_lista_vista' => $this->input->post('posicion_lista_vista'),
         'visibilidad_lista_vista' => $visible,
@@ -89,9 +89,9 @@ class ListaVista extends CI_Controller
         $visible = $this->input->post('visibilidad_lista_vista');
       }
       $data = array(
-        'nombre_lista_vista' => $this->input->post('nombre_lista_vista'),
-        'descripcion_lista_vista' => $this->input->post('descripcion_lista_vista'),
-        'url_lista_vista' => $this->input->post('url_lista_vista'),
+        'nombre_lista_vista' => trim($this->input->post('nombre_lista_vista')),
+        'descripcion_lista_vista' => trim($this->input->post('descripcion_lista_vista')),
+        'url_lista_vista' => trim($this->input->post('url_lista_vista')),
         'id_modulo_vista' => $this->input->post('id_modulo_vista'),
         'posicion_lista_vista' => $this->input->post('posicion_lista_vista'),
         'visibilidad_lista_vista' => $visible,

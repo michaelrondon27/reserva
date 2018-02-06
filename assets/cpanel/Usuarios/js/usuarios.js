@@ -286,16 +286,15 @@ $(document).ready(function(){
                 success: function(respuesta){
                     $("#alertas").html('');
                     respuesta.estados.result_object.forEach(function(campo, index){
-                        agregarOptions("#"+ estado, campo.d_estado, campo.d_estado);
+                        agregarOptions("#" + estado, campo.d_estado, campo.d_estado);
                     });
                     respuesta.ciudades.result_object.forEach(function(campo, index){
                         if(campo.d_ciudad!=""){
-                            agregarOptions("#"+ ciudad, campo.d_ciudad, campo.d_ciudad);
-                            $("#"+ ciudad).css('border-color', '#ccc');
+                            agregarOptions('#' + ciudad, campo.d_ciudad, campo.d_ciudad);
+                            $("#" + ciudad).css('border-color', '#ccc');
                         }else{
-                            agregarOptions(ciudad, "N/A", "NO APLICA");
-                            $("#"+ ciudad + " option[value='N/A']").attr("selected","selected");
-                            $("#"+ ciudad).css('border-color', '#a94442');
+                            agregarOptions('#' + ciudad, "N/A", "NO APLICA");
+                            $("#" + ciudad).css('border-color', '#a94442');
                         }
                     });
                     respuesta.municipios.result_object.forEach(function(campo, index){

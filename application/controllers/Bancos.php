@@ -40,7 +40,7 @@ class Bancos extends CI_Controller
     if($this->form_validation->run() == true){
       $data=array(
         'cod_banco' => $this->input->post('cod_banco'),
-        'nombre_banco' => mb_strtoupper($this->input->post('nombre_banco'), 'UTF-8'),
+        'nombre_banco' => trim(mb_strtoupper($this->input->post('nombre_banco'), 'UTF-8')),
       );
       $this->Bancos_model->registrar_banco($data);
       echo json_encode("<span>El Banco se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
@@ -56,7 +56,7 @@ class Bancos extends CI_Controller
     $this->mensajes_reglas_banco();
     if($this->form_validation->run() == true){
       $data=array(
-        'nombre_banco' => mb_strtoupper($this->input->post('nombre_banco'), 'UTF-8'),
+        'nombre_banco' => trim(mb_strtoupper($this->input->post('nombre_banco'), 'UTF-8')),
       );
       $banco_verificado=$this->Bancos_model->verificar_banco($data); //busca si el nombre del banco esta registrado en la base de datos
       if(count($banco_verificado)>0){

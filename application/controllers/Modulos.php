@@ -50,8 +50,8 @@ class Modulos extends CI_Controller
       );
       $this->Modulos_model->posicionar_modulos($posicionar);
       $data=array(
-        'nombre_modulo_vista' => mb_strtoupper($this->input->post('nombre_modulo_vista'), 'UTF-8'),
-        'descripcion_modulo_vista' => mb_strtoupper($this->input->post('descripcion_modulo_vista'), 'UTF-8'),
+        'nombre_modulo_vista' => trim(mb_strtoupper($this->input->post('nombre_modulo_vista'), 'UTF-8')),
+        'descripcion_modulo_vista' => trim(mb_strtoupper($this->input->post('descripcion_modulo_vista'), 'UTF-8')),
         'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
       );
       $this->Modulos_model->registrar_modulo($data);
@@ -74,8 +74,8 @@ class Modulos extends CI_Controller
         'final' => $this->input->post('posicion_modulo_vista'),
       );
       $data=array(
-        'nombre_modulo_vista' => mb_strtoupper($this->input->post('nombre_modulo_vista'), 'UTF-8'),
-        'descripcion_modulo_vista' => mb_strtoupper($this->input->post('descripcion_modulo_vista'), 'UTF-8'),
+        'nombre_modulo_vista' => trim(mb_strtoupper($this->input->post('nombre_modulo_vista'), 'UTF-8')),
+        'descripcion_modulo_vista' => trim(mb_strtoupper($this->input->post('descripcion_modulo_vista'), 'UTF-8')),
         'posicion_modulo_vista' => $this->input->post('posicion_modulo_vista'),
       );
       if(count($modulo_verificado)>0){

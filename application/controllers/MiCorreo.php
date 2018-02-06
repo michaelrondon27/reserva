@@ -39,10 +39,10 @@ class MiCorreo extends CI_Controller
     $this->mensajes_reglas_mi_correo();
     if($this->form_validation->run() == true){
       $data=array(
-        'servidor_smtp' => $this->input->post('servidor_smtp'),
-        'puerto' => $this->input->post('puerto'),
-        'usuario' => $this->input->post('usuario'),
-        'clave' => $this->input->post('clave'),
+        'servidor_smtp' => trim($this->input->post('servidor_smtp')),
+        'puerto' => trim($this->input->post('puerto')),
+        'usuario' => trim($this->input->post('usuario')),
+        'clave' => trim($this->input->post('clave')),
       );
       $this->MiCorreo_model->actualizar_mi_correo($this->input->post('id_mi_correo'), $data);
       echo json_encode("<span>Correo editado exitosamente!</span>"); // envio de mensaje exitoso

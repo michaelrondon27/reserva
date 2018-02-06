@@ -114,6 +114,7 @@ $(document).ready(function(){
 			$("#id_vendedor_consultar option[value='" + data.id_vendedor + "']").attr("selected","selected");
 			$("#tipo_vendedor_consultar option[value='" + data.tipo_vendedor + "']").attr("selected","selected");
 			$("#tipo_plazo_consultar option[value='" + data.tipo_plazo + "']").attr("selected","selected");
+			$("#cod_esquema_consultar option[value='" + data.cod_esquema + "']").attr("selected","selected");
 			document.getElementById('num_ventas_mes_consultar').value = data.num_ventas_mes;
 			document.getElementById('porctj_comision_consultar').value = data.porctj_comision.replace('.',',');
 			cuadros('#cuadro1', '#cuadro3');
@@ -131,6 +132,7 @@ $(document).ready(function(){
 			$("#id_vendedor_actualizar option[value='" + data.id_vendedor + "']").attr("selected","selected");
 			$("#tipo_vendedor_actualizar option[value='" + data.tipo_vendedor + "']").attr("selected","selected");
 			$("#tipo_plazo_actualizar option[value='" + data.tipo_plazo + "']").attr("selected","selected");
+			$("#cod_esquema_actualizar option[value='" + data.cod_esquema + "']").attr("selected","selected");
 			document.getElementById('id_esquema_comision_actualizar').value = data.id_esquema_comision;
 			document.getElementById('num_ventas_mes_actualizar').value = data.num_ventas_mes;
 			document.getElementById('porctj_comision_actualizar').value = data.porctj_comision.replace('.',',');

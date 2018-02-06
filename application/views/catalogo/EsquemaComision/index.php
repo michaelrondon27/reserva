@@ -101,7 +101,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
-			                            	<div class="col-sm-6">
+				                            <div class="col-sm-4">
+			                            		<label for="cod_esquema_registrar">Esquema de Comsión*</label>
+		                                    	<select name="cod_esquema" id="cod_esquema_registrar" required class="form-control">
+		                                    		<option value="" selected>Seleccione</option>
+		                                    		<?php foreach ($esquemas as $esquema): ?>
+		                                    			<option value="<?= $esquema->id_esquema; ?>"><?= $esquema->cod_esquema . ' - ' . $esquema->descripcion; ?></option>
+		                                    		<?php endforeach ?>
+		                                    	</select>
+				                            </div>
+			                            	<div class="col-sm-4">
 			                            		<label for="num_ventas_mes_registrar">Ventas al mes*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
@@ -109,7 +118,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <div class="col-sm-6">
+				                            <div class="col-sm-4">
 				                                <label for="porctj_comision_registrar">Porcentaje de Comisión*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
@@ -166,7 +175,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	                                    		<?php endforeach ?>
 	                                    	</select>
 			                            </div>
-		                            	<div class="col-sm-6">
+			                            <div class="col-sm-4">
+		                            		<label for="cod_esquema_consultar">Esquema de Comsión*</label>
+	                                    	<select id="cod_esquema_consultar" class="form-control" disabled>
+	                                    		<option value="" selected>Seleccione</option>
+	                                    		<?php foreach ($esquemas as $esquema): ?>
+	                                    			<option value="<?= $esquema->id_esquema; ?>"><?= $esquema->cod_esquema . ' - ' . $esquema->descripcion; ?></option>
+	                                    		<?php endforeach ?>
+	                                    	</select>
+			                            </div>
+		                            	<div class="col-sm-4">
 		                            		<label for="num_ventas_mes_consultar">Ventas al mes*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
@@ -174,7 +192,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                    </div>
 			                                </div>
 			                            </div>
-			                            <div class="col-sm-6">
+			                            <div class="col-sm-4">
 			                                <label for="porctj_comision_consultar">Porcentaje de Comisión*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
@@ -230,7 +248,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
-			                            	<div class="col-sm-6">
+				                            <div class="col-sm-4">
+			                            		<label for="cod_esquema_actualizar">Esquema de Comsión*</label>
+		                                    	<select name="cod_esquema" id="cod_esquema_actualizar" required class="form-control">
+		                                    		<option value="" selected>Seleccione</option>
+		                                    		<?php foreach ($esquemas as $esquema): ?>
+		                                    			<option value="<?= $esquema->id_esquema; ?>"><?= $esquema->cod_esquema . ' - ' . $esquema->descripcion; ?></option>
+		                                    		<?php endforeach ?>
+		                                    	</select>
+				                            </div>
+			                            	<div class="col-sm-4">
 			                            		<label for="num_ventas_mes_actualizar">Ventas al mes*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
@@ -238,7 +265,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <div class="col-sm-6">
+				                            <div class="col-sm-4">
 				                                <label for="porctj_comision_actualizar">Porcentaje de Comisión*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
