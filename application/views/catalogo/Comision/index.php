@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                Gestión de <?php echo $breadcrumbs->nombre_lista_vista; ?>
 		                            </h2>
 		                            <ul class="header-dropdown m-r--5">
-		                                <button class="btn btn-primary waves-effect registrar ocultar" onclick="nuevoEsquemaComision()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
+		                                <button class="btn btn-primary waves-effect registrar ocultar" onclick="nuevoComision()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
 		                            </ul>
 		                        </div>
 		                        <div class="body">
@@ -49,13 +49,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    <tbody></tbody>
 		                                </table>
 		                                <div class="col-md-2 eliminar ocultar">
-		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('EsquemaComision/eliminar_multiple_esquema_comision')">Eliminar seleccionados</button>
+		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('Comision/eliminar_multiple_comision')">Eliminar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 actualizar ocultar">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('EsquemaComision/status_multiple_esquema_comision', 1, 'activar')">Activar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Comision/status_multiple_comision', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 actualizar ocultar">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('EsquemaComision/status_multiple_esquema_comision', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Comision/status_multiple_comision', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>
@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_esquema_comision_registrar" id="form_esquema_comision_registrar" method="post">
+			                            <form name="form_comision_registrar" id="form_comision_registrar" method="post">
 			                            	<div class="col-sm-4">
 			                            		<label for="id_vendedor_registrar">Clasificación*</label>
 		                                    	<select name="id_vendedor" id="id_vendedor_registrar" required class="form-control">
@@ -220,7 +220,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_esquema_comision_actualizar" id="form_esquema_comision_actualizar" method="post">
+			                            <form name="form_comision_actualizar" id="form_comision_actualizar" method="post">
 			                            	<div class="col-sm-4">
 			                            		<label for="id_vendedor_actualizar">Clasificación*</label>
 		                                    	<select name="id_vendedor" id="id_vendedor_actualizar" required class="form-control">
@@ -273,7 +273,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <input type="hidden" name="id_esquema_comision" id="id_esquema_comision_actualizar">
+				                            <input type="hidden" name="id_comision" id="id_comision_actualizar">
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
 		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary waves-effect">Regresar</button>
@@ -299,7 +299,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
-    <script src="<?=base_url();?>assets/cpanel/EsquemaComision/js/esquemaComision.js"></script>
+    <script src="<?=base_url();?>assets/cpanel/Comision/js/comision.js"></script>
     <script>
 		$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
 		$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
