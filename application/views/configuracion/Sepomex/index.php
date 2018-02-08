@@ -57,7 +57,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                    </div>
 			                                </div>
 			                            </div>
-			                            <div class="col-sm-4 col-sm-offset-5 actualizar ocultar">
+			                            <div class="col-sm-5 col-sm-offset-4 actualizar ocultar">
+			                            	<span class="btn btn-danger waves-effect" onclick="cancelar()">Cancelar</span>
 	                                        <input type="submit" value="Actualizar" class="btn btn-success waves-effect">
 		                                </div>
 		                            </form>

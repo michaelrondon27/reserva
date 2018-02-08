@@ -2,8 +2,10 @@
 DROP TABLE proyectos_vendedores;
 DROP TABLE proyectos;
 DROP TABLE esquema_comision;
+DROP TABLE descuentos;
 UPDATE `lista_vista` SET `url_lista_vista` = 'Comision' WHERE `url_lista_vista` = `EsquemaComision`;
 DELETE FROM auditoria WHERE tabla = 'esquema_comision';
+DELETE FROM auditoria WHERE tabla = 'descuentos';
 /*-----------------*/
 
 CREATE TABLE `vendedores_clientes` (
@@ -157,7 +159,7 @@ ALTER TABLE `esquemas`
 	ADD KEY `tipo` (`tipo`);
 
 ALTER TABLE `esquemas`
-  	MODIFY `id_esquema` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  	MODIFY `id_esquema` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `esquemas`
  	ADD CONSTRAINT `esquemas_ibfk_1` FOREIGN KEY (`tipo`) REFERENCES `lval` (`codlval`);
@@ -175,6 +177,22 @@ CREATE TABLE `comisiones` (
 	`porctj_comision` double NOT NULL,
 	`cod_esquema` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `comisiones`
+	ADD PRIMARY KEY (`id_comision`),
+	ADD KEY `id_vendedor` (`id_vendedor`),
+	ADD KEY `tipo_vendedor` (`tipo_vendedor`),
+	ADD KEY `tipo_plazo` (`tipo_plazo`),
+	ADD KEY `cod_esquema` (`cod_esquema`);
+
+ALTER TABLE `comisiones`
+	MODIFY `id_comision` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `comisiones`
+	ADD CONSTRAINT `comisiones_ibfk_1` FOREIGN KEY (`cod_esquema`) REFERENCES `esquemas` (`id_esquema`),
+	ADD CONSTRAINT `fk_id_vendedor` FOREIGN KEY (`id_vendedor`) REFERENCES `lval` (`codlval`),
+	ADD CONSTRAINT `fk_tipo_plazo` FOREIGN KEY (`tipo_plazo`) REFERENCES `lval` (`codlval`),
+	ADD CONSTRAINT `fk_tipo_vendedor` FOREIGN KEY (`tipo_vendedor`) REFERENCES `lval` (`codlval`);
 
 INSERT INTO `comisiones` (`id_comision`, `id_vendedor`, `tipo_vendedor`, `num_ventas_mes`, `tipo_plazo`, `porctj_comision`, `cod_esquema`) VALUES
 (1, 275, 279, 1, 281, 0.05, 1),
@@ -329,22 +347,6 @@ INSERT INTO `comisiones` (`id_comision`, `id_vendedor`, `tipo_vendedor`, `num_ve
 (150, 277, 280, 2, 284, 0.003, 1),
 (151, 277, 280, 3, 284, 0.003, 1);
 
-ALTER TABLE `comisiones`
-	ADD PRIMARY KEY (`id_comision`),
-	ADD KEY `id_vendedor` (`id_vendedor`),
-	ADD KEY `tipo_vendedor` (`tipo_vendedor`),
-	ADD KEY `tipo_plazo` (`tipo_plazo`),
-	ADD KEY `cod_esquema` (`cod_esquema`);
-
-ALTER TABLE `comisiones`
-	MODIFY `id_comision` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
-
-ALTER TABLE `comisiones`
-	ADD CONSTRAINT `comisiones_ibfk_1` FOREIGN KEY (`cod_esquema`) REFERENCES `esquemas` (`id_esquema`),
-	ADD CONSTRAINT `fk_id_vendedor` FOREIGN KEY (`id_vendedor`) REFERENCES `lval` (`codlval`),
-	ADD CONSTRAINT `fk_tipo_plazo` FOREIGN KEY (`tipo_plazo`) REFERENCES `lval` (`codlval`),
-	ADD CONSTRAINT `fk_tipo_vendedor` FOREIGN KEY (`tipo_vendedor`) REFERENCES `lval` (`codlval`);
-
 INSERT INTO `auditoria` (`tabla`, `cod_reg`, `status`, `fec_status`, `usr_regins`, `fec_regins`, `usr_regmod`, `fec_regmod`) VALUES
 ('comisiones', 4, 1, NULL, 1, '2018-01-31', NULL, NULL),
 ('comisiones', 5, 1, NULL, 1, '2018-01-31', NULL, NULL),
@@ -494,3 +496,40 @@ INSERT INTO `auditoria` (`tabla`, `cod_reg`, `status`, `fec_status`, `usr_regins
 ('comisiones', 149, 1, NULL, 11, '2018-01-31', NULL, NULL),
 ('comisiones', 150, 1, NULL, 11, '2018-01-31', NULL, NULL),
 ('comisiones', 151, 1, NULL, 11, '2018-01-31', NULL, NULL);
+
+CREATE TABLE `descuentos` (
+	`id_descuento` int(11) NOT NULL,
+	`tipo_plazo` int(11) NOT NULL,
+	`descuento` double NOT NULL,
+	`cod_esquema` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `descuentos`
+	ADD PRIMARY KEY (`id_descuento`),
+	ADD KEY `tipo_plazo` (`tipo_plazo`),
+	ADD KEY `cod_esquema` (`cod_esquema`);
+
+ALTER TABLE `descuentos`
+  	MODIFY `id_descuento` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `descuentos`
+	ADD CONSTRAINT `descuentos_ibfk_1` FOREIGN KEY (`tipo_plazo`) REFERENCES `lval` (`codlval`),
+	ADD CONSTRAINT `descuentos_ibfk_2` FOREIGN KEY (`cod_esquema`) REFERENCES `esquemas` (`id_esquema`);
+
+INSERT INTO `descuentos` (`tipo_plazo`, `descuento`, `cod_esquema`) VALUES
+(281, 0.12, 2),
+(281, 0.13, 2),
+(281, 0.14, 2),
+(281, 0.15, 2),
+(282, 0.08, 2),
+(283, 0.04, 2),
+(284, 0, 2);
+
+INSERT INTO `auditoria` (`tabla`, `cod_reg`, `status`, `fec_status`, `usr_regins`, `fec_regins`, `usr_regmod`, `fec_regmod`) VALUES
+('descuentos', 1, 1, NULL, 1, '2018-01-31', NULL, NULL),
+('descuentos', 2, 1, NULL, 1, '2018-01-31', NULL, NULL),
+('descuentos', 3, 1, NULL, 1, '2018-01-31', NULL, NULL),
+('descuentos', 4, 1, NULL, 1, '2018-01-31', NULL, NULL),
+('descuentos', 5, 1, NULL, 1, '2018-01-31', NULL, NULL),
+('descuentos', 6, 1, NULL, 1, '2018-01-31', NULL, NULL),
+('descuentos', 7, 1, NULL, 1, '2018-01-31', NULL, NULL);

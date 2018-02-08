@@ -60,6 +60,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                            </div>
 			                            <input type="hidden" name="id_mi_correo" id="id_mi_correo" value="0">
                             			<div class="col-sm-4 col-sm-offset-5 actualizar ocultar">
+                            				<span class="btn btn-danger waves-effect" onclick="listar()">Cancelar</span>
 	                                        <input type="submit" value="Actuzalizar" class="btn btn-success waves-effect">
 		                                </div>
 		                            </form>

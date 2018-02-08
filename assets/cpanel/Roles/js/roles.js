@@ -355,23 +355,39 @@ $(document).ready(function(){
 	/*
 		Funcion que agrega las lista ista a la tabla
 	*/
-	function agregarListaVista(select, tabla){
+	function agregarListaVista(select, tabla, modulo){
+		var idModulo = $(modulo).val();
+		var nombreModulo = $(modulo + " option:selected").html();
 		var value = $(select).val();
 		var text = $(select + " option:selected").html();
-		var validado = false;
+		var validadoLista = false;
+		var validadoModulo = false;
+		var html = '';
+		$(tabla + " tbody tr").each(function() {
+			if (idModulo == $(this).find(".id_modulo_vista").val()) {
+				validadoModulo = true;
+			}
+		});
 		if (value != "") {
 			$(tabla + " tbody tr").each(function() {
 			  	if (value == $(this).find(".id_lista_vista").val())
-			  		validado = true;
+			  		validadoLista = true;
 			});
-			if (!validado) {
-				var html = "<tr id='r" + value + "'><td>" + text + " <input type='hidden' class='id_lista_vista' name='id_lista_vista' value='" + value + "'></td>";
+			if (!validadoModulo) {
+				html += "<tr style='background-color: #eee;' id='mv" + idModulo + "'><td colspan='6'>" + nombreModulo + "<input type='hidden' class='id_modulo_vista' value='" + idModulo + "'></td></tr>";
+			}
+			if (!validadoLista) {
+				html += "<tr id='r" + value + "'><td>" + text + " <input type='hidden' class='id_lista_vista' name='id_lista_vista' value='" + value + "'></td>";
 				html += "<td>" + agregarCheckbox(value, 'consultar', 1) + "</td>";
 				html += "<td>" + agregarCheckbox(value, 'registrar', 1) + "</td>";
 				html += "<td>" + agregarCheckbox(value, 'actualizar', 1) + "</td>";
 				html += "<td>" + agregarCheckbox(value, 'eliminar', 1) + "</td>";
 				html += "<td><button type='button' class='btn btn-danger waves-effect' onclick='eliminarListaVista(\"" + "#r" + value + "\")'>Eliminar</button></td></tr>";
-				$(tabla + " tbody").append(html);
+				if (validadoModulo) {
+					$(tabla + " tbody #mv" + idModulo).after(html);
+				} else {
+					$(tabla + " tbody").append(html);
+				}
 			} else {
 				warning('¡La opción seleccionada ya se encuentra agregada!');
 			}
@@ -439,15 +455,26 @@ $(document).ready(function(){
 	        success: function(respuesta){
 	        	$("#esperarLoading").html('');
 	        	$("#listarRoles").removeClass('ocultar');
-	        	respuesta.forEach(function(operacion, index){
-	        		var html = "<tr id='r" + operacion.id_lista_vista + "'><td>" + operacion.nombre_lista_vista + " <input type='hidden' class='id_lista_vista' name='id_lista_vista' value='" + operacion.id_lista_vista + "'></td>";
+	        	var validado = false;
+	        	var modulo = 0;
+	            respuesta.forEach(function(operacion, index){
+	            	var html = '';
+	            	if (modulo != operacion.id_modulo_vista) {
+	            		modulo = operacion.id_modulo_vista;
+	            		validado = false;
+	            	}
+					if (!validado){
+		            	html += "<tr style='background-color: #eee;' id='mv" + operacion.id_modulo_vista + "'><td colspan='6'>" + operacion.nombre_modulo_vista + "<input type='hidden' class='id_modulo_vista' value='" + operacion.id_modulo_vista + "'></td></tr>";
+		            	validado = true;
+					}
+					html += "<tr id='r" + operacion.id_lista_vista + "'><td>" + operacion.nombre_lista_vista + " <input type='hidden' class='id_lista_vista' name='id_lista_vista' value='" + operacion.id_lista_vista + "'></td>";
 					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'consultar', operacion.consultar) + "</td>";
 					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'registrar', operacion.registrar) + "</td>";
 					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'actualizar', operacion.actualizar) + "</td>";
 					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'eliminar', operacion.eliminar) + "</td>";
 					html += "<td><button type='button' class='btn btn-danger waves-effect' onclick='eliminarRolOperacion(" + operacion.id_rol_operaciones + ", " + id + ")'>Eliminar</button></td></tr>";
 					$("#tableActualizar tbody").append(html);
-	        	});
+	            });
 	        }
 	    });
 	}

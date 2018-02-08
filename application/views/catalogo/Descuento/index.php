@@ -71,8 +71,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        <div class="body">
 		                        	<div class="table-responsive">
 			                            <form name="form_descuento_registrar" id="form_descuento_registrar" method="post">
-				                            <div class="col-sm-6">
-			                            		<label for="tipo_plazo_registrar">Tipo de Plazo*</label>
+				                            <div class="col-sm-4">
+			                            		<label for="4">Tipo de Plazo*</label>
 		                                    	<select name="tipo_plazo" id="tipo_plazo_registrar" required class="form-control">
 		                                    		<option value="" selected>Seleccione</option>
 		                                    		<?php foreach ($tipos_plazos as $tipo_plazo): ?>
@@ -80,7 +80,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
-				                            <div class="col-sm-6">
+				                            <div class="col-sm-4">
+			                            		<label for="4">Esquema de Descuento*</label>
+		                                    	<select name="cod_esquema" id="cod_esquema_registrar" required class="form-control">
+		                                    		<option value="" selected>Seleccione</option>
+		                                    		<?php foreach ($esquemas as $esquema): ?>
+		                                    			<option value="<?= $esquema->id_esquema; ?>"><?= $esquema->cod_esquema . ' - ' .$esquema->descripcion; ?></option>
+		                                    		<?php endforeach ?>
+		                                    	</select>
+				                            </div>
+				                            <div class="col-sm-4">
 				                                <label for="descuento_registrar">Descuento*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
@@ -110,7 +119,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-		                            	<div class="col-sm-6">
+		                            	<div class="col-sm-4">
 		                            		<label for="tipo_plazo_consultar">Tipo de Plazo*</label>
 	                                    	<select id="tipo_plazo_consultar" class="form-control" disabled>
 	                                    		<option value="" selected>Seleccione</option>
@@ -119,7 +128,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	                                    		<?php endforeach ?>
 	                                    	</select>
 			                            </div>
-			                            <div class="col-sm-6">
+			                            <div class="col-sm-4">
+			                            		<label for="4">Esquema de Descuento*</label>
+		                                    	<select id="cod_esquema_consultar" required class="form-control" disabled>
+		                                    		<option value="" selected>Seleccione</option>
+		                                    		<?php foreach ($esquemas as $esquema): ?>
+		                                    			<option value="<?= $esquema->id_esquema; ?>"><?= $esquema->cod_esquema . ' - ' .$esquema->descripcion; ?></option>
+		                                    		<?php endforeach ?>
+		                                    	</select>
+				                            </div>
+			                            <div class="col-sm-4">
 			                                <label for="descuento_registrar">Descuento*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
@@ -148,7 +166,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        <div class="body">
 		                        	<div class="table-responsive">
 			                            <form name="form_descuento_actualizar" id="form_descuento_actualizar" method="post">
-			                            	<div class="col-sm-6">
+			                            	<div class="col-sm-4">
 			                            		<label for="tipo_plazo_actualizar">Tipo de Plazo*</label>
 		                                    	<select name="tipo_plazo" id="tipo_plazo_actualizar" required class="form-control">
 		                                    		<option value="" selected>Seleccione</option>
@@ -157,7 +175,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
-				                            <div class="col-sm-6">
+				                            <div class="col-sm-4">
+			                            		<label for="4">Esquema de Descuento*</label>
+		                                    	<select name="cod_esquema" id="cod_esquema_actualizar" required class="form-control">
+		                                    		<option value="" selected>Seleccione</option>
+		                                    		<?php foreach ($esquemas as $esquema): ?>
+		                                    			<option value="<?= $esquema->id_esquema; ?>"><?= $esquema->cod_esquema . ' - ' .$esquema->descripcion; ?></option>
+		                                    		<?php endforeach ?>
+		                                    	</select>
+				                            </div>
+				                            <div class="col-sm-4">
 				                                <label for="descuento_registrar">Descuento*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">

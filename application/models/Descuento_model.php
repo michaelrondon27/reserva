@@ -7,6 +7,7 @@ Class Descuento_model extends CI_Model
 
     private $tabla_descuento = "descuentos";
     private $tabla_lval = "lval";
+    private $tabla_esquema = "esquemas";
 
     public function listar_descuentos()
     {
@@ -23,6 +24,7 @@ Class Descuento_model extends CI_Model
     public function registrar_descuento($data){
         $this->db->where('tipo_plazo', $data['tipo_plazo']);
         $this->db->where('descuento', $data['descuento']);
+        $this->db->where('cod_esquema', $data['cod_esquema']);
         $this->db->limit(1);
         $resultados = $this->db->get($this->tabla_descuento);
         if ($resultados->num_rows() == 0) {
@@ -44,6 +46,7 @@ Class Descuento_model extends CI_Model
     {
         $this->db->where('tipo_plazo', $data['tipo_plazo']);
         $this->db->where('descuento', $data['descuento']);
+        $this->db->where('cod_esquema', $data['cod_esquema']);
         $this->db->limit(1);
         $resultados = $this->db->get($this->tabla_descuento);
         if ($resultados->num_rows() == 0) {
@@ -124,6 +127,13 @@ Class Descuento_model extends CI_Model
     {
         $this->db->where('tipolval', 'TIPOPLAZOS');
         $resultados = $this->db->get($this->tabla_lval);
+        return $resultados->result();
+    }
+
+    public function esquemas()
+    {
+        $this->db->where('tipo', 298);
+        $resultados = $this->db->get($this->tabla_esquema);
         return $resultados->result();
     }
 

@@ -109,6 +109,7 @@ $(document).ready(function(){
 		$(tbody).on("click", "span.consultar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
 			$("#tipo_plazo_consultar option[value='" + data.tipo_plazo + "']").attr("selected","selected");
+			$("#cod_esquema_consultar option[value='" + data.cod_esquema + "']").attr("selected","selected");
 			document.getElementById('descuento_consultar').value = data.descuento.replace('.',',');
 			cuadros('#cuadro1', '#cuadro3');
 		});
@@ -123,6 +124,7 @@ $(document).ready(function(){
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
 			$("#tipo_plazo_actualizar option[value='" + data.tipo_plazo + "']").attr("selected","selected");
+			$("#cod_esquema_actualizar option[value='" + data.cod_esquema + "']").attr("selected","selected");
 			document.getElementById('id_descuento_actualizar').value = data.id_descuento;
 			document.getElementById('descuento_actualizar').value = data.descuento.replace('.',',');
 			cuadros('#cuadro1', '#cuadro4');

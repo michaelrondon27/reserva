@@ -14,9 +14,6 @@ $(document).ready(function(){
             url:url+'MiCorreo/buscar_mi_correo',
             type:'POST',
             dataType:'JSON',
-            beforeSend: function(){
-                mensajes('info', '<span>Cargando datos, espere por favor... <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>');
-            },
             error: function (repuesta) {
                 listar();              
             },

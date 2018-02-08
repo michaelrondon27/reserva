@@ -102,7 +102,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    	</select>
 				                            </div>
 				                            <div class="col-sm-4">
-			                            		<label for="cod_esquema_registrar">Esquema de Comsión*</label>
+			                            		<label for="cod_esquema_registrar">Esquema de Comisión*</label>
 		                                    	<select name="cod_esquema" id="cod_esquema_registrar" required class="form-control">
 		                                    		<option value="" selected>Seleccione</option>
 		                                    		<?php foreach ($esquemas as $esquema): ?>
@@ -176,7 +176,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	                                    	</select>
 			                            </div>
 			                            <div class="col-sm-4">
-		                            		<label for="cod_esquema_consultar">Esquema de Comsión*</label>
+		                            		<label for="cod_esquema_consultar">Esquema de Comisión*</label>
 	                                    	<select id="cod_esquema_consultar" class="form-control" disabled>
 	                                    		<option value="" selected>Seleccione</option>
 	                                    		<?php foreach ($esquemas as $esquema): ?>
@@ -249,7 +249,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    	</select>
 				                            </div>
 				                            <div class="col-sm-4">
-			                            		<label for="cod_esquema_actualizar">Esquema de Comsión*</label>
+			                            		<label for="cod_esquema_actualizar">Esquema de Comisión*</label>
 		                                    	<select name="cod_esquema" id="cod_esquema_actualizar" required class="form-control">
 		                                    		<option value="" selected>Seleccione</option>
 		                                    		<?php foreach ($esquemas as $esquema): ?>

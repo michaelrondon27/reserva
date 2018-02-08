@@ -153,7 +153,7 @@ Class Comision_model extends CI_Model
 
     public function esquemas()
     {
-        $this->db->where('id_esquema', 1);
+        $this->db->where('tipo', 297);
         $resultados = $this->db->get($this->tabla_esquema);
         return $resultados->result();
     }

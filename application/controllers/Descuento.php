@@ -22,6 +22,7 @@ class Descuento extends CI_Controller
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['tipos_plazos'] = $this->Descuento_model->tipos_plazos();
     $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('Descuento');
+    $datos['esquemas'] = $this->Descuento_model->esquemas();
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('catalogo/Descuento/index', $datos);
@@ -42,6 +43,7 @@ class Descuento extends CI_Controller
       $data=array(
         'tipo_plazo' => $this->input->post('tipo_plazo'),
         'descuento' => trim(str_replace(',', '.', $this->input->post('descuento'))),
+        'cod_esquema' => $this->input->post('cod_esquema'),
       );
       $this->Descuento_model->registrar_descuento($data);
     }else{
@@ -58,6 +60,7 @@ class Descuento extends CI_Controller
       $data=array(
         'tipo_plazo' => $this->input->post('tipo_plazo'),
         'descuento' => trim(str_replace(',', '.', $this->input->post('descuento'))),
+        'cod_esquema' => $this->input->post('cod_esquema'),
       );
       $this->Descuento_model->actualizar_descuento($this->input->post('id_descuento'), $data);
     }else{
@@ -70,6 +73,7 @@ class Descuento extends CI_Controller
   {
     $this->form_validation->set_rules('tipo_plazo','Tipo de Plazo','required');
     $this->form_validation->set_rules('descuento','Descuento','required');
+    $this->form_validation->set_rules('cod_esquema','Esquema de Descuento','required');
   }
 
   public function mensajes_reglas_descuento(){

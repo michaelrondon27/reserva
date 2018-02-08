@@ -105,7 +105,7 @@
 			                                        </select>
 					                            </div>
 					                            <div class="col-sm-2" style="padding-top: 25px;">
-					                            	<button type="button" class="btn btn-primary waves-effect" onclick="agregarListaVista('#lista_vista_registrar', '#tableRegistrar')">Agregar</button>
+					                            	<button type="button" class="btn btn-primary waves-effect" onclick="agregarListaVista('#lista_vista_registrar', '#tableRegistrar', '#modulo_vista_registrar')">Agregar</button>
 					                            </div>
 					                            <div class="col-sm-12">
 					                            	<table class="table table-bordered table-striped table-hover" id="tableRegistrar">
@@ -218,7 +218,7 @@
 			                                        </select>
 					                            </div>
 					                            <div class="col-sm-2" style="padding-top: 25px;">
-					                            	<button type="button" class="btn btn-primary waves-effect" onclick="agregarListaVista('#lista_vista_actualizar', '#tableActualizar')">Agregar</button>
+					                            	<button type="button" class="btn btn-primary waves-effect" onclick="agregarListaVista('#lista_vista_actualizar', '#tableActualizar', '#modulo_vista_actualizar')">Agregar</button>
 					                            </div>
 					                            <div class="col-sm-12">
 					                            	<table class="table table-bordered table-striped table-hover" id="tableActualizar">
