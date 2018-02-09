@@ -37,7 +37,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                        <tr>
 		                                        	<th style="text-align: center; padding: 0px 10px 0px 5px;"><input type="checkbox" id="checkall" class="chk-col-blue"/><label for="checkall"></label></th>
 		                                            <th>Código</th>
-		                                            <th>Nombre o Razón Social</th>
+		                                            <th>Nombre</th>
+		                                            <th>Coordinador</th>
+		                                            <th>Localidad</th>
 		                                            <th>Fecha de Registro</th>
 		                                            <th>Registrado Por</th>
 		                                            <th style="width: 17%;">Acciones</th>
@@ -61,7 +63,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		            </div>
 		        <!-- Cierre del cuadro de la tabla -->
 
-		        <!-- Comienzo del cuadro de registrar banco -->
+		        <!-- Comienzo del cuadro de registrar inmobiliarias -->
 					<div class="row clearfix ocultar" id="cuadro2">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
@@ -72,18 +74,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        	<div class="table-responsive">
 			                            <form name="form_banco_registrar" id="form_banco_registrar" method="post">
 			                            	<div class="col-sm-6">
-			                            		<label for="cod_banco_registrar">Código*</label>
+			                            		<label for="codigo_registrar">Código de la Inmobiliaria*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="cod_banco" id="cod_banco_registrar" onkeypress='return solonumeros(event)' maxlength="4" placeholder="P. EJ. 002" required>
+				                                        <input type="text" class="form-control" name="codigo" id="codigo_registrar" maxlength="20" placeholder="P. EJ. INYUCATAN" required>
 				                                    </div>
 				                                </div>
 				                            </div>
 				                            <div class="col-sm-6">
-				                                <label for="nombre_banco_registrar">Nombre o Razón Social*</label>
+				                                <label for="nombre_registrar">Nombre*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="nombre_banco" id="nombre_banco_registrar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre" id="nombre_registrar"required>
+				                                    </div>
+				                                </div>
+				                            </div>
+				                            <div class="col-sm-6">
+			                            		<label for="coordinador_registrar">Coordinador*</label>
+		                                    	<select name="coordinador" id="coordinador_registrar" required class="form-control">
+		                                    		<option value="" selected>Seleccione</option>
+		                                    		<?php foreach ($tipos_vendedores as $tipo_vendedor): ?>
+		                                    			<option value="<?= $tipo_vendedor->codlval; ?>"><?= $tipo_vendedor->descriplval; ?></option>
+		                                    		<?php endforeach ?>
+		                                    	</select>
+				                            </div>
+				                            <div class="col-sm-6">
+				                                <label for="localidad_registrar">Localidad*</label>
+				                                <div class="form-group">
+				                                    <div class="form-line">
+				                                        <input type="text" class="form-control mayusculas" name="localidad" id="localidad_registrar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -98,9 +117,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                    </div>
 		                </div>
 		            </div>
-		        <!-- Cierre del cuadro de registrar banco -->
+		        <!-- Cierre del cuadro de registrar inmobiliarias -->
 
-		        <!-- Comienzo del cuadro de consultar banco -->
+		        <!-- Comienzo del cuadro de consultar inmobiliarias -->
 					<div class="row clearfix ocultar" id="cuadro3">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
@@ -134,9 +153,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                    </div>
 		                </div>
 		            </div>
-		        <!-- Cierre del cuadro de consultar banco -->
+		        <!-- Cierre del cuadro de consultar inmobiliarias -->
 
-		        <!-- Comienzo del cuadro de editar banco -->
+		        <!-- Comienzo del cuadro de editar inmobiliarias -->
 					<div class="row clearfix ocultar" id="cuadro4">
 		                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                    <div class="card">
@@ -147,7 +166,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        	<div class="table-responsive">
 			                            <form name="form_banco_actualizar" id="form_banco_actualizar" method="post">
 			                            	<div class="col-sm-6">
-			                            		<label for="cod_banco_editar">Código*</label>
+			                            		<label for="cod_banco">Código*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
 				                                        <input type="text" class="form-control" id="cod_banco_editar" disabled>
@@ -156,7 +175,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                            </div>
 				                            <input type="hidden" class="form-control" name="id_banco" id="id_banco_editar">
 				                            <div class="col-sm-6">
-				                                <label for="nombre_banco_editar">Nombre o Razón Social*</label>
+				                                <label for="nombre_banco">Nombre o Razón Social*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
 				                                        <input type="text" class="form-control mayusculas" name="nombre_banco" id="nombre_banco_editar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
@@ -174,7 +193,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                    </div>
 		                </div>
 		            </div>
-		        <!-- Cierre del cuadro de editar banco -->
+		        <!-- Cierre del cuadro de editar inmobiliarias -->
 			</div>
 		</section>
 	</body>
@@ -187,7 +206,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
     <script src="<?=base_url();?>assets/template/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
-    <script src="<?=base_url();?>assets/cpanel/Bancos/js/bancos.js"></script>
+    <script src="<?=base_url();?>assets/cpanel/Inmobiliarias/js/inmobiliarias.js"></script>
     <script>
 		$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
 		$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
