@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!DOCTYPE html>
 <html>
 	<link href="<?=base_url();?>assets/template/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
-	<?php if(($permiso[0]->consultar==1 && $permiso[0]->registrar==1 && $permiso[0]->actualizar==1 && $permiso[0]->eliminar==1) OR $permiso[0]->status==2): ?>
+	<?php if(($permiso[0]->general==1 && $permiso[0]->detallada==1 && $permiso[0]->registrar==1 && $permiso[0]->actualizar==1 && $permiso[0]->eliminar==1) OR $permiso[0]->status==2): ?>
 		<script src="<?=base_url();?>assets/cpanel/js/permiso.js"></script>
 	<?php endif ?>
 	<body class="theme-blue">
@@ -303,7 +303,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script>
 		$("#mv<?php echo $permiso[0]->id_modulo_vista ?>").attr('class', 'active');
 		$("#lv<?php echo $permiso[0]->id_lista_vista ?>").attr('class', 'active');
-		var consultar = <?php echo $permiso[0]->consultar ?>,
+		var consultar = <?php echo $permiso[0]->detallada ?>,
 			registrar = <?php echo $permiso[0]->registrar ?>,
 			actualizar = <?php echo $permiso[0]->actualizar ?>,
 			borrar = <?php echo $permiso[0]->eliminar ?>;

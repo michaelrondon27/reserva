@@ -23,6 +23,7 @@ class Descuento extends CI_Controller
     $datos['tipos_plazos'] = $this->Descuento_model->tipos_plazos();
     $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('Descuento');
     $datos['esquemas'] = $this->Descuento_model->esquemas();
+    $datos['tipos_vendedores'] = $this->Descuento_model->tipos_vendedores();
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('catalogo/Descuento/index', $datos);
@@ -42,6 +43,7 @@ class Descuento extends CI_Controller
     if($this->form_validation->run() == true){
       $data=array(
         'tipo_plazo' => $this->input->post('tipo_plazo'),
+        'tipo_vendedor' => $this->input->post('tipo_vendedor'),
         'descuento' => trim(str_replace(',', '.', $this->input->post('descuento'))),
         'cod_esquema' => $this->input->post('cod_esquema'),
       );
@@ -59,6 +61,7 @@ class Descuento extends CI_Controller
     if($this->form_validation->run() == true){
       $data=array(
         'tipo_plazo' => $this->input->post('tipo_plazo'),
+        'tipo_vendedor' => $this->input->post('tipo_vendedor'),
         'descuento' => trim(str_replace(',', '.', $this->input->post('descuento'))),
         'cod_esquema' => $this->input->post('cod_esquema'),
       );

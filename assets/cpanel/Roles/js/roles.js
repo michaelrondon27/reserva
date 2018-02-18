@@ -126,12 +126,15 @@ $(document).ready(function(){
             $("#tableRegistrar tbody tr").each(function() {
             	var lista_vista = [];
             	var id = $(this).find(".id_lista_vista").val();
-            	lista_vista.push(id);
-            	lista_vista.push(verificarCheckbox('consultar' + id));
-            	lista_vista.push(verificarCheckbox('registrar' + id));
-            	lista_vista.push(verificarCheckbox('actualizar' + id));
-            	lista_vista.push(verificarCheckbox('eliminar' + id));
-				objeto.push(lista_vista);
+            	if (id != undefined){
+	            	lista_vista.push(id);
+	            	lista_vista.push(verificarCheckbox('general' + id));
+	            	lista_vista.push(verificarCheckbox('detallada' + id));
+	            	lista_vista.push(verificarCheckbox('registrar' + id));
+	            	lista_vista.push(verificarCheckbox('actualizar' + id));
+	            	lista_vista.push(verificarCheckbox('eliminar' + id));
+					objeto.push(lista_vista);
+				}
 			});
             $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
             $.ajax({
@@ -224,12 +227,15 @@ $(document).ready(function(){
             $("#tableActualizar tbody tr").each(function() {
             	var lista_vista = [];
             	var id = $(this).find(".id_lista_vista").val();
-            	lista_vista.push(id);
-            	lista_vista.push(verificarCheckbox('consultar' + id));
-            	lista_vista.push(verificarCheckbox('registrar' + id));
-            	lista_vista.push(verificarCheckbox('actualizar' + id));
-            	lista_vista.push(verificarCheckbox('eliminar' + id));
-				objeto.push(lista_vista);
+            	if (id != undefined){
+            		lista_vista.push(id);
+	            	lista_vista.push(verificarCheckbox('general' + id));
+	            	lista_vista.push(verificarCheckbox('detallada' + id));
+	            	lista_vista.push(verificarCheckbox('registrar' + id));
+	            	lista_vista.push(verificarCheckbox('actualizar' + id));
+	            	lista_vista.push(verificarCheckbox('eliminar' + id));
+					objeto.push(lista_vista);
+            	}
 			});
             $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
             $.ajax({
@@ -314,18 +320,19 @@ $(document).ready(function(){
 	        	var validado = false;
 	        	var modulo = 0;
 	            var table = "<table class='table table-bordered table-hover' id='consultaIndividual'><thead><tr>";
-	            table += "<th>Nombre</th><th>Consultar</th><th>Registrar</th><th>Actualizar</th><th>Eliminar</th></tr></thead><tbody>";
+	            table += "<th>Nombre</th><th>Consultar General</th><th>Consultar Detallada</th><th>Registrar</th><th>Actualizar</th><th>Eliminar</th></tr></thead><tbody>";
 	            respuesta.forEach(function(operacion, index){
 	            	if (modulo != operacion.id_modulo_vista) {
 	            		modulo = operacion.id_modulo_vista;
 	            		validado = false;
 	            	}
 					if (!validado){
-		            	table += "<tr style='background-color: #eee;'><td colspan='5'>" + operacion.nombre_modulo_vista + "</td></tr>";
+		            	table += "<tr style='background-color: #eee;'><th colspan='6'>" + operacion.nombre_modulo_vista + "</th></tr>";
 		            	validado = true;
 					}
 					table += '<tr><th>' + operacion.nombre_lista_vista + '</th>';
-	            	table += '<th>' + validarPermisoListaVista(operacion.consultar) + '</th>';
+	            	table += '<th>' + validarPermisoListaVista(operacion.general) + '</th>';
+	            	table += '<th>' + validarPermisoListaVista(operacion.detallada) + '</th>';
 	            	table += '<th>' + validarPermisoListaVista(operacion.registrar) + '</th>';
 	            	table += '<th>' + validarPermisoListaVista(operacion.actualizar) + '</th>';
 	            	table += '<th>' + validarPermisoListaVista(operacion.eliminar) + '</th><tr>';
@@ -374,11 +381,12 @@ $(document).ready(function(){
 			  		validadoLista = true;
 			});
 			if (!validadoModulo) {
-				html += "<tr style='background-color: #eee;' id='mv" + idModulo + "'><td colspan='6'>" + nombreModulo + "<input type='hidden' class='id_modulo_vista' value='" + idModulo + "'></td></tr>";
+				html += "<tr style='background-color: #eee;' id='mv" + idModulo + "'><td colspan='7'>" + nombreModulo + "<input type='hidden' class='id_modulo_vista' value='" + idModulo + "'></td></tr>";
 			}
 			if (!validadoLista) {
 				html += "<tr id='r" + value + "'><td>" + text + " <input type='hidden' class='id_lista_vista' name='id_lista_vista' value='" + value + "'></td>";
-				html += "<td>" + agregarCheckbox(value, 'consultar', 1) + "</td>";
+				html += "<td>" + agregarCheckbox(value, 'general', 1) + "</td>";
+				html += "<td>" + agregarCheckbox(value, 'detallada', 1) + "</td>";
 				html += "<td>" + agregarCheckbox(value, 'registrar', 1) + "</td>";
 				html += "<td>" + agregarCheckbox(value, 'actualizar', 1) + "</td>";
 				html += "<td>" + agregarCheckbox(value, 'eliminar', 1) + "</td>";
@@ -464,11 +472,12 @@ $(document).ready(function(){
 	            		validado = false;
 	            	}
 					if (!validado){
-		            	html += "<tr style='background-color: #eee;' id='mv" + operacion.id_modulo_vista + "'><td colspan='6'>" + operacion.nombre_modulo_vista + "<input type='hidden' class='id_modulo_vista' value='" + operacion.id_modulo_vista + "'></td></tr>";
+		            	html += "<tr style='background-color: #eee;' id='mv" + operacion.id_modulo_vista + "'><td colspan='7'>" + operacion.nombre_modulo_vista + "<input type='hidden' class='id_modulo_vista' value='" + operacion.id_modulo_vista + "'></td></tr>";
 		            	validado = true;
 					}
 					html += "<tr id='r" + operacion.id_lista_vista + "'><td>" + operacion.nombre_lista_vista + " <input type='hidden' class='id_lista_vista' name='id_lista_vista' value='" + operacion.id_lista_vista + "'></td>";
-					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'consultar', operacion.consultar) + "</td>";
+					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'general', operacion.general) + "</td>";
+					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'detallada', operacion.detallada) + "</td>";
 					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'registrar', operacion.registrar) + "</td>";
 					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'actualizar', operacion.actualizar) + "</td>";
 					html += "<td>" + agregarCheckbox(operacion.id_lista_vista, 'eliminar', operacion.eliminar) + "</td>";

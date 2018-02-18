@@ -12,17 +12,19 @@ Class Descuento_model extends CI_Model
     public function listar_descuentos()
     {
         $this->db->where('a.tabla', $this->tabla_descuento);
-        $this->db->select('d.*, a.fec_regins, u.correo_usuario, a.status, lv.descriplval');
+        $this->db->select('d.*, a.fec_regins, u.correo_usuario, a.status, tp.descriplval as tipoPlazo, tv.descriplval as tipoVendedor');
         $this->db->from($this->tabla_descuento . ' d');
         $this->db->join('auditoria a', 'd.id_descuento = a.cod_reg');
         $this->db->join('usuario u', 'a.usr_regins = u.id_usuario');
-        $this->db->join($this->tabla_lval . ' lv', 'd.tipo_plazo = lv.codlval');
+        $this->db->join($this->tabla_lval . ' tp', 'd.tipo_plazo = tp.codlval');
+        $this->db->join($this->tabla_lval . ' tv', 'd.tipo_vendedor = tv.codlval');
         $resultados = $this->db->get();
         return $resultados->result();
     }   
         
     public function registrar_descuento($data){
         $this->db->where('tipo_plazo', $data['tipo_plazo']);
+        $this->db->where('tipo_vendedor', $data['tipo_vendedor']);
         $this->db->where('descuento', $data['descuento']);
         $this->db->where('cod_esquema', $data['cod_esquema']);
         $this->db->limit(1);
@@ -45,6 +47,7 @@ Class Descuento_model extends CI_Model
     public function actualizar_descuento($id, $data)
     {
         $this->db->where('tipo_plazo', $data['tipo_plazo']);
+        $this->db->where('tipo_vendedor', $data['tipo_vendedor']);
         $this->db->where('descuento', $data['descuento']);
         $this->db->where('cod_esquema', $data['cod_esquema']);
         $this->db->limit(1);
@@ -126,6 +129,13 @@ Class Descuento_model extends CI_Model
     public function tipos_plazos()
     {
         $this->db->where('tipolval', 'TIPOPLAZOS');
+        $resultados = $this->db->get($this->tabla_lval);
+        return $resultados->result();
+    }
+
+    public function tipos_vendedores()
+    {
+        $this->db->where('tipolval', 'TIPOVENDEDOR');
         $resultados = $this->db->get($this->tabla_lval);
         return $resultados->result();
     }

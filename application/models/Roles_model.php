@@ -80,10 +80,11 @@ Class Roles_model extends CI_Model
                 $array = array(
                     'id_rol' => $rol,
                     'id_lista_vista' => $permiso[0],
-                    'consultar' => $permiso[1],
-                    'registrar' => $permiso[2],
-                    'actualizar' => $permiso[3],
-                    'eliminar' => $permiso[4],
+                    'general' => $permiso[1],
+                    'detallada' => $permiso[2],
+                    'registrar' => $permiso[3],
+                    'actualizar' => $permiso[4],
+                    'eliminar' => $permiso[5],
                 );
                 $this->db->insert($this->tabla_rol_operaciones, $array);
             }
@@ -105,10 +106,11 @@ Class Roles_model extends CI_Model
             $query = $this->db->query("SELECT * FROM ".$this->tabla_rol_operaciones." WHERE id_rol=".$id." AND id_lista_vista=".$permiso[0]);
             if (sizeof($query->result()) > 0) {
                 $array = array(
-                    'consultar' => $permiso[1],
-                    'registrar' => $permiso[2],
-                    'actualizar' => $permiso[3],
-                    'eliminar' => $permiso[4],
+                    'general' => $permiso[1],
+                    'detallada' => $permiso[2],
+                    'registrar' => $permiso[3],
+                    'actualizar' => $permiso[4],
+                    'eliminar' => $permiso[5],
                 );
                 $this->db->where('id_rol', $id)->where('id_lista_vista', $permiso[0]);
                 $this->db->update($this->tabla_rol_operaciones, $array);
@@ -116,10 +118,11 @@ Class Roles_model extends CI_Model
                 $array = array(
                     'id_rol' => $id,
                     'id_lista_vista' => $permiso[0],
-                    'consultar' => $permiso[1],
-                    'registrar' => $permiso[2],
-                    'actualizar' => $permiso[3],
-                    'eliminar' => $permiso[4],
+                    'general' => $permiso[1],
+                    'detallada' => $permiso[2],
+                    'registrar' => $permiso[3],
+                    'actualizar' => $permiso[4],
+                    'eliminar' => $permiso[5],
                 );
                 $this->db->insert($this->tabla_rol_operaciones, $array);
             }

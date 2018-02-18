@@ -23,7 +23,7 @@ Class Menu_model extends CI_Model
         $this->db->where('lv.visibilidad_lista_vista', 0);
         $this->db->where('a.tabla', 'rol');
         $this->db->where('a.status', 1);
-        $this->db->where('(ro.consultar=0 OR ro.registrar=0 OR ro.actualizar=0 OR eliminar=0)');
+        $this->db->where('(ro.general=0 OR ro.detallada=0 OR ro.registrar=0 OR ro.actualizar=0 OR eliminar=0)');
         $this->db->select('lv.*');
         $this->db->from('usuario u');
         $this->db->join('rol r', 'u.id_rol = r.id_rol');
