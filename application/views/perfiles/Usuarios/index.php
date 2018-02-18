@@ -38,7 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                        <tr>
 		                                        	<th style="text-align: center; padding: 0px 10px 0px 5px; width:4%;"><input type="checkbox" id="checkall" class="chk-col-blue"/><label for="checkall"></label></th>
 		                                        	<th>Nombre(s)</th>
-		                                        	<th>Apeelido Paterno</th>
+		                                        	<th>Apellido Paterno</th>
 		                                        	<th>Apellido Materno</th>
 		                                        	<th>CURP</th>
 		                                            <th>Correo Electrónico</th>
@@ -277,7 +277,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                    <div class="form-line">
 				                                        <input type="file" class="form-control" id="avatar_usuario_registrar" name="avatar_usuario" onchange="readURL(this, '#imagen_registrar', '#avatar_usuario_registrar')">
 				                                    </div>
-				                                    <img id="imagen_registrar" src="http://placehold.it/180" alt="Tu avatar"/ class="img-responsive" style="max-width: 15%;">
+				                                    <img id="imagen_registrar" src="<?php echo base_url();?>assets/cpanel/Usuarios/images/default.png" alt="Tu avatar"/ class="img-responsive" style="max-width: 15%;">
 				                                </div>
 				                            </div>
                                 			<br>

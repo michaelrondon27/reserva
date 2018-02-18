@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="index.html">ADMINBSB - MATERIAL DESIGN</a>
+            <a class="navbar-brand" href="<?=base_url();?>">CRM-Gestión de Ventas.</a>
         </div>
     </div>
 </nav>
@@ -25,7 +25,8 @@
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                     <ul class="dropdown-menu pull-right">
-                        <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                        <li><a href="javascript:void(0);"><i class="material-icons">person</i>Perfil</a></li>
+                        <li><a href="javascript:void(0);"><i class="material-icons">info</i>Ayuda</a></li>
                         <li role="seperator" class="divider"></li>
                         <li><a href="<?php echo base_url();?>auth/logout"><i class="material-icons">input</i>Cerrar Sesión</a></li>
                     </ul>
@@ -64,10 +65,10 @@
         <!-- Footer -->
         <div class="legal">
             <div class="copyright">
-                &copy; 2016 - 2017 <a href="javascript:void(0);">AdminBSB - Material Design</a>.
+                <span class="text-info">&copy; 2018.</span> CRM-Gestión de Ventas.
             </div>
             <div class="version">
-                <b>Version: </b> 1.0.5
+                <span class="text-info">Todos los derechos reservados by</span> <img src="<?=base_url()?>assets/cpanel/images/LOGO(AF)-AG2-01.svg" style="width: 25%;">
             </div>
         </div>
         <!-- #Footer -->
