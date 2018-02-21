@@ -10,18 +10,21 @@ Class Inmobiliarias_model extends CI_Model
     public function listado_inmobiliarias()
     {
         $this->db->where('a.tabla', $this->tabla_inmobiliaria);
-        $this->db->select('i.*, a.fec_regins, u.correo_usuario, a.status');
+        $this->db->where('a.status', 1);
+        $this->db->select('i.*, a.fec_regins, u.correo_usuario, a.status, dt.nombre_datos_personales AS nombres, dt.apellido_p_datos_personales AS paterno, dt.apellido_m_datos_personales AS materno');
         $this->db->from($this->tabla_inmobiliaria . ' i');
         $this->db->join('auditoria a', 'i.id_inmobiliaria = a.cod_reg');
         $this->db->join('usuario u', 'a.usr_regins = u.id_usuario');
+        $this->db->join('usuario c', 'i.id_coordinador = c.id_usuario');
+        $this->db->join('datos_personales dt', 'u.id_usuario = dt.id_usuario');
         $resultados = $this->db->get();
         return $resultados->result();
     }   
         
-    public function registrar_banco($data){
-        $this->db->insert($this->nombre_tabla, $data);
+    public function registrar_inmobiliaria($data){
+        $this->db->insert($this->tabla_inmobiliaria, $data);
         $datos=array(
-            'tabla' => $this->nombre_tabla,
+            'tabla' => $this->tabla_inmobiliaria,
             'cod_reg' => $this->db->insert_id(),
             'usr_regins' => $this->session->userdata('id_usuario'),
             'fec_regins' => date('Y-m-d'),
@@ -97,12 +100,18 @@ Class Inmobiliarias_model extends CI_Model
         $this->db->query("UPDATE auditoria SET status = " . $status . ", fec_status = " . date('Y-m-d') . ", usr_regmod = " . $this->session->userdata('id_usuario') . ", fec_regmod = " . date('Y-m-d') . " WHERE cod_reg in (" . $bancos . ") AND tabla='" . $this->nombre_tabla . "'");
     }
 
-    public function coordinador()
+    public function coordinadores()
     {
         $this->db->where('r.nombre_rol', 'COORDINADOR');
         $this->db->where('a.tabla', 'usuario');
         $this->db->where('a.status', 1);
-        $this->db->select('')
+        $this->db->select('u.id_usuario, dt.nombre_datos_personales AS nombres, dt.apellido_p_datos_personales AS paterno, dt.apellido_m_datos_personales AS materno');
+        $this->db->from('rol r');
+        $this->db->join('usuario u', 'r.id_rol = u.id_rol');
+        $this->db->join('datos_personales dt', 'u.id_usuario = dt.id_usuario');
+        $this->db->join('auditoria a', 'u.id_usuario = a.cod_reg');
+        $resultados = $this->db->get();
+        return $resultados->result();
     }
 
 }

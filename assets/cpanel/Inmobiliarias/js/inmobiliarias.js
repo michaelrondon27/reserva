@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	listar();
-	registrar_banco();
+	registrar_inmobiliaria();
 	actualizar_banco();
 });
 
@@ -28,8 +28,22 @@ $(document).ready(function(){
 					}
 				},
 				{"data":"codigo"},
-				{"data":"nombre"},
-				{"data":"coordinador"},
+				{"data":"nombre",
+					render : function(data, type, row) {
+						var descripcion = data;
+						if (descripcion.length > 15)
+							descripcion = data.substr(0,14) + "..."
+						return descripcion;
+	          		}
+				},
+				{"data": null,
+					render : function(data, type, row) {
+						var nombres = data.nombres + " " + data.paterno + " " + data.materno;
+						if (nombres.length > 15)
+							descripcion = nombres.substr(0,14) + "..."
+						return descripcion;
+	          		}
+				},
 				{"data":"localidad"},
 				{"data":"fec_regins",
 					render : function(data, type, row) {
@@ -73,10 +87,10 @@ $(document).ready(function(){
 	/* 
 		Funcion que muestra el cuadro2 para mostrar el formulario de registrar.
 	*/
-	function nuevoBanco(cuadroOcultar, cuadroMostrar){
+	function nuevoInmobiliaria(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
 		limpiarFormularioRegistrar();
-		$("#cod_banco_registrar").focus();
+		$("#codigo_registrar").focus();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -85,8 +99,7 @@ $(document).ready(function(){
 		Funcion para limpiar el formulario de registrar.
 	*/
 	function limpiarFormularioRegistrar(){
-		document.getElementById('cod_banco_registrar').value="";
-		document.getElementById('nombre_banco_registrar').value="";
+		$("#form_inmobiliaria_registrar")[0].reset();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -94,8 +107,8 @@ $(document).ready(function(){
 	/*
 		Funcion que realiza el envio del formulario de registro
 	*/
-	function registrar_banco(){
-		enviarFormulario("#form_banco_registrar", 'Bancos/registrar_banco', '#cuadro2');
+	function registrar_inmobiliaria(){
+		enviarFormulario("#form_inmobiliaria_registrar", 'Inmobiliarias/registrar_inmobiliaria', '#cuadro2');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -106,8 +119,10 @@ $(document).ready(function(){
 	function ver(tbody, table){
 		$(tbody).on("click", "span.consultar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			document.getElementById('cod_banco_consultar').value=data.cod_banco;
-			document.getElementById('nombre_banco_consultar').value=data.nombre_banco;
+			document.getElementById('codigo_consultar').value=data.codigo;
+			document.getElementById('nombre_consultar').value=data.nombre;
+			$("#coordinador_consultar option[value='" + data.id_coordinador + "']").attr("selected","selected");
+			document.getElementById('localidad_consultar').value=data.localidad;
 			cuadros('#cuadro1', '#cuadro3');
 		});
 	}

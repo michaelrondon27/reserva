@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                Gestión de <?php echo $breadcrumbs->nombre_lista_vista; ?>
 		                            </h2>
 		                            <ul class="header-dropdown m-r--5">
-		                                <button class="btn btn-primary waves-effect registrar ocultar" onclick="nuevoBanco()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
+		                                <button class="btn btn-primary waves-effect registrar ocultar" onclick="nuevoInmobiliaria()"><i class='fa fa-plus-circle' style="color: white; font-size: 18px;"></i> | Nuevo</button>
 		                            </ul>
 		                        </div>
 		                        <div class="body">
@@ -72,12 +72,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_banco_registrar" id="form_banco_registrar" method="post">
+			                            <form name="form_inmobiliaria_registrar" id="form_inmobiliaria_registrar" method="post">
 			                            	<div class="col-sm-6">
 			                            		<label for="codigo_registrar">Código de la Inmobiliaria*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" name="codigo" id="codigo_registrar" maxlength="20" placeholder="P. EJ. INYUCATAN" required>
+				                                        <input type="text" class="form-control mayusculas" name="codigo" id="codigo_registrar" maxlength="50" placeholder="P. EJ. INYUCATAN" required>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -85,7 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                <label for="nombre_registrar">Nombre*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="nombre" id="nombre_registrar"required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre" id="nombre_registrar" required>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -93,8 +93,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                            		<label for="coordinador_registrar">Coordinador*</label>
 		                                    	<select name="coordinador" id="coordinador_registrar" required class="form-control">
 		                                    		<option value="" selected>Seleccione</option>
-		                                    		<?php foreach ($tipos_vendedores as $tipo_vendedor): ?>
-		                                    			<option value="<?= $tipo_vendedor->codlval; ?>"><?= $tipo_vendedor->descriplval; ?></option>
+		                                    		<?php foreach ($coordinadores as $coordinador): ?>
+		                                    			<option value="<?= $coordinador->id_usuario; ?>"><?= $coordinador->nombres . " " . $coordinador->paterno . " " . $coordinador->materno ?></option>
 		                                    		<?php endforeach ?>
 		                                    	</select>
 				                            </div>
@@ -129,18 +129,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        <div class="body">
 		                        	<div class="table-responsive">
 		                            	<div class="col-sm-6">
-		                            		<label>Código</label>
+		                            		<label for="codigo_consultar">Código de la Inmobiliaria*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control" id="cod_banco_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="codigo_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>
 			                            <div class="col-sm-6">
-			                                <label>Nombre o Razón Social</label>
+			                                <label for="nombre_consultar">Nombre*</label>
 			                                <div class="form-group">
 			                                    <div class="form-line">
-			                                        <input type="text" class="form-control mayusculas" id="nombre_banco_consultar" disabled>
+			                                        <input type="text" class="form-control mayusculas" id="nombre_consultar" disabled>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-6">
+		                            		<label for="coordinador_consultar">Coordinador*</label>
+	                                    	<select id="coordinador_consultar" disabled class="form-control">
+	                                    		<option value="" selected>Seleccione</option>
+	                                    		<?php foreach ($coordinadores as $coordinador): ?>
+	                                    			<option value="<?= $coordinador->id_usuario; ?>"><?= $coordinador->nombres . " " . $coordinador->paterno . " " . $coordinador->materno ?></option>
+	                                    		<?php endforeach ?>
+	                                    	</select>
+			                            </div>
+			                            <div class="col-sm-6">
+			                                <label for="localidad_consultar">Localidad*</label>
+			                                <div class="form-group">
+			                                    <div class="form-line">
+			                                        <input type="text" class="form-control mayusculas" id="localidad_consultar" disabled>
 			                                    </div>
 			                                </div>
 			                            </div>

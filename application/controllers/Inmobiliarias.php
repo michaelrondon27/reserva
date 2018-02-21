@@ -21,6 +21,7 @@ class Inmobiliarias extends CI_Controller
     $data['modulos'] = $this->Menu_model->modulos();
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('Inmobiliarias');
+    $datos['coordinadores'] = $this->Inmobiliarias_model->coordinadores();
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('catalogo/Inmobiliarias/index', $datos);
@@ -33,17 +34,19 @@ class Inmobiliarias extends CI_Controller
     echo json_encode($listado);
   }
 
-  public function registrar_banco()
+  public function registrar_inmobiliaria()
   {
-    $this->reglas_bancos('insert');
-    $this->mensajes_reglas_banco();
+    $this->reglas_inmobiliarias('insert');
+    $this->mensajes_reglas_inmobiliarias();
     if($this->form_validation->run() == true){
       $data=array(
-        'cod_banco' => $this->input->post('cod_banco'),
-        'nombre_banco' => trim(mb_strtoupper($this->input->post('nombre_banco'), 'UTF-8')),
+        'codigo' => trim(mb_strtoupper($this->input->post('codigo'), 'UTF-8')),
+        'nombre' => trim(mb_strtoupper($this->input->post('nombre'), 'UTF-8')),
+        'id_coordinador' => $this->input->post('coordinador'),
+        'localidad' => trim(mb_strtoupper($this->input->post('localidad'), 'UTF-8')),
       );
-      $this->Inmobiliarias_model->registrar_banco($data);
-      echo json_encode("<span>El Banco se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
+      $this->Inmobiliarias_model->registrar_inmobiliaria($data);
+      echo json_encode("<span>La Inmobiliaria se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
     }else{
       // enviar los errores
       echo validation_errors();
@@ -81,17 +84,19 @@ class Inmobiliarias extends CI_Controller
     }
   }
 
-  public function reglas_bancos($method)
+  public function reglas_inmobiliarias($method)
   {
     if($method=="insert"){
-      $this->form_validation->set_rules('cod_banco','Código Bancario','required|numeric|max_length[3]|is_unique[banco.cod_banco]');
-      $this->form_validation->set_rules('nombre_banco','Nombre o Razón Social','required|max_length[200]|is_unique[banco.nombre_banco]');
+      $this->form_validation->set_rules('codigo','Código','required|max_length[50]|is_unique[inmobiliarias.codigo]');
+      $this->form_validation->set_rules('nombre','Nombre','required|max_length[255]');
+      $this->form_validation->set_rules('coordinador','Coordinador','required');
+      $this->form_validation->set_rules('localidad','Localidad','required|max_length[255]');
     }else if($method=="update"){
       $this->form_validation->set_rules('nombre_banco','Nombre o Razón Social','required|max_length[200]');
     }
   }
 
-  public function mensajes_reglas_banco(){
+  public function mensajes_reglas_inmobiliarias(){
     $this->form_validation->set_message('required', 'El campo %s es obligatorio');
     $this->form_validation->set_message('min_length', 'El Campo %s debe tener un Mínimo de %d Caracteres');
     $this->form_validation->set_message('max_length', 'El Campo %s debe tener un Máximo de %d Caracteres');
