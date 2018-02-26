@@ -58,7 +58,7 @@ class Proyectos extends CI_Controller
         'director' => $this->input->post('director'),
         'plano' => $imagen,
       );
-      $this->Proyectos_model->registrar_proyecto($proyectoArray);
+      $this->Proyectos_model->registrar_proyecto($proyectoArray, $this->input->post('inmobiliarias'));
       echo json_encode("<span>El proyecto se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
     } else {
       // enviar los errores
@@ -93,7 +93,7 @@ class Proyectos extends CI_Controller
         // si es mayor a cero, se verifica si el id recibido del formulario es igual al id que se verifico
         if($proyecto_verificado[0]['id_proyecto'] == $this->input->post('id_proyecto')){
           //si son iguales, quiere decir que es el mismo registro
-          $this->Proyectos_model->actualizar_proyecto($proyectoArray, $this->input->post('id_proyecto'), $imagen);
+          $this->Proyectos_model->actualizar_proyecto($proyectoArray, $this->input->post('id_proyecto'), $imagen, $this->input->post('inmobiliarias'));
           echo json_encode("<span>El proyecto se ha editado exitosamente!</span>"); // envio de mensaje exitoso
         }else{
           //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro
@@ -101,7 +101,7 @@ class Proyectos extends CI_Controller
         }
       }else{
         // si conteo del array es igual a 0, se actualiza el registro
-        $this->Proyectos_model->actualizar_proyecto($proyectoArray, $this->input->post('id_proyecto'), $imagen);
+        $this->Proyectos_model->actualizar_proyecto($proyectoArray, $this->input->post('id_proyecto'), $imagen, $this->input->post('inmobiliarias'));
         echo json_encode("<span>El proyecto se ha editado exitosamente!</span>"); // envio de mensaje exitoso
       }
     }else{
@@ -153,6 +153,17 @@ class Proyectos extends CI_Controller
   {
     $this->Proyectos_model->status_multiple_proyecto($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
+  }
+
+  public function buscarInmobiliarias()
+  {
+    $inmobiliarias = $this->Proyectos_model->buscarInmobiliarias($this->input->post('proyecto'));
+    echo json_encode($inmobiliarias);
+  }
+
+  public function eliminar_inmobiliaria_proyecto()
+  {
+    $this->Proyectos_model->eliminar_inmobiliaria_proyecto($this->input->post('id'));
   }
 
 }//Fin class Bancos

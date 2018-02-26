@@ -6,6 +6,8 @@ Class Proyectos_model extends CI_Model
 {
 
     private $tabla_proyecto = "proyectos";
+    private $tabla_inmobiliarias = "inmobiliarias";
+    private $tabla_inmobliarias_proyectos = "inmobiliarias_proyectos";
 
     public function listado_proyectos()
     {
@@ -20,18 +22,29 @@ Class Proyectos_model extends CI_Model
         return $resultados->result();
     }   
         
-    public function registrar_proyecto($data){
+    public function registrar_proyecto($data, $inmobiliarias){
         $this->db->insert($this->tabla_proyecto, $data);
+        $proyecto = $this->db->insert_id();
         $datos=array(
             'tabla' => $this->tabla_proyecto,
-            'cod_reg' => $this->db->insert_id(),
+            'cod_reg' => $proyecto,
             'usr_regins' => $this->session->userdata('id_usuario'),
             'fec_regins' => date('Y-m-d'),
         );
         $this->db->insert('auditoria', $datos);
+        if (sizeof($inmobiliarias) > 0){
+            foreach($inmobiliarias as $inmobiliaria)
+            {
+                $array = array(
+                    'id_inmobiliaria' => $inmobiliaria,
+                    'id_proyecto' => $proyecto,
+                );
+                $this->db->insert($this->tabla_inmobliarias_proyectos, $array);
+            }
+        }
     }
 
-    public function actualizar_proyecto($proyectoArray, $id, $imagen)
+    public function actualizar_proyecto($proyectoArray, $id, $imagen, $inmobiliarias)
     {
         $this->db->where('id_proyecto', $id);
         $this->db->update($this->tabla_proyecto, $proyectoArray);
@@ -48,6 +61,19 @@ Class Proyectos_model extends CI_Model
         );
         $this->db->where('cod_reg', $id)->where('tabla', $this->tabla_proyecto);
         $this->db->update('auditoria', $datos);
+        if (sizeof($inmobiliarias) > 0){
+            foreach($inmobiliarias as $inmobiliaria)
+            {
+                $query = $this->db->query("SELECT * FROM ".$this->tabla_inmobliarias_proyectos." WHERE id_proyecto=".$id." AND id_inmobiliaria=".$inmobiliaria);
+                if (sizeof($query->result()) == 0) {
+                    $array = array(
+                        'id_inmobiliaria' => $inmobiliaria,
+                        'id_proyecto' => $id,
+                    );
+                    $this->db->insert($this->tabla_inmobliarias_proyectos, $array);
+                }
+            }
+        }
     }
 
     public function verificar_proyecto($data)
@@ -125,11 +151,35 @@ Class Proyectos_model extends CI_Model
         $this->db->where('a.tabla', 'inmobiliarias');
         $this->db->where('a.status', 1);
         $this->db->select('i.*');
-        $this->db->from('inmobiliarias i');
+        $this->db->from($this->tabla_inmobiliarias . ' i');
         $this->db->join('auditoria a', 'i.id_inmobiliaria = a.cod_reg');
         $resultados = $this->db->get();
         return $resultados->result();
     }
 
+    public function buscarInmobiliarias($proyecto)
+    {
+        $this->db->where('ip.id_proyecto', $proyecto);
+        $this->db->select('i.codigo, i.nombre, dt.nombre_datos_personales AS nombres, dt.apellido_p_datos_personales AS paterno, dt.apellido_m_datos_personales AS materno, ip.*');
+        $this->db->from($this->tabla_inmobliarias_proyectos . ' ip');
+        $this->db->join($this->tabla_inmobiliarias . ' i', 'ip.id_inmobiliaria = i.id_inmobiliaria');
+        $this->db->join('usuario u', 'i.id_coordinador = u.id_usuario');
+        $this->db->join('datos_personales dt', 'u.id_usuario = dt.id_usuario');
+        $resultados = $this->db->get();
+        return $resultados->result();
+    }
+
+    public function eliminar_inmobiliaria_proyecto($id)
+    {
+        try { 
+            if(!$this->db->delete($this->tabla_inmobliarias_proyectos, array('id_inmobiliaria_proyecto' => $id))){
+                throw new Exception("<span>Ha ocurrido un error, intentelo de nuevo!</span>");
+            }else{
+                echo json_encode("<span>La inmobiliaria se ha eliminado exitosamente!</span>"); // envio de mensaje exitoso
+            }
+        } catch(Exception $e){ 
+            echo $e->getMessage(); // envio de mensaje de error
+        }
+    }
 
 }

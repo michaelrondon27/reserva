@@ -114,8 +114,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <div class="header">
-					                            <h2>Inmobiliarias</h2>
+				                            <div style="border-bottom: 1px solid #ccc;">
+					                            <h3>Inmobiliarias</h3>
 					                        </div>
 					                        <div class="col-sm-12">
 				                            	<div class="col-sm-4" style="padding-top: 10px;">
@@ -205,6 +205,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                                    </div>
 			                                </div>
 			                            </div>
+			                            <div class="col-sm-12">
+			                            	<table class="table table-bordered table-striped table-hover" id="tableInmobiliariaConsultar">
+			                            		<thead>
+			                            			<tr>
+			                            				<th>Inmobiliaria</th>
+			                            				<th>&nbsp;</th>
+			                            			</tr>
+			                            		</thead>
+			                            		<tbody></tbody>
+			                            	</table>
+			                            </div>
                             			<br>
                             			<div class="col-sm-2 col-sm-offset-5">
 	                                        <button type="button" onclick="regresar('#cuadro3')" class="btn btn-primary waves-effect">Regresar</button>
@@ -268,6 +279,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                                </div>
 				                            </div>
 				                            <input type="hidden" name="id_proyecto" id="id_proyecto_editar">
+				                            <div style="border-bottom: 1px solid #ccc;">
+					                            <h3>Inmobiliarias</h3>
+					                        </div>
+					                        <div class="col-sm-12">
+				                            	<div class="col-sm-4" style="padding-top: 10px;">
+			                                        <select id="inmobiliaria_editar" class="form-control form-group">
+			                                        	<option value="">Seleccione</option>
+			                                        	<?php foreach($inmobiliarias as $inmobiliaria): ?>
+			                                        		<option value="<?php echo $inmobiliaria->id_inmobiliaria ?>"><?php echo $inmobiliaria->codigo . " - " . $inmobiliaria->nombre?></option>
+			                                        	<?php endforeach ?>
+			                                        </select>
+					                            </div>
+					                            <div class="col-sm-2" style="padding-top: 10px;">
+					                            	<button type="button" class="btn btn-primary waves-effect" onclick="agregarInmobiliaria('#inmobiliaria_editar', '#tableInmobiliariaEditar')">Agregar</button>
+					                            </div>
+					                            <div class="col-sm-12">
+					                            	<table class="table table-bordered table-striped table-hover" id="tableInmobiliariaEditar">
+					                            		<thead>
+					                            			<tr>
+					                            				<th>Inmobiliaria</th>
+					                            				<th>&nbsp;</th>
+					                            			</tr>
+					                            		</thead>
+					                            		<tbody></tbody>
+					                            	</table>
+					                            </div>
+				                            </div>
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
 		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary waves-effect">Regresar</button>

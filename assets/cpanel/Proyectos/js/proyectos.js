@@ -97,6 +97,7 @@ $(document).ready(function(){
 	function nuevoProyecto(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
 		$("#form_proyecto_registrar")[0].reset();
+		$("#tableInmobiliariaRegistrar tbody tr").remove(); 
 		$("#codigo_registrar").focus();
 	}
 /* ------------------------------------------------------------------------------- */
@@ -106,7 +107,56 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function registrar_proyecto(){
-		enviarFormulario("#form_proyecto_registrar", 'Proyectos/registrar_proyecto', '#cuadro2');
+		$("#form_proyecto_registrar").submit(function(e){
+            e.preventDefault(); //previene el comportamiento por defecto del formulario al darle click al input submit
+            var codigo = $("#codigo_registrar").val();
+            var nombre = $("#nombre_registrar").val();
+            var descripcion = $("#descripcion_registrar").val();
+            var director = $("#director_registrar").val();
+            var plano = $("#plano_registrar")[0].files[0];
+            var objetoInmobiliaria = [];
+            $("#tableInmobiliariaRegistrar tbody tr").each(function() {
+            	var inmobiliaria = [];
+            	var id = $(this).find(".id_inmobiliaria").val();
+            	inmobiliaria.push(id);
+				objetoInmobiliaria.push(inmobiliaria);
+			});
+			var data = new FormData();
+			data.append('codigo', codigo);
+			data.append('nombre', nombre);
+			data.append('descripcion', descripcion);
+			data.append('director', director);
+			data.append('plano', plano);
+			for (var i = 0; i < objetoInmobiliaria.length; i++) {
+				data.append('inmobiliarias[]', objetoInmobiliaria[i]);
+			}
+            $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
+            $.ajax({
+                url: document.getElementById('ruta').value + 'Proyectos/registrar_proyecto',
+                type: 'POST',
+                dataType:'JSON',
+                data:data,
+                cache: false,
+				processData: false,
+				contentType: false,
+                beforeSend: function(){
+                    mensajes('info', '<span>Guardando datos, espere por favor... <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>');
+                },
+                error: function (repuesta) {
+                    $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
+                    var errores=repuesta.responseText;
+                    if(errores!="")
+                        mensajes('danger', errores);
+                    else
+                        mensajes('danger', "<span>Ha ocurrido un error, por favor intentelo de nuevo.</span>");        
+                },
+                success: function(respuesta){
+                    $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
+                    mensajes('success', respuesta);
+                    listar('#cuadro2');
+                }
+            });
+        });
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -115,6 +165,7 @@ $(document).ready(function(){
 		Funcion que muestra el cuadro3 para la consulta del banco.
 	*/
 	function ver(tbody, table){
+		$("#tableInmobiliariaConsultar tbody tr").remove(); 
 		$(tbody).on("click", "span.consultar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
 			document.getElementById('codigo_consultar').value=data.codigo;
@@ -129,6 +180,7 @@ $(document).ready(function(){
 				$("#plano_consultar").addClass('ocultar');
 				$("#no_plano").removeClass('ocultar');
 			}
+			buscarInmobiliarias('#tableInmobiliariaConsultar', data.id_proyecto);
 			cuadros('#cuadro1', '#cuadro3');
 		});
 	}
@@ -140,6 +192,7 @@ $(document).ready(function(){
 	*/
 	function editar(tbody, table){
 		$("#form_proyecto_actualizar")[0].reset();
+		$("#tableInmobiliariaEditar tbody tr").remove(); 
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
 			document.getElementById('codigo_editar').value=data.codigo;
@@ -147,6 +200,7 @@ $(document).ready(function(){
 			document.getElementById('descripcion_editar').value=data.descripcion;
 			document.getElementById('id_proyecto_editar').value=data.id_proyecto;
 			$("#director_editar option[value='" + data.director + "']").attr("selected","selected");
+			buscarInmobiliarias('#tableInmobiliariaEditar', data.id_proyecto);
 			cuadros('#cuadro1', '#cuadro4');
 			$("#codigo_editar").focus();
 		});
@@ -158,7 +212,60 @@ $(document).ready(function(){
 		Funcion que realiza el envio del formulario de registro
 	*/
 	function actualizar_proyecto(){
-		enviarFormulario("#form_proyecto_actualizar", 'Proyectos/actualizar_proyecto', '#cuadro4');
+		$("#form_proyecto_actualizar").submit(function(e){
+            e.preventDefault(); //previene el comportamiento por defecto del formulario al darle click al input submit
+            var id_proyecto = $("#id_proyecto_editar").val();
+            var codigo = $("#codigo_editar").val();
+            var nombre = $("#nombre_editar").val();
+            var descripcion = $("#descripcion_editar").val();
+            var director = $("#director_editar").val();
+            var plano = $("#plano_editar")[0].files[0];
+            var objetoInmobiliaria = [];
+            $("#tableInmobiliariaEditar tbody tr").each(function() {
+            	var inmobiliaria = [];
+            	var id = $(this).find(".id_inmobiliaria").val();
+            	if ( id != undefined){
+            		inmobiliaria.push(id);
+					objetoInmobiliaria.push(inmobiliaria);
+            	}
+			});
+			var data = new FormData();
+			data.append('id_proyecto', id_proyecto);
+			data.append('codigo', codigo);
+			data.append('nombre', nombre);
+			data.append('descripcion', descripcion);
+			data.append('director', director);
+			data.append('plano', plano);
+			for (var i = 0; i < objetoInmobiliaria.length; i++) {
+				data.append('inmobiliarias[]', objetoInmobiliaria[i]);
+			}
+            $('input[type="submit"]').attr('disabled','disabled'); //desactiva el input submit
+            $.ajax({
+                url: document.getElementById('ruta').value + 'Proyectos/actualizar_proyecto',
+                type: 'POST',
+                dataType:'JSON',
+                data:data,
+                cache: false,
+				processData: false,
+				contentType: false,
+                beforeSend: function(){
+                    mensajes('info', '<span>Guardando datos, espere por favor... <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>');
+                },
+                error: function (repuesta) {
+                    $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
+                    var errores=repuesta.responseText;
+                    if(errores!="")
+                        mensajes('danger', errores);
+                    else
+                        mensajes('danger', "<span>Ha ocurrido un error, por favor intentelo de nuevo.</span>");        
+                },
+                success: function(respuesta){
+                    $('input[type="submit"]').removeAttr('disabled'); //activa el input submit
+                    mensajes('success', respuesta);
+                    listar('#cuadro4');
+                }
+            });
+        });
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -208,16 +315,94 @@ $(document).ready(function(){
 		var validadoInmobiliaria = false;
 		var html = '';
 		$(tabla + " tbody tr").each(function() {
-		  	if (value == $(this).find(".id_inmobiliaria").val())
+		  	if (idInmobiliaria == $(this).find(".id_inmobiliaria").val())
 		  		validadoInmobiliaria = true;
 		});
 		if (!validadoInmobiliaria) {
-			html += "<tr id='i" + idInmobiliaria + "'><td>" + nombreInmobiliaria + " <input type='hidden' class='id_inmobiliaria' name='id_inmobiliaria' value='" + vidInmobiliariaalue + "'></td>";
+			html += "<tr id='i" + idInmobiliaria + "'><td>" + nombreInmobiliaria + " <input type='hidden' class='id_inmobiliaria' name='id_inmobiliaria' value='" + idInmobiliaria + "'></td>";
 			html += "<td><button type='button' class='btn btn-danger waves-effect' onclick='eliminarInmobiliaria(\"" + "#i" + idInmobiliaria + "\")'>Eliminar</button></td></tr>";
 			$(tabla + " tbody").append(html);
 		} else {
 			warning('¡La opción seleccionada ya se encuentra agregada!');
 		}
 		$(select + " option[value='']").attr("selected","selected");
+	}
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion que elimina la inmobiliaria de la tabla
+	*/
+	function eliminarInmobiliaria(tr){
+		$(tr).remove(); 
+	}
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion que busca las inmobiliarias asociadas al proyecto.
+	*/
+	function buscarInmobiliarias(tabla, proyecto){
+		$.ajax({
+	        url:document.getElementById('ruta').value + 'Proyectos/buscarInmobiliarias',
+	        type:'POST',
+	        dataType:'JSON',
+	        data: {'proyecto' : proyecto},
+	        error: function() {
+                buscarInmobiliarias(tabla, proyecto);
+	        },
+	        success: function(respuesta){
+	            respuesta.forEach(function(inmobiliaria, index){
+	            	if ( tabla == "#tableInmobiliariaConsultar") {
+						table = '<tr><td>' + inmobiliaria.codigo + ' - ' + inmobiliaria.nombre + ' - Coordinador: ' + inmobiliaria.nombres + ' ' + inmobiliaria.paterno + ' ' + inmobiliaria.materno + '</td><tr>';
+	            	} else if( tabla == "#tableInmobiliariaEditar") {
+						table = "<tr id='i" + inmobiliaria.id_inmobiliaria + "'><td>" + inmobiliaria.codigo + " - " + inmobiliaria.nombre + "<input type='hidden' class='id_inmobiliaria' name='id_inmobiliaria' value='" + inmobiliaria.id_inmobiliaria + "'></td><td><button type='button' class='btn btn-danger waves-effect'onclick='eliminarInmobiliariaConfirmar(" + inmobiliaria.id_inmobiliaria_proyecto + ", " + inmobiliaria.id_inmobiliaria + ")'>Eliminar</button></td><tr>";
+	            	}
+					$(tabla + " tbody").append(table);
+	            });
+	        }
+	    });
+	}
+/* ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------- */
+	/*
+		Funcion que hace una busqueda de las operaciones que tiene el rol por cada
+		lista vista y mostrar los resultados para su edicion
+	*/
+	function eliminarInmobiliariaConfirmar(id, inmobiliaria){
+		swal({
+            title: '¿Esta seguro de eliminar este registro?',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, Eliminar!",
+            cancelButtonText: "No, Cancelar!",
+            closeOnConfirm: true,
+            closeOnCancel: false
+        },
+        function(isConfirm){
+            if (isConfirm) {
+                swal.close();
+                $.ajax({
+                    url: document.getElementById('ruta').value + "Proyectos/eliminar_inmobiliaria_proyecto",
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data:{
+                        'id' : id,
+                    },
+                    error: function (repuesta) {
+                        var errores=repuesta.responseText;
+                        mensajes('danger', errores);
+                    },
+                    success: function(respuesta){
+                        mensajes('success', respuesta);
+                        $("#tableInmobiliariaEditar").find("tbody tr#i" + inmobiliaria).remove();
+                    }
+                });
+            } else {
+                swal("Cancelado", "No se ha eliminado el registro", "error");
+            }
+        });
 	}
 /* ------------------------------------------------------------------------------- */
