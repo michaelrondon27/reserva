@@ -98,18 +98,9 @@ $(document).ready(function(){
 	*/
 	function nuevoRol(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
-		limpiarFormularioRegistrar();
-		$("#nombre_rol_registrar").focus();
-	}
-/* ------------------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------------------- */
-	/* 
-		Funcion para limpiar el formulario de registrar.
-	*/
-	function limpiarFormularioRegistrar(){
 		$("#form_rol_registrar")[0].reset();
 		$("#tableRegistrar tbody tr").remove(); 
+		$("#nombre_rol_registrar").focus();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -188,6 +179,7 @@ $(document).ready(function(){
 		Funcion que muestra el cuadro4 para editar el banco.
 	*/
 	function editar(tbody, table){
+		$("#form_rol_actualizar")[0].reset();
 		$("#tableActualizar tbody tr").remove(); 
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
@@ -421,7 +413,7 @@ $(document).ready(function(){
 
 /* ------------------------------------------------------------------------------- */
 	/*
-		Funcion que agrega las lista ista a la tabla
+		Funcion que elimina la lista ista de la tabla
 	*/
 	function eliminarListaVista(tr){
 		$(tr).remove(); 

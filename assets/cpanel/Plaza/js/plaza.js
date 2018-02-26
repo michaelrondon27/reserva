@@ -72,18 +72,8 @@ $(document).ready(function(){
 	*/
 	function nuevoPlaza(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
-		limpiarFormularioRegistrar();
+		$("#form_plaza_registrar")[0].reset();
 		$("#cod_plaza_registrar").focus();
-	}
-/* ------------------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------------------- */
-	/* 
-		Funcion para limpiar el formulario de registrar.
-	*/
-	function limpiarFormularioRegistrar(){
-		document.getElementById('cod_plaza_registrar').value="";
-		document.getElementById('nombre_plaza_registrar').value="";
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -115,6 +105,7 @@ $(document).ready(function(){
 		Funcion que muestra el cuadro4 para editar la plaza.
 	*/
 	function editar(tbody, table){
+		$("#form_plaza_actualizar")[0].reset();
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
 			document.getElementById('id_plaza_editar').value=data.id_plaza;

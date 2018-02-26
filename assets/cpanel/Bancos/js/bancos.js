@@ -73,18 +73,8 @@ $(document).ready(function(){
 	*/
 	function nuevoBanco(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
-		limpiarFormularioRegistrar();
+		$("#form_banco_registrar")[0].reset();
 		$("#cod_banco_registrar").focus();
-	}
-/* ------------------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------------------- */
-	/* 
-		Funcion para limpiar el formulario de registrar.
-	*/
-	function limpiarFormularioRegistrar(){
-		document.getElementById('cod_banco_registrar').value="";
-		document.getElementById('nombre_banco_registrar').value="";
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -116,6 +106,7 @@ $(document).ready(function(){
 		Funcion que muestra el cuadro4 para editar el banco.
 	*/
 	function editar(tbody, table){
+		$("#form_banco_actualizar")[0].reset();
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
 			document.getElementById('id_banco_editar').value=data.id_banco;

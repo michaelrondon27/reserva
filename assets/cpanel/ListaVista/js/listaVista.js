@@ -83,17 +83,8 @@ $(document).ready(function(){
 	*/
 	function nuevoListaVista(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
-		limpiarFormularioRegistrar();
-		$("#nombre_modulo_vista_registrar").focus();
-	}
-/* ------------------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------------------- */
-	/* 
-		Funcion para limpiar el formulario de registrar.
-	*/
-	function limpiarFormularioRegistrar(){
 		$("#form_lista_vista_registrar")[0].reset();
+		$("#nombre_modulo_vista_registrar").focus();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -129,6 +120,7 @@ $(document).ready(function(){
 		Funcion que muestra el cuadro4 para editar el banco.
 	*/
 	function editar(tbody, table){
+		$("#form_lista_vista_actualizar")[0].reset();
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
 			contador_listaVista(data.id_modulo_vista, 'actualizar', data.posicion_lista_vista);

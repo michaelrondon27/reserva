@@ -82,17 +82,8 @@ $(document).ready(function(){
 	*/
 	function nuevoEsquema(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
-		limpiarFormularioRegistrar("#form_esquema_registrar");
+		$("#form_esquema_registrar")[0].reset();
 		$("#tipo_registrar").focus();
-	}
-/* ------------------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------------------- */
-	/* 
-		Funcion para limpiar el formulario de registrar.
-	*/
-	function limpiarFormularioRegistrar(form){
-		$(form)[0].reset();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -125,6 +116,7 @@ $(document).ready(function(){
 		Funcion que muestra el cuadro4 para editar el banco.
 	*/
 	function editar(tbody, table){
+		$("#form_esquema_actualizar")[0].reset();
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
 			$("#tipo_actualizar option[value='" + data.tipo + "']").attr("selected","selected");

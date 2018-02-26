@@ -96,7 +96,7 @@ class Sepomex extends CI_Controller {
                             if(count($verificar)==0){
                                 $this->Sepomex_model->registrar_codigo_postal($data);
                             }else{
-                                //$this->Sepomex_model->actualizar_codigo_postal($array[0], $array[12], $data);
+                                $this->Sepomex_model->actualizar_codigo_postal($array[0], $array[12], $data);
                             }
                         }
                     }

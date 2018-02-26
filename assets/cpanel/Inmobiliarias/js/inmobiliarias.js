@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	listar();
 	registrar_inmobiliaria();
-	actualizar_banco();
+	actualizar_inmobiliaria();
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -44,7 +44,14 @@ $(document).ready(function(){
 						return descripcion;
 	          		}
 				},
-				{"data":"localidad"},
+				{"data":"descriplval",
+					render : function(data, type, row) {
+						var descripcion = data;
+						if (descripcion.length > 15)
+							descripcion = data.substr(0,14) + "..."
+						return descripcion;
+	          		}
+				},
 				{"data":"fec_regins",
 					render : function(data, type, row) {
 						return cambiarFormatoFecha(data);
@@ -89,17 +96,8 @@ $(document).ready(function(){
 	*/
 	function nuevoInmobiliaria(cuadroOcultar, cuadroMostrar){
 		cuadros("#cuadro1", "#cuadro2");
-		limpiarFormularioRegistrar();
-		$("#codigo_registrar").focus();
-	}
-/* ------------------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------------------- */
-	/* 
-		Funcion para limpiar el formulario de registrar.
-	*/
-	function limpiarFormularioRegistrar(){
 		$("#form_inmobiliaria_registrar")[0].reset();
+		$("#codigo_registrar").focus();
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -133,13 +131,16 @@ $(document).ready(function(){
 		Funcion que muestra el cuadro4 para editar el banco.
 	*/
 	function editar(tbody, table){
+		$("#form_inmobiliaria_actualizar")[0].reset();
 		$(tbody).on("click", "span.editar", function(){
 			var data = table.row( $(this).parents("tr") ).data();
-			document.getElementById('id_banco_editar').value=data.id_banco;
-			document.getElementById('cod_banco_editar').value=data.cod_banco;
-			document.getElementById('nombre_banco_editar').value=data.nombre_banco;
+			document.getElementById('id_inmobiliaria_editar').value = data.id_inmobiliaria;
+			document.getElementById('codigo_editar').value=data.codigo;
+			document.getElementById('nombre_editar').value=data.nombre;
+			$("#coordinador_editar option[value='" + data.id_coordinador + "']").attr("selected","selected");
+			document.getElementById('localidad_editar').value=data.localidad;
 			cuadros('#cuadro1', '#cuadro4');
-			$("#nombre_banco_editar").focus();
+			$("#codigo_editar").focus();
 		});
 	}
 /* ------------------------------------------------------------------------------- */
@@ -148,8 +149,8 @@ $(document).ready(function(){
 	/*
 		Funcion que realiza el envio del formulario de registro
 	*/
-	function actualizar_banco(){
-		enviarFormulario("#form_banco_actualizar", 'Bancos/actualizar_banco', '#cuadro4');
+	function actualizar_inmobiliaria(){
+		enviarFormulario("#form_inmobiliaria_actualizar", 'Inmobiliarias/actualizar_inmobiliaria', '#cuadro4');
 	}
 /* ------------------------------------------------------------------------------- */
 
@@ -160,7 +161,7 @@ $(document).ready(function(){
 	function eliminar(tbody, table){
 		$(tbody).on("click", "span.eliminar", function(){
             var data=table.row($(this).parents("tr")).data();
-            eliminarConfirmacion('Bancos/eliminar_banco', data.id_banco, "¿Esta seguro de eliminar el registro?");
+            eliminarConfirmacion('Inmobiliarias/eliminar_inmobiliaria', data.id_inmobiliaria, "¿Esta seguro de eliminar el registro?");
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -172,7 +173,7 @@ $(document).ready(function(){
 	function desactivar(tbody, table){
 		$(tbody).on("click", "span.desactivar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Bancos/status_banco', data.id_banco, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
+            statusConfirmacion('Inmobiliarias/status_inmobiliaria', data.id_inmobiliaria, 2, "¿Esta seguro de desactivar el registro?", 'desactivar');
         });
 	}
 /* ------------------------------------------------------------------------------- */
@@ -184,7 +185,7 @@ $(document).ready(function(){
 	function activar(tbody, table){
 		$(tbody).on("click", "span.activar", function(){
             var data=table.row($(this).parents("tr")).data();
-            statusConfirmacion('Bancos/status_banco', data.id_banco, 1, "¿Esta seguro de activar el registro?", 'activar');
+            statusConfirmacion('Inmobiliarias/status_inmobiliaria', data.id_inmobiliaria, 1, "¿Esta seguro de activar el registro?", 'activar');
         });
 	}
 /* ------------------------------------------------------------------------------- */

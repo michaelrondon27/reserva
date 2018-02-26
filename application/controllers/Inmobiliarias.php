@@ -22,6 +22,7 @@ class Inmobiliarias extends CI_Controller
     $data['vistas'] = $this->Menu_model->vistas($this->session->userdata('id_usuario'));
     $datos['breadcrumbs'] = $this->Menu_model->breadcrumbs('Inmobiliarias');
     $datos['coordinadores'] = $this->Inmobiliarias_model->coordinadores();
+    $datos['localidades'] = $this->Inmobiliarias_model->localidades();
     $this->load->view('cpanel/header');
     $this->load->view('cpanel/menu', $data);
     $this->load->view('catalogo/Inmobiliarias/index', $datos);
@@ -43,7 +44,7 @@ class Inmobiliarias extends CI_Controller
         'codigo' => trim(mb_strtoupper($this->input->post('codigo'), 'UTF-8')),
         'nombre' => trim(mb_strtoupper($this->input->post('nombre'), 'UTF-8')),
         'id_coordinador' => $this->input->post('coordinador'),
-        'localidad' => trim(mb_strtoupper($this->input->post('localidad'), 'UTF-8')),
+        'localidad' => $this->input->post('localidad'),
       );
       $this->Inmobiliarias_model->registrar_inmobiliaria($data);
       echo json_encode("<span>La Inmobiliaria se ha registrado exitosamente!</span>"); // envio de mensaje exitoso
@@ -53,29 +54,32 @@ class Inmobiliarias extends CI_Controller
     }
   }
 
-  public function actualizar_banco()
+  public function actualizar_inmobiliaria()
   {
-    $this->reglas_bancos('update');
-    $this->mensajes_reglas_banco();
+    $this->reglas_inmobiliarias('update');
+    $this->mensajes_reglas_inmobiliarias();
     if($this->form_validation->run() == true){
       $data=array(
-        'nombre_banco' => trim(mb_strtoupper($this->input->post('nombre_banco'), 'UTF-8')),
+        'codigo' => trim(mb_strtoupper($this->input->post('codigo'), 'UTF-8')),
+        'nombre' => trim(mb_strtoupper($this->input->post('nombre'), 'UTF-8')),
+        'id_coordinador' => $this->input->post('coordinador'),
+        'localidad' => $this->input->post('localidad'),
       );
-      $banco_verificado=$this->Inmobiliarias_model->verificar_banco($data); //busca si el nombre del banco esta registrado en la base de datos
-      if(count($banco_verificado)>0){
+      $inmobiliaria_verificado=$this->Inmobiliarias_model->verificar_inmobiliaria($data); //busca si el nombre del banco esta registrado en la base de datos
+      if(count($inmobiliaria_verificado)>0){
         // si es mayor a cero, se verifica si el id recibido del formulario es igual al id que se verifico
-        if($banco_verificado[0]['id_banco']==$this->input->post('id_banco')){
+        if($inmobiliaria_verificado[0]['id_inmobiliaria']==$this->input->post('id_inmobiliaria')){
           //si son iguales, quiere decir que es el mismo registro
-          $this->Inmobiliarias_model->actualizar_banco($this->input->post('id_banco'), $data);
-          echo json_encode("<span>El Banco se ha editado exitosamente!</span>"); // envio de mensaje exitoso
+          $this->Inmobiliarias_model->actualizar_inmobiliaria($this->input->post('id_inmobiliaria'), $data);
+          echo json_encode("<span>La inmobiliaria se ha editado exitosamente!</span>"); // envio de mensaje exitoso
         }else{
           //si son diferentes, quiere decir que ya el nombre del banco se encuentra en uso por otro registro
-          echo "<span>El nombre del banco ingresado ya se encuentra en uso!</span>";
+          echo "<span>El código de la inmobiliaria ingresado ya se encuentra en uso!</span>";
         }
       }else{
         // si conteo del array es igual a 0, se actualiza el registro
-        $this->Inmobiliarias_model->actualizar_banco($this->input->post('id_banco'), $data);
-        echo json_encode("<span>El Banco se ha editado exitosamente!</span>"); // envio de mensaje exitoso
+        $this->Inmobiliarias_model->actualizar_inmobiliaria($this->input->post('id_inmobiliaria'), $data);
+        echo json_encode("<span>a inmobiliaria se ha editado exitosamente!</span>"); // envio de mensaje exitoso
       }
       
     }else{
@@ -92,7 +96,10 @@ class Inmobiliarias extends CI_Controller
       $this->form_validation->set_rules('coordinador','Coordinador','required');
       $this->form_validation->set_rules('localidad','Localidad','required|max_length[255]');
     }else if($method=="update"){
-      $this->form_validation->set_rules('nombre_banco','Nombre o Razón Social','required|max_length[200]');
+      $this->form_validation->set_rules('codigo','Código','required|max_length[50]');
+      $this->form_validation->set_rules('nombre','Nombre','required|max_length[255]');
+      $this->form_validation->set_rules('coordinador','Coordinador','required');
+      $this->form_validation->set_rules('localidad','Localidad','required|max_length[255]');
     }
   }
 
@@ -104,25 +111,25 @@ class Inmobiliarias extends CI_Controller
     $this->form_validation->set_message('is_unique', 'El valor ingresado en el campo %s ya se encuentra en uso');
   }
 
-  public function eliminar_banco()
+  public function eliminar_inmobiliaria()
   {
-    $this->Inmobiliarias_model->eliminar_banco($this->input->post('id'));
+    $this->Inmobiliarias_model->eliminar_inmobiliaria($this->input->post('id'));
   }
 
-  public function status_banco()
+  public function status_inmobiliaria()
   {
-    $this->Inmobiliarias_model->status_banco($this->input->post('id'), $this->input->post('status'));
+    $this->Inmobiliarias_model->status_inmobiliaria($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 
-  public function eliminar_multiple_banco()
+  public function eliminar_multiple_inmobiliaria()
   {
-    $this->Inmobiliarias_model->eliminar_multiple_banco($this->input->post('id'));
+    $this->Inmobiliarias_model->eliminar_multiple_inmobiliaria($this->input->post('id'));
   }
 
-  public function status_multiple_banco()
+  public function status_multiple_inmobiliaria()
   {
-    $this->Inmobiliarias_model->status_multiple_banco($this->input->post('id'), $this->input->post('status'));
+    $this->Inmobiliarias_model->status_multiple_inmobiliaria($this->input->post('id'), $this->input->post('status'));
     echo json_encode("<span>Cambios realizados exitosamente!</span>"); // envio de mensaje exitoso
   }
 

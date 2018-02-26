@@ -48,13 +48,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                                    <tbody></tbody>
 		                                </table>
 		                                <div class="col-md-2 eliminar ocultar">
-		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('Bancos/eliminar_multiple_banco')">Eliminar seleccionados</button>
+		                                	<button class="btn btn-danger waves-effect" onclick="eliminarMultiple('Inmobiliarias/eliminar_multiple_inmobiliaria')">Eliminar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 actualizar ocultar">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Bancos/status_multiple_banco', 1, 'activar')">Activar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Inmobiliarias/status_multiple_inmobiliaria', 1, 'activar')">Activar seleccionados</button>
 		                                </div>
 		                                <div class="col-md-2 actualizar ocultar">
-		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Bancos/status_multiple_banco', 2, 'desactivar')">Desactivar seleccionados</button>
+		                                	<button class="btn btn-warning waves-effect" onclick="statusMultiple('Inmobiliarias/status_multiple_inmobiliaria', 2, 'desactivar')">Desactivar seleccionados</button>
 		                                </div>
 		                            </div>
 		                        </div>
@@ -100,11 +100,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				                            </div>
 				                            <div class="col-sm-6">
 				                                <label for="localidad_registrar">Localidad*</label>
-				                                <div class="form-group">
-				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="localidad" id="localidad_registrar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
-				                                    </div>
-				                                </div>
+				                                <select name="localidad" id="localidad_registrar" required class="form-control">
+		                                    		<option value="" selected>Seleccione</option>
+		                                    		<?php foreach ($localidades as $localidad): ?>
+		                                    			<option value="<?= $localidad->codlval; ?>"><?= $localidad->descriplval ?></option>
+		                                    		<?php endforeach ?>
+		                                    	</select>
 				                            </div>
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
@@ -155,11 +156,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			                            </div>
 			                            <div class="col-sm-6">
 			                                <label for="localidad_consultar">Localidad*</label>
-			                                <div class="form-group">
-			                                    <div class="form-line">
-			                                        <input type="text" class="form-control mayusculas" id="localidad_consultar" disabled>
-			                                    </div>
-			                                </div>
+			                                <select id="localidad_consultar" disabled class="form-control">
+	                                    		<option value="" selected>Seleccione</option>
+	                                    		<?php foreach ($localidades as $localidad): ?>
+	                                    			<option value="<?= $localidad->codlval; ?>"><?= $localidad->descriplval ?></option>
+	                                    		<?php endforeach ?>
+	                                    	</select>
 			                            </div>
                             			<br>
                             			<div class="col-sm-2 col-sm-offset-5">
@@ -181,24 +183,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                        </div>
 		                        <div class="body">
 		                        	<div class="table-responsive">
-			                            <form name="form_banco_actualizar" id="form_banco_actualizar" method="post">
+			                            <form name="form_inmobiliaria_actualizar" id="form_inmobiliaria_actualizar" method="post">
 			                            	<div class="col-sm-6">
-			                            		<label for="cod_banco">Código*</label>
+			                            		<label for="codigo_editar">Código de la Inmobiliaria*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control" id="cod_banco_editar" disabled>
+				                                        <input type="text" class="form-control mayusculas" name="codigo" id="codigo_editar" maxlength="50" placeholder="P. EJ. INYUCATAN" required>
 				                                    </div>
 				                                </div>
 				                            </div>
-				                            <input type="hidden" class="form-control" name="id_banco" id="id_banco_editar">
 				                            <div class="col-sm-6">
-				                                <label for="nombre_banco">Nombre o Razón Social*</label>
+				                                <label for="nombre_editar">Nombre*</label>
 				                                <div class="form-group">
 				                                    <div class="form-line">
-				                                        <input type="text" class="form-control mayusculas" name="nombre_banco" id="nombre_banco_editar" placeholder="P. EJ. BANCO NACIONAL DE MÉXICO, S.A." required>
+				                                        <input type="text" class="form-control mayusculas" name="nombre" id="nombre_editar" required>
 				                                    </div>
 				                                </div>
 				                            </div>
+				                            <div class="col-sm-6">
+			                            		<label for="coordinador_editar">Coordinador*</label>
+		                                    	<select name="coordinador" id="coordinador_editar" required class="form-control">
+		                                    		<option value="" selected>Seleccione</option>
+		                                    		<?php foreach ($coordinadores as $coordinador): ?>
+		                                    			<option value="<?= $coordinador->id_usuario; ?>"><?= $coordinador->nombres . " " . $coordinador->paterno . " " . $coordinador->materno ?></option>
+		                                    		<?php endforeach ?>
+		                                    	</select>
+				                            </div>
+				                            <div class="col-sm-6">
+				                                <label for="localidad_editar">Localidad*</label>
+				                                <select name="localidad" id="localidad_editar" required class="form-control">
+		                                    		<option value="" selected>Seleccione</option>
+		                                    		<?php foreach ($localidades as $localidad): ?>
+		                                    			<option value="<?= $localidad->codlval; ?>"><?= $localidad->descriplval ?></option>
+		                                    		<?php endforeach ?>
+		                                    	</select>
+				                            </div>
+				                            <input type="hidden" name="id_inmobiliaria" id="id_inmobiliaria_editar">
                                 			<br>
                                 			<div class="col-sm-4 col-sm-offset-5">
 		                                        <button type="button" onclick="regresar('#cuadro4')" class="btn btn-primary waves-effect">Regresar</button>
